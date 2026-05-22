@@ -13,6 +13,7 @@
 # limitations under the License.
 
 
+from train import WurstCoreC
 from CSD.model import CSD_CLIP
 from CSD.utils import convert_state_dict
 from modules.common import LayerNorm2d, Linear
@@ -20,7 +21,6 @@ import numpy as np
 import torch
 import torch.nn as nn
 from train import WurstCoreC
-
 
 def setup_csd(device: str = "cpu") -> nn.Module:
   """Sets up the CSD model.
@@ -358,37 +358,72 @@ class Attention2D(nn.Module):
 
       ## simple average
       x = (x_txt + x_txt_style + x_style) / 3
-
+      ## PROPOSAL
     elif img_style:
-      mean = kv[:, -clip_size:, :].mean(axis=1).unsqueeze(dim=1)
+      alpha_style = 0.85
+      w_txt = 0.0
+      w_sub = 0.15
+      w_style = 0.45
+      w_sub_style = 0.40
 
-      ## for txt, helps in extreme style transfer
+      style_tokens = kv[:, -clip_size:, :].clone()
+      mean = style_tokens.mean(axis=1).unsqueeze(dim=1)
+      blended_style = alpha_style * style_tokens + (1 - alpha_style) * torch.cat([mean] * clip_size, dim=1)
+      
+      kv_txt = kv.clone()
       x_txt = self.attn(
           x,
-          kv[:, : -2 * clip_size, :],
-          kv[:, : -2 * clip_size, :],
+          kv_txt[:, : -2 * clip_size, :],
+          kv_txt[:, : -2 * clip_size, :],
           need_weights=False,
       )[0]
-
-      ## for sub
+      
+      kv_sub = kv.clone()
       x_sub = self.attn(
-          x, kv[:, :-clip_size, :], kv[:, :-clip_size, :], need_weights=False
+          x, kv_sub[:, :-clip_size, :], kv_sub[:, :-clip_size, :], need_weights=False
       )[0]
 
-      ## for sub_style
-      kv[:, -clip_size:, :] = torch.cat([mean] * (clip_size), dim=1)
-      x_sub_style, att_map = self.attn(x, kv, kv, need_weights=True)
+      kv_mixed = kv.clone()
+      kv_mixed[:, -clip_size:, :] = blended_style
+      x_sub_style, att_map = self.attn(x, kv_mixed, kv_mixed, need_weights=True)
 
-      ## for style
-      kv[:, -2 * clip_size : -clip_size, :] = torch.cat(
-          [mean] * (clip_size), dim=1
-      )
+      kv_pure_style = kv.clone()
+      kv_pure_style[:, -2 * clip_size : -clip_size, :] = blended_style
       x_style = self.attn(
-          x, kv[:, :-clip_size, :], kv[:, :-clip_size, :], need_weights=False
+          x, kv_pure_style[:, :-clip_size, :], kv_pure_style[:, :-clip_size, :], need_weights=False
       )[0]
 
-      ## simple averaging
-      x = (x_txt + x_sub + x_style + x_sub_style) / 4
+      x = (w_txt * x_txt) + (w_sub * x_sub) + (w_style * x_style) + (w_sub_style * x_sub_style)
+  #   elif img_style:
+  #     mean = kv[:, -clip_size:, :].mean(axis=1).unsqueeze(dim=1)
+
+  #     ## for txt, helps in extreme style transfer
+  #     x_txt = self.attn(
+  #         x,
+  #         kv[:, : -2 * clip_size, :],
+  #         kv[:, : -2 * clip_size, :],
+  #         need_weights=False,
+  #     )[0]
+
+  #     ## for sub
+  #     x_sub = self.attn(
+  #         x, kv[:, :-clip_size, :], kv[:, :-clip_size, :], need_weights=False
+  #     )[0]
+
+  #     ## for sub_style
+  #     kv[:, -clip_size:, :] = torch.cat([mean] * (clip_size), dim=1)
+  #     x_sub_style, att_map = self.attn(x, kv, kv, need_weights=True)
+
+  #     ## for style
+  #     kv[:, -2 * clip_size : -clip_size, :] = torch.cat(
+  #         [mean] * (clip_size), dim=1
+  #     )
+  #     x_style = self.attn(
+  #         x, kv[:, :-clip_size, :], kv[:, :-clip_size, :], need_weights=False
+  #     )[0]
+
+  #     ## simple averaging
+  #     x = (x_txt + x_sub + x_style + x_sub_style) / 4
     else:
       x = self.attn(x, kv, kv, need_weights=False)[0]
     x = x.permute(0, 2, 1).view(*orig_shape)

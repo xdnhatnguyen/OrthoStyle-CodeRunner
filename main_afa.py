@@ -169,17 +169,24 @@ if getattr(models_b, "text_model", None) is not None:
 print_module_devices(models_rbm, models_b)
 
 # Inputs
-ref_style_file = "data/mosaic.png"
+ref_style_file = "data/poster.png"
 ref_sub_file = "data/cat.jpg"
-caption = "a cat in 3d rendering"
+org_caption = "a cat"
+caption = "a cat"
 sam_prompt = "a cat"
-use_sam_mask = False
+use_sam_mask = True
 
 batch_size = 1
 height, width = 1024, 1024
+ETA = 0.45
+LAMBDA = 1  
+ANALYZE_STEPS = True
+
 stage_c_latent_shape, stage_b_latent_shape = calculate_latent_sizes(
     height, width, batch_size=batch_size
 )
+
+n_inversion_steps = 20
 
 extras.sampling_configs["cfg"] = 4
 extras.sampling_configs["shift"] = 2
@@ -199,6 +206,18 @@ ref_images = resize_image(PIL.Image.open(ref_sub_file).convert("RGB")) \
     .unsqueeze(0).expand(batch_size, -1, -1, -1).to(device_c)
 
 # Separate batches for each stage/device
+org_batch_c = {
+    "captions": [org_caption] * batch_size,
+    "style": ref_style,
+    "images": ref_images,
+}
+
+org_batch_b = {
+    "captions": [org_caption] * batch_size,
+    "style": ref_style.to(device_b),
+    "images": ref_images.to(device_b),
+}
+
 batch_c = {
     "captions": [caption] * batch_size,
     "style": ref_style,
@@ -235,40 +254,74 @@ results = sam_model.predict([image_pil], [sam_prompt])
 sam_mask = torch.from_numpy(results[0]["masks"][0]).unsqueeze(0).unsqueeze(0).float().to(device_c)
 
 # Conditions
-conditions = core.get_conditions(
-    batch_c,
-    models_rbm,
-    extras,
-    is_eval=True,
-    is_unconditional=False,
-    eval_image_embeds=True,
-    eval_subject_style=True,
-    eval_csd=False,
-)
-unconditions = core.get_conditions(
-    batch_c,
-    models_rbm,
-    extras,
-    is_eval=True,
-    is_unconditional=True,
-    eval_image_embeds=False,
-    eval_subject_style=True,
-)
-
-conditions_b = core_b.get_conditions(
-    batch_b,
-    models_b,
-    extras_b,
-    is_eval=True,
-    is_unconditional=False,
-)
-unconditions_b = core_b.get_conditions(
-    batch_b,
-    models_b,
-    extras_b,
-    is_eval=True,
-    is_unconditional=True,
-)
+with torch.no_grad():
+    org_conditions = core.get_conditions(
+        org_batch_c,
+        models_rbm,
+        extras,
+        is_eval=True,
+        is_unconditional=False,
+        eval_image_embeds=False,
+        eval_subject_style=False,
+        eval_csd=False,
+    )
+    conditions = core.get_conditions(
+        batch_c,
+        models_rbm,
+        extras,
+        is_eval=True,
+        is_unconditional=False,
+        eval_image_embeds=True,
+        eval_subject_style=True,
+        eval_csd=False,
+    )
+    org_unconditions = core.get_conditions(
+        org_batch_c,
+        models_rbm,
+        extras,
+        is_eval=True,
+        is_unconditional=True,
+        eval_image_embeds=False,
+        eval_subject_style=False,
+        eval_csd=False,
+    )
+    unconditions = core.get_conditions(
+        batch_c,
+        models_rbm,
+        extras,
+        is_eval=True,
+        is_unconditional=True,
+        eval_image_embeds=False,
+        eval_subject_style=True,
+    )
+    conditions_b = core_b.get_conditions(
+        batch_b,
+        models_b,
+        extras_b,
+        is_eval=True,
+        is_unconditional=False,
+    )
+    unconditions_b = core_b.get_conditions(
+        batch_b,
+        models_b,
+        extras_b,
+        is_eval=True,
+        is_unconditional=True,
+    )
+    org_conditions_b = core_b.get_conditions(
+        org_batch_b,
+        models_b,
+        extras_b,
+        is_eval=True,
+        is_unconditional=False,
+    )
+    org_unconditions_b = core_b.get_conditions(
+        org_batch_b,
+        models_b,
+        extras_b,
+        is_eval=True,
+        is_unconditional=True,
+    )
 
 # Optional low_vram branch if your project defines models_to elsewhere
 if low_vram and "models_to" in globals():
@@ -290,12 +343,43 @@ if getattr(models_rbm, "image_model", None) is not None:
 
 torch.cuda.empty_cache()
 
+# inverting...
+
+inversion = extras.gdf.StableCascade_inversion(
+  x0_forward, 
+  models_rbm.generator,
+  org_conditions, 
+  stage_c_latent_shape, 
+  org_unconditions,
+  device=device_c,
+  **extras.sampling_configs,
+  inversion_timesteps=n_inversion_steps
+)
+
+for (inverted_latent, _, _) in tqdm(inversion, total=extras.sampling_configs["timesteps"], desc="Inverting"):
+    pass
+
+# resampling for inversion check
+orig_sampling_c = extras.gdf.orig_sample(
+    models_rbm.generator,
+    org_conditions, 
+    stage_c_latent_shape, 
+    org_unconditions,
+    device=device_c,
+    **extras.sampling_configs,
+    x_init=inverted_latent,
+)
+
+for (resampled_latent, _, _) in tqdm(orig_sampling_c, total=extras.sampling_configs["timesteps"], desc="Resampling after inversion"):
+    pass
+
 sampling_c = extras.gdf.sample(
     models_rbm.generator,
     conditions,
     stage_c_latent_shape,
     unconditions,
     device=device_c,
+    device_2=device_b,
     **extras.sampling_configs,
     x0_style_forward=x0_style_forward,
     x0_forward=x0_forward,
@@ -303,7 +387,7 @@ sampling_c = extras.gdf.sample(
     tau_pushforward=5,
     tau_pushforward_csd=10,
     num_iter=3,
-    eta=1e-1,
+    eta=ETA,
     tau=20,
     eval_sub_csd=True,
     extras=extras,
@@ -315,10 +399,14 @@ sampling_c = extras.gdf.sample(
     sam_mask=sam_mask,
     use_sam_mask=use_sam_mask,
     sam_prompt=sam_prompt,
+    Lambda=LAMBDA
 )
 
-for (sampled_c, _, _) in tqdm(sampling_c, total=extras.sampling_configs["timesteps"]):
-    pass
+list_of_steps = []
+
+for (sampled_c, _, _) in tqdm(sampling_c, total=extras.sampling_configs["timesteps"], desc="Sampling"):
+    if ANALYZE_STEPS == True:
+        list_of_steps.append(sampled_c)
 
 # Free some gpu0 memory after Stage C
 del conditions, unconditions, x0_forward, x0_style_forward
@@ -346,6 +434,38 @@ with torch.no_grad(), torch.amp.autocast("cuda", dtype=torch.bfloat16):
 
     sampled = models_b.stage_a.decode(sampled_b).float()
 
+    sampling_b = extras_b.gdf.sample(
+        models_b.generator,
+        org_conditions_b,
+        stage_b_latent_shape,
+        org_unconditions_b,
+        device=device_b,
+        **extras_b.sampling_configs,
+    )
+
+    conditions_b["effnet"] = inverted_latent
+    unconditions_b["effnet"] = torch.zeros_like(inverted_latent, device=device_b)
+
+    for (sampled_b, _, _) in tqdm(sampling_b, total=extras_b.sampling_configs["timesteps"]):
+        pass
+
+    inverted_img = models_b.stage_a.decode(sampled_b).float()
+
+    conditions_b["effnet"] = resampled_latent
+    unconditions_b["effnet"] = torch.zeros_like(resampled_latent, device=device_b)
+
+    for (sampled_b, _, _) in tqdm(sampling_b, total=extras_b.sampling_configs["timesteps"]):
+        pass
+    
+    resampled_img = models_b.stage_a.decode(sampled_b).float()
+
+    models_rbm.previewer.to(device=device_c)
+
+    for i, tensor in enumerate(list_of_steps):
+        print("Saving preview of step", i)
+        res = models_rbm.previewer(tensor).to(dtype=torch.float32)
+        save_images(res, "./our_results/sampling_" + str(i) + ".png".strip())
+
 # Save output
 sampled = torch.cat(
     [
@@ -356,4 +476,6 @@ sampled = torch.cat(
     dim=0,
 )
 
-save_images(sampled, "./out_images/combined_afa_ours_no_style_prompt.png")
+save_images(inverted_img, "./our_results/inversed_content.png".strip())
+save_images(resampled_img, "./our_results/resampled_content.png".strip())
+save_images(sampled, "./out_images/newAFA01_melting_gold_fix_att_weight_eta_0_25_prompt_a_cat.png".strip())
