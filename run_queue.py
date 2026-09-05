@@ -193,14 +193,25 @@ def worker_loop(gpu_id: str, task_queue: queue.Queue, results: list, lock: threa
         success = False
         error_msg = ""
 
+        sub_env = os.environ.copy()
+        sub_env["PYTHONUNBUFFERED"] = "1"
+
         try:
             with open(log_file, "w", encoding="utf-8") as f_log:
                 proc = subprocess.Popen(
                     cmd,
-                    stdout=f_log,
+                    stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT,
-                    env=os.environ.copy()
+                    env=sub_env,
+                    text=True,
+                    bufsize=1,
                 )
+                if proc.stdout:
+                    for line in proc.stdout:
+                        f_log.write(line)
+                        f_log.flush()
+                        with lock:
+                            print(f"[{device_str.upper()}] {line}", end="", flush=True)
                 ret_code = proc.wait()
                 if ret_code == 0:
                     success = True

@@ -212,7 +212,7 @@ def setup_all_models(device_str: str = "cuda:0", use_controlnet_canny: bool = Tr
     if str(device_str).isdigit():
         device_str = f"cuda:{device_str}"
     device = torch.device(device_str if torch.cuda.is_available() else "cpu")
-    print(f"[*] Initializing OrthoStyle models on {device} (with CPU offload)...")
+    print(f"[*] Initializing OrthoStyle models on {device} (with CPU offload)...", flush=True)
 
     # Resolve paths for StableCascade and CSD
     if os.path.exists(os.path.join(third_party_root, "configs/inference/stage_c_3b.yaml")):
@@ -223,14 +223,19 @@ def setup_all_models(device_str: str = "cuda:0", use_controlnet_canny: bool = Tr
         parent_tp = third_party_root
 
     # Set CSD environment variable for utils.py if not already set
-    csd_path = os.path.join(parent_tp, "CSD/checkpoint.pth")
+    csd_path = os.environ.get("CSD_CHECKPOINT_PATH", os.path.join(parent_tp, "CSD/checkpoint.pth"))
     if os.path.exists(csd_path):
         os.environ["CSD_CHECKPOINT_PATH"] = csd_path
+    else:
+        print(f"[!] Notice: CSD checkpoint not found at: {csd_path}", flush=True)
 
     sc_models_dir = os.path.join(sc_dir, "models")
+    print(f"[*] [1/5] Loading Stage C Core configs (from {sc_dir})...", flush=True)
 
     # Stage C config
     config_file_c = os.path.join(sc_dir, "configs/inference/stage_c_3b.yaml")
+    if not os.path.exists(config_file_c):
+        raise FileNotFoundError(f"[ERROR] Stage C config not found at: {config_file_c}")
     with open(config_file_c, "r", encoding="utf-8") as f:
         loaded_config_c = yaml.safe_load(f)
 
@@ -241,11 +246,21 @@ def setup_all_models(device_str: str = "cuda:0", use_controlnet_canny: bool = Tr
             model_f = os.path.join(sc_models_dir, fname)
             if os.path.exists(model_f):
                 loaded_config_c[k] = model_f
+            elif not os.path.exists(loaded_config_c[k]):
+                raise FileNotFoundError(
+                    f"[ERROR] Required StableCascade model '{fname}' not found!\n"
+                    f"  Checked: {model_f}\n"
+                    f"  Checked: {loaded_config_c[k]}\n"
+                    f"  Please make sure models are located in: {sc_models_dir}/"
+                )
 
     core_c = WurstCoreCRBM(config_dict=loaded_config_c, device=device, training=False)
 
+    print(f"[*] [2/5] Loading Stage B Core configs...", flush=True)
     # Stage B config
     config_file_b = os.path.join(sc_dir, "configs/inference/stage_b_3b.yaml")
+    if not os.path.exists(config_file_b):
+        raise FileNotFoundError(f"[ERROR] Stage B config not found at: {config_file_b}")
     with open(config_file_b, "r", encoding="utf-8") as f:
         loaded_config_b = yaml.safe_load(f)
 
@@ -255,6 +270,13 @@ def setup_all_models(device_str: str = "cuda:0", use_controlnet_canny: bool = Tr
             model_f = os.path.join(sc_models_dir, fname)
             if os.path.exists(model_f):
                 loaded_config_b[k] = model_f
+            elif not os.path.exists(loaded_config_b[k]):
+                raise FileNotFoundError(
+                    f"[ERROR] Required Stage B model '{fname}' not found!\n"
+                    f"  Checked: {model_f}\n"
+                    f"  Checked: {loaded_config_b[k]}\n"
+                    f"  Please make sure models are located in: {sc_models_dir}/"
+                )
 
     core_b = WurstCoreB(config_dict=loaded_config_b, device=device, training=False)
 
@@ -301,8 +323,12 @@ def setup_all_models(device_str: str = "cuda:0", use_controlnet_canny: bool = Tr
     )
     models_b.generator.eval().requires_grad_(False)
 
+    print(f"[*] [3/5] Loading StageCRBM generator weights...", flush=True)
     generator_rbm = StageCRBM()
-    for param_name, param in load_or_fail(core_c.config.generator_checkpoint_path).items():
+    c_ckpt = load_or_fail(core_c.config.generator_checkpoint_path)
+    if c_ckpt is None:
+        raise FileNotFoundError(f"[ERROR] Could not load generator checkpoint: {core_c.config.generator_checkpoint_path}")
+    for param_name, param in c_ckpt.items():
         set_module_tensor_to_device(generator_rbm, param_name, "cpu", value=param)
     generator_rbm = generator_rbm.to(getattr(torch, core_c.config.dtype)).to(device)
     generator_rbm = core_c.load_model(generator_rbm, "generator")
@@ -321,6 +347,7 @@ def setup_all_models(device_str: str = "cuda:0", use_controlnet_canny: bool = Tr
     controlnet = None
     canny_filter = None
     if use_controlnet_canny:
+        print(f"[*] [4/5] Loading ControlNet Canny...", flush=True)
         controlnet = ControlNet(c_in=1, proj_blocks=[0, 4, 8, 12, 51, 55, 59, 63], bottleneck_mode=None)
         canny_ckpt_path = os.environ.get("CONTROLNET_CHECKPOINT_PATH", os.path.join(sc_models_dir, "canny.safetensors"))
         if not os.path.exists(canny_ckpt_path):
@@ -332,17 +359,25 @@ def setup_all_models(device_str: str = "cuda:0", use_controlnet_canny: bool = Tr
                 if os.path.exists(fallback):
                     canny_ckpt_path = fallback
                     break
+        if not os.path.exists(canny_ckpt_path):
+            raise FileNotFoundError(
+                f"[ERROR] ControlNet checkpoint not found at: '{canny_ckpt_path}'!\n"
+                f"  Please download from: https://huggingface.co/stabilityai/stable-cascade/resolve/main/controlnet/canny.safetensors\n"
+                f"  and save to: {os.path.join(sc_models_dir, 'canny.safetensors')}"
+            )
         cnet_ckpt = load_or_fail(canny_ckpt_path)
         controlnet.load_state_dict(cnet_ckpt if "state_dict" not in cnet_ckpt else cnet_ckpt["state_dict"])
         controlnet = controlnet.to(getattr(torch, core_c.config.dtype)).eval().requires_grad_(False)
         canny_filter = CannyFilter(device, resize=224)
 
+    print(f"[*] [5/5] Loading DINO model...", flush=True)
     dino_model = setup_dino(device=str(device))
 
     # Keep all models offloaded to CPU initially
     move_stage_c_to_cpu(models_rbm, controlnet, dino_model)
     move_stage_b_to_cpu(models_b)
     hard_clear_cuda()
+    print(f"[✔] All models loaded successfully! Ready for inference.\n", flush=True)
 
     print("[*] Models initialized and offloaded to CPU successfully.")
     return {

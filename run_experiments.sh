@@ -56,8 +56,29 @@ run_task () {
 #   Lần 1: ./run_experiments.sh phase1 0 1   (hoặc PHASE=1 ./run_experiments.sh)
 #   Lần 2: ./run_experiments.sh phase2 0 1   (hoặc PHASE=2 ./run_experiments.sh)
 #   Tất cả: ./run_experiments.sh run_all 0 1
-# ============================================================
 CMD="${1:-none}"
+
+# Debug Mode (Chạy thử 1 sample trên 1 GPU, in log trực tiếp ra terminal không qua queue)
+# Cách dùng: ./run_experiments.sh debug [gpu_id]
+if [[ "$CMD" =~ ^(debug|test|run_debug)$ ]]; then
+  shift || true
+  DBG_GPU="${1:-0}"
+  echo "============================================================"
+  echo "DEBUG MODE: Running 1 pair test on GPU $DBG_GPU (Live Console Output)"
+  echo "============================================================"
+  "$PYTHON" -u "$RUNNER" \
+    --device "cuda:$DBG_GPU" \
+    "${COMMON[@]}" \
+    --start_idx 1 \
+    --end_idx 1 \
+    --prompt_levels null \
+    --output_root "output/debug"
+  echo
+  echo "============================================================"
+  echo "[✔] Debug test finished successfully! Output saved in: output/debug"
+  echo "============================================================"
+  exit 0
+fi
 
 # Lần 1: Main Benchmark + 2 Prompt Levels + Tau Sweeps (10 tasks, 871 ảnh)
 if [[ "${PHASE:-0}" == "1" || "$CMD" == "phase1" || "$CMD" == "run_phase1" ]]; then
