@@ -112,40 +112,45 @@ if [[ "${RUN_SWEEPS:-0}" == "1" ]]; then
   done
 fi
 
-# 5. Table 2 Component Ablation Study (49 pairs 7x7)
+# 5. Table 2 Component Ablation Study (Full 15x15 = 225 pairs)
 if [[ "${RUN_TABLE2:-0}" == "1" ]]; then
   # (B) Pure Mean Token
   run_task ablation_B_pure_mean \
     --alpha_style 0.0 \
-    --subset_7x7 \
+    --start_idx 1 \
+    --end_idx 225 \
     --prompt_levels null \
     --ablation_tag ablation_B_pure_mean
 
   # (C) Raw Style Token
   run_task ablation_C_raw_style \
     --alpha_style 1.0 \
-    --subset_7x7 \
+    --start_idx 1 \
+    --end_idx 225 \
     --prompt_levels null \
     --ablation_tag ablation_C_raw_style
 
   # (D) No Score-Orthogonal Guidance
   run_task ablation_D_no_ortho \
     --no_ortho \
-    --subset_7x7 \
+    --start_idx 1 \
+    --end_idx 225 \
     --prompt_levels null \
     --ablation_tag ablation_D_no_ortho
 
   # (E) No AdaIN Pushforward
   run_task ablation_E_no_pushforward \
     --no_pushforward \
-    --subset_7x7 \
+    --start_idx 1 \
+    --end_idx 225 \
     --prompt_levels null \
     --ablation_tag ablation_E_no_pushforward
 
   # (F) No Semantic Gated Canny
   run_task ablation_F_no_semantic_gating \
     --no_semantic_gating \
-    --subset_7x7 \
+    --start_idx 1 \
+    --end_idx 225 \
     --prompt_levels null \
     --ablation_tag ablation_F_no_semantic_gating
 fi

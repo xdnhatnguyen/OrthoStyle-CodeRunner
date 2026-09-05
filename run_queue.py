@@ -52,32 +52,62 @@ TASKS_SWEEPS = [
     },
 ]
 
-# 2. Table 2: Component Ablation Study (Configurations B to F on 49 pairs 7x7)
+# 2. Table 2: Component Ablation Study (Full 15x15 = 225 pairs per configuration, split into parts)
 TASKS_TABLE2 = [
+    # (B) Pure Mean Token (alpha_s=0.0)
     {
-        "name": "ablation_B_pure_mean",
-        "desc": "Table 2 (B): Pure Mean Token (alpha_s=0.0, 49 pairs 7x7)",
-        "args": ["--alpha_style", "0.0", "--subset_7x7", "--prompt_levels", "null", "--ablation_tag", "ablation_B_pure_mean"],
+        "name": "ablation_B_pure_mean_part1",
+        "desc": "Table 2 (B): Pure Mean Token (alpha_s=0.0, Pairs 1..112)",
+        "args": ["--alpha_style", "0.0", "--start_idx", "1", "--end_idx", "112", "--prompt_levels", "null", "--ablation_tag", "ablation_B_pure_mean"],
     },
     {
-        "name": "ablation_C_raw_style",
-        "desc": "Table 2 (C): Raw Style Token (alpha_s=1.0, 49 pairs 7x7)",
-        "args": ["--alpha_style", "1.0", "--subset_7x7", "--prompt_levels", "null", "--ablation_tag", "ablation_C_raw_style"],
+        "name": "ablation_B_pure_mean_part2",
+        "desc": "Table 2 (B): Pure Mean Token (alpha_s=0.0, Pairs 113..225)",
+        "args": ["--alpha_style", "0.0", "--start_idx", "113", "--end_idx", "225", "--prompt_levels", "null", "--ablation_tag", "ablation_B_pure_mean"],
+    },
+    # (C) Raw Style Token (alpha_s=1.0)
+    {
+        "name": "ablation_C_raw_style_part1",
+        "desc": "Table 2 (C): Raw Style Token (alpha_s=1.0, Pairs 1..112)",
+        "args": ["--alpha_style", "1.0", "--start_idx", "1", "--end_idx", "112", "--prompt_levels", "null", "--ablation_tag", "ablation_C_raw_style"],
     },
     {
-        "name": "ablation_D_no_ortho",
-        "desc": "Table 2 (D): No Score-Orthogonal Guidance (49 pairs 7x7)",
-        "args": ["--no_ortho", "--subset_7x7", "--prompt_levels", "null", "--ablation_tag", "ablation_D_no_ortho"],
+        "name": "ablation_C_raw_style_part2",
+        "desc": "Table 2 (C): Raw Style Token (alpha_s=1.0, Pairs 113..225)",
+        "args": ["--alpha_style", "1.0", "--start_idx", "113", "--end_idx", "225", "--prompt_levels", "null", "--ablation_tag", "ablation_C_raw_style"],
+    },
+    # (D) No Score-Orthogonal Guidance
+    {
+        "name": "ablation_D_no_ortho_part1",
+        "desc": "Table 2 (D): No Score-Ortho Guidance (Pairs 1..112)",
+        "args": ["--no_ortho", "--start_idx", "1", "--end_idx", "112", "--prompt_levels", "null", "--ablation_tag", "ablation_D_no_ortho"],
     },
     {
-        "name": "ablation_E_no_pushforward",
-        "desc": "Table 2 (E): No AdaIN Pushforward (tau=0, p_switch=0, 49 pairs 7x7)",
-        "args": ["--no_pushforward", "--subset_7x7", "--prompt_levels", "null", "--ablation_tag", "ablation_E_no_pushforward"],
+        "name": "ablation_D_no_ortho_part2",
+        "desc": "Table 2 (D): No Score-Ortho Guidance (Pairs 113..225)",
+        "args": ["--no_ortho", "--start_idx", "113", "--end_idx", "225", "--prompt_levels", "null", "--ablation_tag", "ablation_D_no_ortho"],
+    },
+    # (E) No AdaIN Pushforward
+    {
+        "name": "ablation_E_no_pushforward_part1",
+        "desc": "Table 2 (E): No AdaIN Pushforward (Pairs 1..112)",
+        "args": ["--no_pushforward", "--start_idx", "1", "--end_idx", "112", "--prompt_levels", "null", "--ablation_tag", "ablation_E_no_pushforward"],
     },
     {
-        "name": "ablation_F_no_semantic_gating",
-        "desc": "Table 2 (F): No Semantic Gated Canny (49 pairs 7x7)",
-        "args": ["--no_semantic_gating", "--subset_7x7", "--prompt_levels", "null", "--ablation_tag", "ablation_F_no_semantic_gating"],
+        "name": "ablation_E_no_pushforward_part2",
+        "desc": "Table 2 (E): No AdaIN Pushforward (Pairs 113..225)",
+        "args": ["--no_pushforward", "--start_idx", "113", "--end_idx", "225", "--prompt_levels", "null", "--ablation_tag", "ablation_E_no_pushforward"],
+    },
+    # (F) No Semantic Gated Canny
+    {
+        "name": "ablation_F_no_semantic_gating_part1",
+        "desc": "Table 2 (F): No Semantic Gated Canny (Pairs 1..112)",
+        "args": ["--no_semantic_gating", "--start_idx", "1", "--end_idx", "112", "--prompt_levels", "null", "--ablation_tag", "ablation_F_no_semantic_gating"],
+    },
+    {
+        "name": "ablation_F_no_semantic_gating_part2",
+        "desc": "Table 2 (F): No Semantic Gated Canny (Pairs 113..225)",
+        "args": ["--no_semantic_gating", "--start_idx", "113", "--end_idx", "225", "--prompt_levels", "null", "--ablation_tag", "ablation_F_no_semantic_gating"],
     },
 ]
 
