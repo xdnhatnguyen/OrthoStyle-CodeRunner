@@ -1,32 +1,31 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # OrthoStyle Experiment Orchestration Script
-# Multi-Card & Task Dispatcher for University Servers & Local Workstations
+# Multi-Card Dynamic Queue Dispatcher for University Servers & Workstations
 # ==============================================================================
 #
 # USAGE GUIDE:
 #
-# 1. Chạy 1 task (prompt level) trên 1 card cụ thể:
-#    ./run_experiments.sh task null 0              # Chạy task null prompt trên GPU 0
-#    ./run_experiments.sh task object 1            # Chạy task object prompt trên GPU 1
-#    ./run_experiments.sh task style_desc 2        # Chạy task style_desc trên GPU 2
+# 1. Chạy TỰ ĐỘNG TẤT CẢ (Queue Dispatcher trên 2 GPUs - Khuyên dùng cho server trường):
+#    ./run_experiments.sh run_all              # Tự động điều phối 15 tasks trên GPU 0 & GPU 1
+#    ./run_experiments.sh run_all 0 1          # Chỉ định cụ thể GPU 0 và GPU 1
 #
-# 2. Bắn song song các task lên các card khác nhau cùng lúc (Background + Logging):
-#    ./run_experiments.sh launch_tasks 0 1         # null -> GPU 0, object -> GPU 1
-#    ./run_experiments.sh launch_tasks 0 1 2       # null -> GPU 0, object -> GPU 1, style_desc -> GPU 2
+# 2. Chạy từng Suite cụ thể (Tự động chia tải 2 GPU qua Queue):
+#    ./run_experiments.sh run_ablations 0 1    # Chạy Table 2 Ablations (B..F) + Tau Sweeps (1..4)
+#    ./run_experiments.sh run_sweeps 0 1       # Chạy Tau Pushforward Sweeps [1, 2, 3, 4] (49 ảnh 7x7)
+#    ./run_experiments.sh run_table2 0 1       # Chạy 5 cấu hình Table 2 Component Ablations (49 ảnh 7x7)
+#    ./run_experiments.sh run_main 0 1         # Chạy Main Benchmark Null Prompt (225 cặp)
 #
-# 3. Chia đôi 225 cặp chạy song song 2 GPU (cả 3 prompt levels):
-#    ./run_experiments.sh split_pairs 0 1          # GPU 0: cặp 1..112, GPU 1: cặp 113..225
+# 3. Chạy thủ công từng task / level trên 1 GPU:
+#    ./run_experiments.sh task null 0          # Chạy null prompt trên GPU 0
+#    ./run_experiments.sh task object 1        # Chạy object prompt trên GPU 1
+#    ./run_experiments.sh task style_desc 0    # Chạy style_desc trên GPU 0
 #
-# 4. Chạy một dải cặp (range) trên 1 card cụ thể:
-#    ./run_experiments.sh range 1 112 0            # Cặp 1..112 trên GPU 0
-#    ./run_experiments.sh range 113 225 1          # Cặp 113..225 trên GPU 1
+# 4. Bắn song song các task lên các card khác nhau cùng lúc (Background):
+#    ./run_experiments.sh launch_tasks 0 1     # null -> GPU 0, object -> GPU 1
 #
-# 5. Chạy toàn bộ 675 ảnh tuần tự trên 1 GPU:
-#    ./run_experiments.sh single 0                 # Full 675 ảnh trên GPU 0
-#
-# 6. Chạy bộ thí nghiệm Ablation Study (Bảng 2) trên 1 GPU:
-#    ./run_experiments.sh ablations 0              # Chạy cấu hình A-F trên GPU 0
+# 5. Chia đôi 225 cặp chạy song song 2 GPU (cả 3 prompt levels):
+#    ./run_experiments.sh split_pairs 0 1      # GPU 0: cặp 1..112, GPU 1: cặp 113..225
 # ==============================================================================
 
 set -eo pipefail
@@ -43,6 +42,7 @@ else
 fi
 
 SCRIPT="batch_runner.py"
+QUEUE_SCRIPT="run_queue.py"
 
 mkdir -p logs
 mkdir -p output/benchmark
@@ -60,36 +60,44 @@ show_help() {
   cat << 'EOF'
 OrthoStyle Experiment Runner - Multi-Card & Task Interface
 
-Usage:
+1. Automated Server Queue Runners (Auto-loads next task when a GPU finishes):
+  ./run_experiments.sh run_all [gpus...]
+      Run ALL 15 tasks (sweeps, table2 ablations, main null benchmark, object, style_desc).
+      Default GPUs: 0 1. Example: ./run_experiments.sh run_all
+                                  ./run_experiments.sh run_all 0 1
+
+  ./run_experiments.sh run_ablations [gpus...]
+      Run both Tau Sweeps [1..4] and Table 2 Component Ablations [B..F] (49 pairs 7x7).
+      Example: ./run_experiments.sh run_ablations 0 1
+
+  ./run_experiments.sh run_sweeps [gpus...]
+      Run Tau Pushforward Sweeps (tau=1, 2, 3, 4; p_switch=0.05..0.20 on 49 pairs 7x7).
+      Example: ./run_experiments.sh run_sweeps 0 1
+
+  ./run_experiments.sh run_table2 [gpus...]
+      Run Table 2 Component Ablations (B: Pure Mean, C: Raw Style, D: No Ortho, E: No Pushforward, F: No Canny Gating).
+      Example: ./run_experiments.sh run_table2 0 1
+
+  ./run_experiments.sh run_main [gpus...]
+      Run Main Benchmark (Null prompt across 225 pairs split over GPUs).
+      Example: ./run_experiments.sh run_main 0 1
+
+2. Manual / Interactive Task Runners:
   ./run_experiments.sh task <prompt_level> <gpu_id> [start_idx] [end_idx]
       Run a single prompt level ('null', 'object', 'style_desc') on a specific GPU.
       Example: ./run_experiments.sh task null 0
-               ./run_experiments.sh task object 1
 
   ./run_experiments.sh launch_tasks <gpu_for_null> <gpu_for_object> [gpu_for_style_desc]
-      Launch tasks concurrently across 2 or 3 GPUs in background with dedicated logs.
+      Launch tasks concurrently across GPUs in background with dedicated logs.
       Example: ./run_experiments.sh launch_tasks 0 1
-               ./run_experiments.sh launch_tasks 0 1 2
 
   ./run_experiments.sh split_pairs <gpu_0> <gpu_1>
       Split 225 pairs evenly across 2 GPUs (GPU 0 handles 1..112, GPU 1 handles 113..225).
       Example: ./run_experiments.sh split_pairs 0 1
 
-  ./run_experiments.sh range <start_idx> <end_idx> <gpu_id> [prompt_level]
-      Run a custom index range on a specific GPU.
-      Example: ./run_experiments.sh range 1 50 0 null
-
   ./run_experiments.sh single [gpu_id]
       Run all 3 prompt levels sequentially on a single GPU (default: 0).
       Example: ./run_experiments.sh single 0
-
-  ./run_experiments.sh ablations [gpu_id]
-      Run Table 2 Ablation Study suite (Configurations B to F) on a specific GPU (default: 0).
-      Example: ./run_experiments.sh ablations 0
-
-Legacy Commands:
-  ./run_experiments.sh benchmark_single_gpu   # Alias for 'single 0'
-  ./run_experiments.sh benchmark_dual_gpu     # Alias for 'split_pairs 0 1'
 EOF
 }
 
@@ -97,7 +105,60 @@ CMD="${1:-help}"
 
 case "${CMD}" in
   # ----------------------------------------------------------------------------
-  # 1. Chạy 1 task cụ thể trên 1 card
+  # Automated Dynamic Queue Dispatchers (Khuyên dùng cho server trường)
+  # ----------------------------------------------------------------------------
+  run_all)
+    shift || true
+    GPUS=("$@")
+    if [ ${#GPUS[@]} -eq 0 ]; then
+      GPUS=("0" "1")
+    fi
+    echo "=== Starting Full Suite Queue Dispatcher on GPUs: ${GPUS[*]} ==="
+    ${PYTHON_BIN} "${QUEUE_SCRIPT}" --suite "all" --gpus "${GPUS[@]}"
+    ;;
+
+  run_ablations)
+    shift || true
+    GPUS=("$@")
+    if [ ${#GPUS[@]} -eq 0 ]; then
+      GPUS=("0" "1")
+    fi
+    echo "=== Starting Ablations Queue Dispatcher (Sweeps + Table 2) on GPUs: ${GPUS[*]} ==="
+    ${PYTHON_BIN} "${QUEUE_SCRIPT}" --suite "ablations" --gpus "${GPUS[@]}"
+    ;;
+
+  run_sweeps)
+    shift || true
+    GPUS=("$@")
+    if [ ${#GPUS[@]} -eq 0 ]; then
+      GPUS=("0" "1")
+    fi
+    echo "=== Starting Tau Sweeps [1, 2, 3, 4] Queue Dispatcher on GPUs: ${GPUS[*]} ==="
+    ${PYTHON_BIN} "${QUEUE_SCRIPT}" --suite "sweeps" --gpus "${GPUS[@]}"
+    ;;
+
+  run_table2|ablations)
+    shift || true
+    GPUS=("$@")
+    if [ ${#GPUS[@]} -eq 0 ]; then
+      GPUS=("0" "1")
+    fi
+    echo "=== Starting Table 2 Component Ablations Queue Dispatcher on GPUs: ${GPUS[*]} ==="
+    ${PYTHON_BIN} "${QUEUE_SCRIPT}" --suite "table2" --gpus "${GPUS[@]}"
+    ;;
+
+  run_main)
+    shift || true
+    GPUS=("$@")
+    if [ ${#GPUS[@]} -eq 0 ]; then
+      GPUS=("0" "1")
+    fi
+    echo "=== Starting Main Benchmark (Null Prompt 225 pairs) Queue on GPUs: ${GPUS[*]} ==="
+    ${PYTHON_BIN} "${QUEUE_SCRIPT}" --suite "main" --gpus "${GPUS[@]}"
+    ;;
+
+  # ----------------------------------------------------------------------------
+  # Manual / Interactive Tasks
   # ----------------------------------------------------------------------------
   task)
     LEVEL="${2:?Vui lòng chỉ định prompt level: null, object, style_desc}"
@@ -121,9 +182,6 @@ case "${CMD}" in
         2>&1 | tee "logs/task_${LEVEL}_${GPU_ID//:/_}.log"
     ;;
 
-  # ----------------------------------------------------------------------------
-  # 2. Bắn song song các task lên các card khác nhau (Multi-Card Dispatch)
-  # ----------------------------------------------------------------------------
   launch_tasks)
     GPU_NULL="$(normalize_device "${2:?Vui lòng chỉ định GPU cho task null (ví dụ: 0)}")"
     GPU_OBJECT="$(normalize_device "${3:?Vui lòng chỉ định GPU cho task object (ví dụ: 1)}")"
@@ -162,14 +220,10 @@ case "${CMD}" in
           > "logs/task_style_${GPU_STYLE_NORM//:/_}.log" 2>&1 &
       PID_STYLE=$!
       echo "   Worker STYLE_DESC PID: ${PID_STYLE} | Log: logs/task_style_${GPU_STYLE_NORM//:/_}.log"
-    else
-      echo ">> Note: GPU cho task 3 (style_desc) chưa được chỉ định. Bạn có thể chạy riêng bằng: ./run_experiments.sh task style_desc <gpu>"
     fi
 
     echo ""
-    echo "Workers running in background. Monitoring progress..."
-    echo "Tip: Run 'tail -f logs/task_null_*.log' or 'tail -f logs/task_object_*.log' to view real-time outputs."
-    
+    echo "Workers running in background. Waiting for completion..."
     wait ${PID_NULL}
     echo "[✔] Task NULL finished."
     wait ${PID_OBJECT}
@@ -181,15 +235,12 @@ case "${CMD}" in
     echo "[✔] All launched multi-card tasks completed!"
     ;;
 
-  # ----------------------------------------------------------------------------
-  # 3. Chia đôi 225 cặp chạy trên 2 GPU (Split Pairs)
-  # ----------------------------------------------------------------------------
   split_pairs|benchmark_dual_gpu)
     GPU_0="$(normalize_device "${2:-0}")"
     GPU_1="$(normalize_device "${3:-1}")"
 
     echo "=== Running Full Benchmark Split on ${GPU_0} and ${GPU_1} ==="
-    echo ">> Launching Worker 0 on ${GPU_0} (Pairs 1 -> 112, all 3 levels)..."
+    echo ">> Launching Worker 0 on ${GPU_0} (Pairs 1 -> 112)..."
     ${PYTHON_BIN} "${SCRIPT}" \
         --device "${GPU_0}" \
         --start_idx 1 \
@@ -198,7 +249,7 @@ case "${CMD}" in
         > "logs/split_pairs_w0_${GPU_0//:/_}.log" 2>&1 &
     PID_W0=$!
 
-    echo ">> Launching Worker 1 on ${GPU_1} (Pairs 113 -> 225, all 3 levels)..."
+    echo ">> Launching Worker 1 on ${GPU_1} (Pairs 113 -> 225)..."
     ${PYTHON_BIN} "${SCRIPT}" \
         --device "${GPU_1}" \
         --start_idx 113 \
@@ -217,9 +268,6 @@ case "${CMD}" in
     echo "[✔] Split pair benchmark completed!"
     ;;
 
-  # ----------------------------------------------------------------------------
-  # 4. Chạy một dải cặp (range) trên 1 card
-  # ----------------------------------------------------------------------------
   range)
     START_IDX="${2:?Thiếu start_idx}"
     END_IDX="${3:?Thiếu end_idx}"
@@ -235,9 +283,6 @@ case "${CMD}" in
         2>&1 | tee "logs/range_${START_IDX}_${END_IDX}_${GPU_ID//:/_}.log"
     ;;
 
-  # ----------------------------------------------------------------------------
-  # 5. Chạy Full 675 ảnh tuần tự trên 1 GPU
-  # ----------------------------------------------------------------------------
   single|benchmark_single_gpu)
     GPU_ID="$(normalize_device "${2:-0}")"
     echo "=== Running Full Benchmark on Single GPU (${GPU_ID}) ==="
@@ -247,32 +292,6 @@ case "${CMD}" in
         --end_idx 225 \
         --prompt_levels null object style_desc \
         2>&1 | tee "logs/benchmark_single_${GPU_ID//:/_}.log"
-    ;;
-
-  # ----------------------------------------------------------------------------
-  # 6. Ablation Study Suite (Table 2)
-  # ----------------------------------------------------------------------------
-  ablations)
-    GPU_ID="$(normalize_device "${2:-0}")"
-    echo "=== Running Ablation Study Suite (Table 2) on ${GPU_ID} ==="
-    PAIRS_ABLATION="1 2 3 4 5 16 17 18 19 20 31 32 33 34 35 46 47 48 49 50 61 62 63 64 65"
-
-    echo "[1/5] Running Config (B): Pure Mean Token..."
-    ${PYTHON_BIN} "${SCRIPT}" --device "${GPU_ID}" --pair_indices ${PAIRS_ABLATION} --alpha_style 0.0 --ablation_tag "ablation_B_pure_mean" > "logs/ablation_B.log" 2>&1
-
-    echo "[2/5] Running Config (C): Raw Style Token..."
-    ${PYTHON_BIN} "${SCRIPT}" --device "${GPU_ID}" --pair_indices ${PAIRS_ABLATION} --alpha_style 1.0 --ablation_tag "ablation_C_raw_style" > "logs/ablation_C.log" 2>&1
-
-    echo "[3/5] Running Config (D): No Score-Orthogonal Guidance..."
-    ${PYTHON_BIN} "${SCRIPT}" --device "${GPU_ID}" --pair_indices ${PAIRS_ABLATION} --no_ortho --ablation_tag "ablation_D_no_ortho" > "logs/ablation_D.log" 2>&1
-
-    echo "[4/5] Running Config (E): No AdaIN Pushforward..."
-    ${PYTHON_BIN} "${SCRIPT}" --device "${GPU_ID}" --pair_indices ${PAIRS_ABLATION} --no_pushforward --ablation_tag "ablation_E_no_pushforward" > "logs/ablation_E.log" 2>&1
-
-    echo "[5/5] Running Config (F): No Semantic Gated Canny..."
-    ${PYTHON_BIN} "${SCRIPT}" --device "${GPU_ID}" --pair_indices ${PAIRS_ABLATION} --no_semantic_gating --ablation_tag "ablation_F_no_semantic_gating" > "logs/ablation_F.log" 2>&1
-
-    echo "[✔] Ablation study runs completed!"
     ;;
 
   help|--help|-h)

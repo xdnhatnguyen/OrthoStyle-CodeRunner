@@ -595,18 +595,30 @@ def main():
 
     # Ablation arguments
     parser.add_argument("--alpha_style", type=float, default=0.85, help="Alpha style blending (0.0=pure mean, 1.0=raw style)")
-    parser.add_argument("--p_switch", type=float, default=0.10, help="Switch point for style injection sigmoid schedule")
+    parser.add_argument("--tau_pushforward", type=int, default=2,
+                        help="Number of initial steps to apply AdaIN pushforward (default: 2)")
+    parser.add_argument("--p_switch", type=float, default=None,
+                        help="Switch point for style injection sigmoid schedule (default: tau_pushforward / 20.0)")
     parser.add_argument("--no_ortho", action="store_true", help="Disable Score-Orthogonal Guidance (use raw grad)")
     parser.add_argument("--no_pushforward", action="store_true", help="Disable AdaIN Pushforward")
     parser.add_argument("--no_canny", action="store_true", help="Disable ControlNet Canny")
     parser.add_argument("--no_semantic_gating", action="store_true", help="Disable rembg semantic gating on Canny map")
+    parser.add_argument("--subset_7x7", action="store_true", help="Filter to first 7 contents x 7 styles (49 pairs) for ablation study")
     parser.add_argument("--ablation_tag", type=str, default="", help="Subfolder name for ablation outputs if specified")
 
     args = parser.parse_args()
 
+    # Harmonize tau_pushforward and p_switch
+    if args.no_pushforward:
+        effective_tau = 0
+        effective_p_switch = 0.0
+    else:
+        effective_tau = args.tau_pushforward
+        effective_p_switch = (effective_tau / 20.0) if args.p_switch is None else args.p_switch
+
     # Set ablation environment variables
     os.environ["ALPHA_STYLE"] = str(args.alpha_style)
-    os.environ["P_SWITCH"] = str(args.p_switch)
+    os.environ["P_SWITCH"] = str(effective_p_switch)
     os.environ["USE_ORTHO_GUIDANCE"] = "0" if args.no_ortho else "1"
 
     # Read benchmark config
@@ -622,10 +634,14 @@ def main():
     else:
         target_pairs = [p for p in pairs if args.start_idx <= p["pair_idx"] <= args.end_idx]
 
+    if args.subset_7x7:
+        target_pairs = [p for p in target_pairs if p["content_idx"] < 7 and p["style_idx"] < 7]
+        print(f"[*] Subset 7x7 applied: {len(target_pairs)} pairs selected.")
+
     print(f"[*] Total pairs to evaluate: {len(target_pairs)} (Range: {args.start_idx} to {args.end_idx})")
     print(f"[*] Target device: {args.device}")
     print(f"[*] Prompt levels to run: {args.prompt_levels}")
-    print(f"[*] Ablation settings: alpha_style={args.alpha_style}, p_switch={args.p_switch}, ortho={not args.no_ortho}, pushforward={not args.no_pushforward}, canny={not args.no_canny}, semantic_gating={not args.no_semantic_gating}")
+    print(f"[*] Ablation settings: alpha_style={args.alpha_style}, tau_pushforward={effective_tau}, p_switch={effective_p_switch:.3f}, ortho={not args.no_ortho}, pushforward={not args.no_pushforward}, canny={not args.no_canny}, semantic_gating={not args.no_semantic_gating}")
 
     # Initialize models
     state = setup_all_models(
@@ -701,7 +717,7 @@ def main():
                 save_path=out_path,
                 save_grid_path=grid_path,
                 preview_dir=preview_dir,
-                tau_pushforward=(0 if args.no_pushforward else 5),
+                tau_pushforward=effective_tau,
                 cnet_strength=0.8,
                 use_semantic_gating=(not args.no_semantic_gating),
             )
