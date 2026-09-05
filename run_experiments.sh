@@ -31,7 +31,6 @@ case "${MODE}" in
         --start_idx 1 \
         --end_idx 225 \
         --prompt_levels null object style_desc \
-        --auto_previews_5x5 \
         2>&1 | tee "logs/benchmark_single_gpu.log"
     ;;
 
@@ -48,7 +47,6 @@ case "${MODE}" in
         --start_idx 1 \
         --end_idx 112 \
         --prompt_levels null object style_desc \
-        --auto_previews_5x5 \
         > "logs/benchmark_gpu0.log" 2>&1 &
     PID_GPU0=$!
 
@@ -59,7 +57,6 @@ case "${MODE}" in
         --start_idx 113 \
         --end_idx 225 \
         --prompt_levels null object style_desc \
-        --auto_previews_5x5 \
         > "logs/benchmark_gpu1.log" 2>&1 &
     PID_GPU1=$!
 

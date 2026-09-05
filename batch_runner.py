@@ -491,7 +491,7 @@ def main():
     parser.add_argument("--end_idx", type=int, default=225, help="1-indexed pair index end (inclusive)")
     parser.add_argument("--pair_indices", nargs="+", type=int, default=None, help="Explicit pair indices to run")
     parser.add_argument("--save_previews", action="store_true", help="Force save timestep previews")
-    parser.add_argument("--auto_previews_5x5", action="store_true", default=True,
+    parser.add_argument("--auto_previews_5x5", action="store_true", default=False,
                         help="Automatically save previews for the first 5 contents x 5 styles")
     parser.add_argument("--save_grids", action="store_true", default=True, help="Also save 3-panel [Content|Style|Output] grids")
 
