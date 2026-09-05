@@ -10,8 +10,19 @@ Supports:
 
 import os
 import sys
-sys.path.append("third_party/")
-sys.path.append("third_party/StableCascade/")
+
+# Dynamic third_party path resolution (supports local and external paths)
+_TP_ROOT = os.environ.get("THIRD_PARTY_ROOT", "third_party")
+if os.path.exists(os.path.join(_TP_ROOT, "configs/inference/stage_c_3b.yaml")):
+    _SC_DIR = _TP_ROOT
+    _PARENT_TP = os.path.dirname(os.path.abspath(_TP_ROOT.rstrip("/")))
+else:
+    _SC_DIR = os.path.join(_TP_ROOT, "StableCascade")
+    _PARENT_TP = _TP_ROOT
+
+for p in [_PARENT_TP, _SC_DIR, "third_party/", "third_party/StableCascade/"]:
+    if os.path.exists(p) and p not in sys.path:
+        sys.path.insert(0, p)
 
 import argparse
 import copy
@@ -203,17 +214,47 @@ def setup_all_models(device_str: str = "cuda:0", use_controlnet_canny: bool = Tr
     device = torch.device(device_str if torch.cuda.is_available() else "cpu")
     print(f"[*] Initializing OrthoStyle models on {device} (with CPU offload)...")
 
+    # Resolve paths for StableCascade and CSD
+    if os.path.exists(os.path.join(third_party_root, "configs/inference/stage_c_3b.yaml")):
+        sc_dir = third_party_root
+        parent_tp = os.path.dirname(os.path.abspath(third_party_root.rstrip("/")))
+    else:
+        sc_dir = os.path.join(third_party_root, "StableCascade")
+        parent_tp = third_party_root
+
+    # Set CSD environment variable for utils.py if not already set
+    csd_path = os.path.join(parent_tp, "CSD/checkpoint.pth")
+    if os.path.exists(csd_path):
+        os.environ["CSD_CHECKPOINT_PATH"] = csd_path
+
+    sc_models_dir = os.path.join(sc_dir, "models")
+
     # Stage C config
-    config_file_c = os.path.join(third_party_root, "StableCascade/configs/inference/stage_c_3b.yaml")
+    config_file_c = os.path.join(sc_dir, "configs/inference/stage_c_3b.yaml")
     with open(config_file_c, "r", encoding="utf-8") as f:
         loaded_config_c = yaml.safe_load(f)
+
+    # Rewrite model paths to actual directory if needed
+    for k in ["effnet_checkpoint_path", "previewer_checkpoint_path", "generator_checkpoint_path"]:
+        if k in loaded_config_c and isinstance(loaded_config_c[k], str):
+            fname = os.path.basename(loaded_config_c[k])
+            model_f = os.path.join(sc_models_dir, fname)
+            if os.path.exists(model_f):
+                loaded_config_c[k] = model_f
 
     core_c = WurstCoreCRBM(config_dict=loaded_config_c, device=device, training=False)
 
     # Stage B config
-    config_file_b = os.path.join(third_party_root, "StableCascade/configs/inference/stage_b_3b.yaml")
+    config_file_b = os.path.join(sc_dir, "configs/inference/stage_b_3b.yaml")
     with open(config_file_b, "r", encoding="utf-8") as f:
         loaded_config_b = yaml.safe_load(f)
+
+    for k in ["effnet_checkpoint_path", "stage_a_checkpoint_path", "generator_checkpoint_path"]:
+        if k in loaded_config_b and isinstance(loaded_config_b[k], str):
+            fname = os.path.basename(loaded_config_b[k])
+            model_f = os.path.join(sc_models_dir, fname)
+            if os.path.exists(model_f):
+                loaded_config_b[k] = model_f
 
     core_b = WurstCoreB(config_dict=loaded_config_b, device=device, training=False)
 
@@ -281,7 +322,15 @@ def setup_all_models(device_str: str = "cuda:0", use_controlnet_canny: bool = Tr
     canny_filter = None
     if use_controlnet_canny:
         controlnet = ControlNet(c_in=1, proj_blocks=[0, 4, 8, 12, 51, 55, 59, 63], bottleneck_mode=None)
-        canny_ckpt_path = os.path.join(third_party_root, "StableCascade/models/canny.safetensors")
+        canny_ckpt_path = os.path.join(sc_models_dir, "canny.safetensors")
+        if not os.path.exists(canny_ckpt_path):
+            for fallback in [
+                "third_party/StableCascade/models/canny.safetensors",
+                os.path.join(parent_tp, "StableCascade/models/canny.safetensors"),
+            ]:
+                if os.path.exists(fallback):
+                    canny_ckpt_path = fallback
+                    break
         cnet_ckpt = load_or_fail(canny_ckpt_path)
         controlnet.load_state_dict(cnet_ckpt if "state_dict" not in cnet_ckpt else cnet_ckpt["state_dict"])
         controlnet = controlnet.to(getattr(torch, core_c.config.dtype)).eval().requires_grad_(False)

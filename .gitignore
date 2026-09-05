@@ -17,10 +17,13 @@ reference/
 ref_paper/
 ref_gdf_rbm.py
 
-# Heavy dependencies, Data & Local Test scripts
+# Heavy dependencies, Data & Local Test/Exploratory scripts
 third_party/
 data/
 run_test.py
+main.py
+rb-modulation.ipynb
+*.ipynb
 
 # Models & Checkpoints
 *.safetensors
