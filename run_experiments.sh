@@ -33,7 +33,6 @@ COMMON=(
   --data_root "$DATA_ROOT"
   --third_party_root "$THIRD_PARTY_ROOT"
   --output_root "$RESULTS_ROOT"
-  --save_grids
 )
 
 run_task () {

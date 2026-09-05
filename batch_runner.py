@@ -627,7 +627,7 @@ def main():
     parser.add_argument("--save_previews", action="store_true", help="Force save timestep previews")
     parser.add_argument("--auto_previews_5x5", action="store_true", default=False,
                         help="Automatically save previews for the first 5 contents x 5 styles")
-    parser.add_argument("--save_grids", action="store_true", default=True, help="Also save 3-panel [Content|Style|Output] grids")
+    parser.add_argument("--save_grids", action="store_true", default=False, help="Also save 3-panel [Content|Style|Output] grids")
     parser.add_argument("--overwrite", action="store_true", help="Force recompute and overwrite existing completed outputs")
 
     # Ablation arguments
