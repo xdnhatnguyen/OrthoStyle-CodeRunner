@@ -613,6 +613,7 @@ def main():
     parser = argparse.ArgumentParser(description="OrthoStyle Benchmark & Ablation Batch Runner (1-GPU Offload)")
     default_config = "configs/benchmark_config.json" if os.path.exists("configs/benchmark_config.json") else "data/benchmark_config.json"
     parser.add_argument("--config_path", type=str, default=default_config, help="Path to benchmark JSON configuration")
+    parser.add_argument("--data_root", type=str, default="data", help="Root data folder containing content/ and style/")
     default_tp = os.environ.get("THIRD_PARTY_ROOT", "third_party")
     parser.add_argument("--third_party_root", type=str, default=default_tp, help="Root folder of third_party dependencies")
     parser.add_argument("--device", type=str, default="cuda:0", help="GPU device ID or string (e.g. 0, 1, cuda:0, cuda:1)")
