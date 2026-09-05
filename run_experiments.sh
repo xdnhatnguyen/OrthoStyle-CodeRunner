@@ -8,6 +8,7 @@ export PROJECT_ROOT=${PROJECT_ROOT:-$(cd "$(dirname "$0")" && pwd)}
 export THIRD_PARTY_ROOT=${THIRD_PARTY_ROOT:-$PROJECT_ROOT/third_party}
 export CSD_REPO_DIR=${CSD_REPO_DIR:-$THIRD_PARTY_ROOT/CSD}
 export CSD_CHECKPOINT_PATH=${CSD_CHECKPOINT_PATH:-$CSD_REPO_DIR/checkpoint.pth}
+export CONTROLNET_CHECKPOINT_PATH=${CONTROLNET_CHECKPOINT_PATH:-$THIRD_PARTY_ROOT/StableCascade/models/canny.safetensors}
 export DATA_ROOT=${DATA_ROOT:-$PROJECT_ROOT/data}
 export CONFIG_PATH=${CONFIG_PATH:-$PROJECT_ROOT/configs/benchmark_config.json}
 export RESULTS_ROOT=${RESULTS_ROOT:-$PROJECT_ROOT/output/benchmark}

@@ -322,11 +322,12 @@ def setup_all_models(device_str: str = "cuda:0", use_controlnet_canny: bool = Tr
     canny_filter = None
     if use_controlnet_canny:
         controlnet = ControlNet(c_in=1, proj_blocks=[0, 4, 8, 12, 51, 55, 59, 63], bottleneck_mode=None)
-        canny_ckpt_path = os.path.join(sc_models_dir, "canny.safetensors")
+        canny_ckpt_path = os.environ.get("CONTROLNET_CHECKPOINT_PATH", os.path.join(sc_models_dir, "canny.safetensors"))
         if not os.path.exists(canny_ckpt_path):
             for fallback in [
                 "third_party/StableCascade/models/canny.safetensors",
                 os.path.join(parent_tp, "StableCascade/models/canny.safetensors"),
+                os.path.join(os.environ.get("PROJECT_ROOT", "."), "third_party/StableCascade/models/canny.safetensors"),
             ]:
                 if os.path.exists(fallback):
                     canny_ckpt_path = fallback
