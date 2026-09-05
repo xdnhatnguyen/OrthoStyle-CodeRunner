@@ -1,11 +1,9 @@
 import os
 
-# Set cache dirs BEFORE importing libraries that may download models
-os.environ["HF_HUB_CACHE"] = "/mnt/wav2vec2/khoan/hf_cache/hub"
-os.environ["HF_HOME"] = "/mnt/wav2vec2/khoan/hf_cache/home"
-os.environ["TRANSFORMERS_CACHE"] = "/mnt/wav2vec2/khoan/hf_cache/hub"
-os.environ["TORCH_HOME"] = "/mnt/wav2vec2/khoan/torch_cache"
-os.environ["TMPDIR"] = "/mnt/wav2vec2/khoan/tmp"
+# Optional cache dirs from environment if specified
+for env_var in ["HF_HUB_CACHE", "HF_HOME", "TRANSFORMERS_CACHE", "TORCH_HOME"]:
+    if env_var in os.environ and not os.path.exists(os.environ[env_var]):
+        os.makedirs(os.environ[env_var], exist_ok=True)
 
 import sys
 sys.path.append("third_party/")

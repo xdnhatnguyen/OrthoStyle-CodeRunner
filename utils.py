@@ -43,8 +43,9 @@ def setup_csd(device: str = "cpu") -> nn.Module:
   model_path = os.environ.get("CSD_CHECKPOINT_PATH", "third_party/CSD/checkpoint.pth")
   if not os.path.exists(model_path):
       for fallback in [
-          "/mnt/wav2vec2/khoan/source_code/Uncertainty-OC/third_party/CSD/checkpoint.pth",
           "third_party/CSD/checkpoint.pth",
+          "../third_party/CSD/checkpoint.pth",
+          os.path.join(os.environ.get("PROJECT_ROOT", "."), "third_party/CSD/checkpoint.pth"),
       ]:
           if os.path.exists(fallback):
               model_path = fallback
