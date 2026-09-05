@@ -278,7 +278,7 @@ class StageCRBM(nn.Module):
     emb = torch.cat([emb.sin(), emb.cos()], dim=1)
     if self.c_r % 2 == 1:  # zero pad
       emb = nn.functional.pad(emb, (0, 1), mode="constant")
-    return emb
+    return emb.to(next(self.parameters()).dtype)
 
   def gen_c_embeddings(
       self,
@@ -298,6 +298,16 @@ class StageCRBM(nn.Module):
     Returns:
         Generated conditional embedding.
     """
+    target_dtype = next(self.parameters()).dtype
+    if clip_txt is not None:
+      clip_txt = clip_txt.to(target_dtype)
+    if clip_txt_pooled is not None:
+      clip_txt_pooled = clip_txt_pooled.to(target_dtype)
+    if clip_img is not None:
+      clip_img = clip_img.to(target_dtype)
+    if clip_style is not None:
+      clip_style = clip_style.to(target_dtype)
+
     clip_txt = self.clip_txt_mapper(clip_txt)
     if len(clip_txt_pooled.shape) == 2:
       clip_txt_pool = clip_txt_pooled.unsqueeze(1)
@@ -484,6 +494,12 @@ class StageCRBM(nn.Module):
     Returns:
         Output tensor.
     """
+    target_dtype = next(self.parameters()).dtype
+    if x.dtype != target_dtype:
+      x = x.to(target_dtype)
+    if r.dtype != target_dtype:
+      r = r.to(target_dtype)
+
     # Process the conditioning embeddings.
     r_embed = self.gen_r_embedding(r)
     for c in self.t_conds:
@@ -503,6 +519,8 @@ class StageCRBM(nn.Module):
 
     # Model Blocks.
     x = self.embedding(x)
+    if cnet is None and 'controlnet' in kwargs:
+      cnet = kwargs['controlnet']
     if cnet is not None:
       cnet = ControlNetDeliverer(cnet)
     level_outputs = self._down_encode(

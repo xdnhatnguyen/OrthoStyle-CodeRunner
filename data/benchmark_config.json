@@ -1,0 +1,2554 @@
+{
+  "benchmark_info": {
+    "title": "SOICT 2026 Training-Free Style Transfer Benchmark",
+    "content_count": 15,
+    "style_count": 15,
+    "total_pairs": 225,
+    "prompt_levels": [
+      "level1_null_prompt",
+      "level2_object_prompt",
+      "level3_style_description_prompt"
+    ]
+  },
+  "contents": [
+    {
+      "id": "01_backpack_dog",
+      "filename": "01_backpack_dog.png",
+      "object_prompt": "A backpack with a dog print",
+      "dimensions": [
+        1440,
+        1440
+      ]
+    },
+    {
+      "id": "02_bear_plushie",
+      "filename": "02_bear_plushie.png",
+      "object_prompt": "A teddy bear plushie",
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "id": "03_berry_bowl",
+      "filename": "03_berry_bowl.png",
+      "object_prompt": "A bowl of berries",
+      "dimensions": [
+        1280,
+        1280
+      ]
+    },
+    {
+      "id": "04_can",
+      "filename": "04_can.png",
+      "object_prompt": "A can",
+      "dimensions": [
+        1280,
+        1280
+      ]
+    },
+    {
+      "id": "05_cat_laying",
+      "filename": "05_cat_laying.png",
+      "object_prompt": "A cat laying down",
+      "dimensions": [
+        1484,
+        1484
+      ]
+    },
+    {
+      "id": "06_cat_sitting",
+      "filename": "06_cat_sitting.png",
+      "object_prompt": "A cat sitting",
+      "dimensions": [
+        1282,
+        1282
+      ]
+    },
+    {
+      "id": "07_vintage_clock",
+      "filename": "07_vintage_clock.png",
+      "object_prompt": "A clock",
+      "dimensions": [
+        1360,
+        1360
+      ]
+    },
+    {
+      "id": "08_colorful_sneaker",
+      "filename": "08_colorful_sneaker.png",
+      "object_prompt": "A sneaker",
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "id": "09_dog_sitting",
+      "filename": "09_dog_sitting.png",
+      "object_prompt": "A dog",
+      "dimensions": [
+        780,
+        780
+      ]
+    },
+    {
+      "id": "10_rubber_duck",
+      "filename": "10_rubber_duck.png",
+      "object_prompt": "A rubber duck toy",
+      "dimensions": [
+        1440,
+        1440
+      ]
+    },
+    {
+      "id": "11_fancy_boot",
+      "filename": "11_fancy_boot.png",
+      "object_prompt": "A boot",
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "id": "12_pink_sunglasses",
+      "filename": "12_pink_sunglasses.png",
+      "object_prompt": "A pair of sunglasses",
+      "dimensions": [
+        1440,
+        1440
+      ]
+    },
+    {
+      "id": "13_poop_emoji",
+      "filename": "13_poop_emoji.png",
+      "object_prompt": "A poop emoji toy",
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "id": "14_ceramic_teapot",
+      "filename": "14_ceramic_teapot.png",
+      "object_prompt": "A teapot",
+      "dimensions": [
+        1073,
+        1073
+      ]
+    },
+    {
+      "id": "15_decorative_vase",
+      "filename": "15_decorative_vase.png",
+      "object_prompt": "A vase",
+      "dimensions": [
+        1080,
+        1080
+      ]
+    }
+  ],
+  "styles": [
+    {
+      "id": "01_antimonocromatismo",
+      "filename": "01_antimonocromatismo.png",
+      "style_name": "Colorful Geometric Abstract",
+      "style_prompt": "in colorful geometric abstract art style",
+      "dimensions": [
+        512,
+        512
+      ]
+    },
+    {
+      "id": "02_color_splash",
+      "filename": "02_color_splash.png",
+      "style_name": "Colorful Splash",
+      "style_prompt": "in vibrant colorful abstract splash style",
+      "dimensions": [
+        735,
+        980
+      ]
+    },
+    {
+      "id": "03_cyberpunk",
+      "filename": "03_cyberpunk.png",
+      "style_name": "Cyberpunk",
+      "style_prompt": "in cyberpunk neon style",
+      "dimensions": [
+        462,
+        460
+      ]
+    },
+    {
+      "id": "04_flat_illustration",
+      "filename": "04_flat_illustration.png",
+      "style_name": "Flat Illustration",
+      "style_prompt": "in flat vector illustration style",
+      "dimensions": [
+        996,
+        996
+      ]
+    },
+    {
+      "id": "05_glowing_neon",
+      "filename": "05_glowing_neon.png",
+      "style_name": "Glowing Lines",
+      "style_prompt": "in glowing neon luminous style",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "id": "06_historical_oil",
+      "filename": "06_historical_oil.png",
+      "style_name": "Historical Oil Painting",
+      "style_prompt": "in classical historical oil painting style",
+      "dimensions": [
+        512,
+        512
+      ]
+    },
+    {
+      "id": "07_graphic_poster",
+      "filename": "07_graphic_poster.png",
+      "style_name": "Graphic Poster",
+      "style_prompt": "in graphic vintage poster style",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "id": "08_pencil_sketch",
+      "filename": "08_pencil_sketch.png",
+      "style_name": "Pencil Sketch",
+      "style_prompt": "in pencil sketch drawing style",
+      "dimensions": [
+        512,
+        512
+      ]
+    },
+    {
+      "id": "09_sticker",
+      "filename": "09_sticker.png",
+      "style_name": "Sticker",
+      "style_prompt": "in die-cut sticker style",
+      "dimensions": [
+        655,
+        826
+      ]
+    },
+    {
+      "id": "10_starry_night_sketch",
+      "filename": "10_starry_night_sketch.png",
+      "style_name": "Starry Night Sketch",
+      "style_prompt": "in Van Gogh Starry Night sketch style",
+      "dimensions": [
+        1879,
+        1500
+      ]
+    },
+    {
+      "id": "11_abstract_3d_render",
+      "filename": "11_abstract_3d_render.png",
+      "style_name": "3D Abstract Render",
+      "style_prompt": "in 3D abstract digital render style",
+      "dimensions": [
+        626,
+        626
+      ]
+    },
+    {
+      "id": "12_vintage_woodcut",
+      "filename": "12_vintage_woodcut.png",
+      "style_name": "Vintage Woodcut",
+      "style_prompt": "in vintage woodcut print style",
+      "dimensions": [
+        1448,
+        991
+      ]
+    },
+    {
+      "id": "13_3d_isometric",
+      "filename": "13_3d_isometric.png",
+      "style_name": "3D Isometric",
+      "style_prompt": "in 3D isometric miniature style",
+      "dimensions": [
+        996,
+        996
+      ]
+    },
+    {
+      "id": "14_crayon_drawing",
+      "filename": "14_crayon_drawing.png",
+      "style_name": "Crayon Drawing",
+      "style_prompt": "in children's crayon sketch style",
+      "dimensions": [
+        1855,
+        1855
+      ]
+    },
+    {
+      "id": "15_oil_pastels",
+      "filename": "15_oil_pastels.png",
+      "style_name": "Oil Pastels",
+      "style_prompt": "in oil pastel painting style",
+      "dimensions": [
+        1935,
+        2580
+      ]
+    }
+  ],
+  "pairs": [
+    {
+      "pair_idx": 1,
+      "content_idx": 0,
+      "style_idx": 0,
+      "content_file": "01_backpack_dog.png",
+      "style_file": "01_antimonocromatismo.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A backpack with a dog print",
+      "level3_style_description_prompt": "A backpack with a dog print in colorful geometric abstract art style"
+    },
+    {
+      "pair_idx": 2,
+      "content_idx": 1,
+      "style_idx": 0,
+      "content_file": "02_bear_plushie.png",
+      "style_file": "01_antimonocromatismo.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teddy bear plushie",
+      "level3_style_description_prompt": "A teddy bear plushie in colorful geometric abstract art style"
+    },
+    {
+      "pair_idx": 3,
+      "content_idx": 2,
+      "style_idx": 0,
+      "content_file": "03_berry_bowl.png",
+      "style_file": "01_antimonocromatismo.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A bowl of berries",
+      "level3_style_description_prompt": "A bowl of berries in colorful geometric abstract art style"
+    },
+    {
+      "pair_idx": 4,
+      "content_idx": 3,
+      "style_idx": 0,
+      "content_file": "04_can.png",
+      "style_file": "01_antimonocromatismo.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A can",
+      "level3_style_description_prompt": "A can in colorful geometric abstract art style"
+    },
+    {
+      "pair_idx": 5,
+      "content_idx": 4,
+      "style_idx": 0,
+      "content_file": "05_cat_laying.png",
+      "style_file": "01_antimonocromatismo.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat laying down",
+      "level3_style_description_prompt": "A cat laying down in colorful geometric abstract art style"
+    },
+    {
+      "pair_idx": 6,
+      "content_idx": 5,
+      "style_idx": 0,
+      "content_file": "06_cat_sitting.png",
+      "style_file": "01_antimonocromatismo.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat sitting",
+      "level3_style_description_prompt": "A cat sitting in colorful geometric abstract art style"
+    },
+    {
+      "pair_idx": 7,
+      "content_idx": 6,
+      "style_idx": 0,
+      "content_file": "07_vintage_clock.png",
+      "style_file": "01_antimonocromatismo.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A clock",
+      "level3_style_description_prompt": "A clock in colorful geometric abstract art style"
+    },
+    {
+      "pair_idx": 8,
+      "content_idx": 7,
+      "style_idx": 0,
+      "content_file": "08_colorful_sneaker.png",
+      "style_file": "01_antimonocromatismo.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A sneaker",
+      "level3_style_description_prompt": "A sneaker in colorful geometric abstract art style"
+    },
+    {
+      "pair_idx": 9,
+      "content_idx": 8,
+      "style_idx": 0,
+      "content_file": "09_dog_sitting.png",
+      "style_file": "01_antimonocromatismo.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A dog",
+      "level3_style_description_prompt": "A dog in colorful geometric abstract art style"
+    },
+    {
+      "pair_idx": 10,
+      "content_idx": 9,
+      "style_idx": 0,
+      "content_file": "10_rubber_duck.png",
+      "style_file": "01_antimonocromatismo.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A rubber duck toy",
+      "level3_style_description_prompt": "A rubber duck toy in colorful geometric abstract art style"
+    },
+    {
+      "pair_idx": 11,
+      "content_idx": 10,
+      "style_idx": 0,
+      "content_file": "11_fancy_boot.png",
+      "style_file": "01_antimonocromatismo.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A boot",
+      "level3_style_description_prompt": "A boot in colorful geometric abstract art style"
+    },
+    {
+      "pair_idx": 12,
+      "content_idx": 11,
+      "style_idx": 0,
+      "content_file": "12_pink_sunglasses.png",
+      "style_file": "01_antimonocromatismo.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A pair of sunglasses",
+      "level3_style_description_prompt": "A pair of sunglasses in colorful geometric abstract art style"
+    },
+    {
+      "pair_idx": 13,
+      "content_idx": 12,
+      "style_idx": 0,
+      "content_file": "13_poop_emoji.png",
+      "style_file": "01_antimonocromatismo.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A poop emoji toy",
+      "level3_style_description_prompt": "A poop emoji toy in colorful geometric abstract art style"
+    },
+    {
+      "pair_idx": 14,
+      "content_idx": 13,
+      "style_idx": 0,
+      "content_file": "14_ceramic_teapot.png",
+      "style_file": "01_antimonocromatismo.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teapot",
+      "level3_style_description_prompt": "A teapot in colorful geometric abstract art style"
+    },
+    {
+      "pair_idx": 15,
+      "content_idx": 14,
+      "style_idx": 0,
+      "content_file": "15_decorative_vase.png",
+      "style_file": "01_antimonocromatismo.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A vase",
+      "level3_style_description_prompt": "A vase in colorful geometric abstract art style"
+    },
+    {
+      "pair_idx": 16,
+      "content_idx": 0,
+      "style_idx": 1,
+      "content_file": "01_backpack_dog.png",
+      "style_file": "02_color_splash.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A backpack with a dog print",
+      "level3_style_description_prompt": "A backpack with a dog print in vibrant colorful abstract splash style"
+    },
+    {
+      "pair_idx": 17,
+      "content_idx": 1,
+      "style_idx": 1,
+      "content_file": "02_bear_plushie.png",
+      "style_file": "02_color_splash.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teddy bear plushie",
+      "level3_style_description_prompt": "A teddy bear plushie in vibrant colorful abstract splash style"
+    },
+    {
+      "pair_idx": 18,
+      "content_idx": 2,
+      "style_idx": 1,
+      "content_file": "03_berry_bowl.png",
+      "style_file": "02_color_splash.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A bowl of berries",
+      "level3_style_description_prompt": "A bowl of berries in vibrant colorful abstract splash style"
+    },
+    {
+      "pair_idx": 19,
+      "content_idx": 3,
+      "style_idx": 1,
+      "content_file": "04_can.png",
+      "style_file": "02_color_splash.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A can",
+      "level3_style_description_prompt": "A can in vibrant colorful abstract splash style"
+    },
+    {
+      "pair_idx": 20,
+      "content_idx": 4,
+      "style_idx": 1,
+      "content_file": "05_cat_laying.png",
+      "style_file": "02_color_splash.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat laying down",
+      "level3_style_description_prompt": "A cat laying down in vibrant colorful abstract splash style"
+    },
+    {
+      "pair_idx": 21,
+      "content_idx": 5,
+      "style_idx": 1,
+      "content_file": "06_cat_sitting.png",
+      "style_file": "02_color_splash.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat sitting",
+      "level3_style_description_prompt": "A cat sitting in vibrant colorful abstract splash style"
+    },
+    {
+      "pair_idx": 22,
+      "content_idx": 6,
+      "style_idx": 1,
+      "content_file": "07_vintage_clock.png",
+      "style_file": "02_color_splash.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A clock",
+      "level3_style_description_prompt": "A clock in vibrant colorful abstract splash style"
+    },
+    {
+      "pair_idx": 23,
+      "content_idx": 7,
+      "style_idx": 1,
+      "content_file": "08_colorful_sneaker.png",
+      "style_file": "02_color_splash.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A sneaker",
+      "level3_style_description_prompt": "A sneaker in vibrant colorful abstract splash style"
+    },
+    {
+      "pair_idx": 24,
+      "content_idx": 8,
+      "style_idx": 1,
+      "content_file": "09_dog_sitting.png",
+      "style_file": "02_color_splash.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A dog",
+      "level3_style_description_prompt": "A dog in vibrant colorful abstract splash style"
+    },
+    {
+      "pair_idx": 25,
+      "content_idx": 9,
+      "style_idx": 1,
+      "content_file": "10_rubber_duck.png",
+      "style_file": "02_color_splash.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A rubber duck toy",
+      "level3_style_description_prompt": "A rubber duck toy in vibrant colorful abstract splash style"
+    },
+    {
+      "pair_idx": 26,
+      "content_idx": 10,
+      "style_idx": 1,
+      "content_file": "11_fancy_boot.png",
+      "style_file": "02_color_splash.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A boot",
+      "level3_style_description_prompt": "A boot in vibrant colorful abstract splash style"
+    },
+    {
+      "pair_idx": 27,
+      "content_idx": 11,
+      "style_idx": 1,
+      "content_file": "12_pink_sunglasses.png",
+      "style_file": "02_color_splash.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A pair of sunglasses",
+      "level3_style_description_prompt": "A pair of sunglasses in vibrant colorful abstract splash style"
+    },
+    {
+      "pair_idx": 28,
+      "content_idx": 12,
+      "style_idx": 1,
+      "content_file": "13_poop_emoji.png",
+      "style_file": "02_color_splash.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A poop emoji toy",
+      "level3_style_description_prompt": "A poop emoji toy in vibrant colorful abstract splash style"
+    },
+    {
+      "pair_idx": 29,
+      "content_idx": 13,
+      "style_idx": 1,
+      "content_file": "14_ceramic_teapot.png",
+      "style_file": "02_color_splash.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teapot",
+      "level3_style_description_prompt": "A teapot in vibrant colorful abstract splash style"
+    },
+    {
+      "pair_idx": 30,
+      "content_idx": 14,
+      "style_idx": 1,
+      "content_file": "15_decorative_vase.png",
+      "style_file": "02_color_splash.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A vase",
+      "level3_style_description_prompt": "A vase in vibrant colorful abstract splash style"
+    },
+    {
+      "pair_idx": 31,
+      "content_idx": 0,
+      "style_idx": 2,
+      "content_file": "01_backpack_dog.png",
+      "style_file": "03_cyberpunk.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A backpack with a dog print",
+      "level3_style_description_prompt": "A backpack with a dog print in cyberpunk neon style"
+    },
+    {
+      "pair_idx": 32,
+      "content_idx": 1,
+      "style_idx": 2,
+      "content_file": "02_bear_plushie.png",
+      "style_file": "03_cyberpunk.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teddy bear plushie",
+      "level3_style_description_prompt": "A teddy bear plushie in cyberpunk neon style"
+    },
+    {
+      "pair_idx": 33,
+      "content_idx": 2,
+      "style_idx": 2,
+      "content_file": "03_berry_bowl.png",
+      "style_file": "03_cyberpunk.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A bowl of berries",
+      "level3_style_description_prompt": "A bowl of berries in cyberpunk neon style"
+    },
+    {
+      "pair_idx": 34,
+      "content_idx": 3,
+      "style_idx": 2,
+      "content_file": "04_can.png",
+      "style_file": "03_cyberpunk.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A can",
+      "level3_style_description_prompt": "A can in cyberpunk neon style"
+    },
+    {
+      "pair_idx": 35,
+      "content_idx": 4,
+      "style_idx": 2,
+      "content_file": "05_cat_laying.png",
+      "style_file": "03_cyberpunk.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat laying down",
+      "level3_style_description_prompt": "A cat laying down in cyberpunk neon style"
+    },
+    {
+      "pair_idx": 36,
+      "content_idx": 5,
+      "style_idx": 2,
+      "content_file": "06_cat_sitting.png",
+      "style_file": "03_cyberpunk.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat sitting",
+      "level3_style_description_prompt": "A cat sitting in cyberpunk neon style"
+    },
+    {
+      "pair_idx": 37,
+      "content_idx": 6,
+      "style_idx": 2,
+      "content_file": "07_vintage_clock.png",
+      "style_file": "03_cyberpunk.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A clock",
+      "level3_style_description_prompt": "A clock in cyberpunk neon style"
+    },
+    {
+      "pair_idx": 38,
+      "content_idx": 7,
+      "style_idx": 2,
+      "content_file": "08_colorful_sneaker.png",
+      "style_file": "03_cyberpunk.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A sneaker",
+      "level3_style_description_prompt": "A sneaker in cyberpunk neon style"
+    },
+    {
+      "pair_idx": 39,
+      "content_idx": 8,
+      "style_idx": 2,
+      "content_file": "09_dog_sitting.png",
+      "style_file": "03_cyberpunk.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A dog",
+      "level3_style_description_prompt": "A dog in cyberpunk neon style"
+    },
+    {
+      "pair_idx": 40,
+      "content_idx": 9,
+      "style_idx": 2,
+      "content_file": "10_rubber_duck.png",
+      "style_file": "03_cyberpunk.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A rubber duck toy",
+      "level3_style_description_prompt": "A rubber duck toy in cyberpunk neon style"
+    },
+    {
+      "pair_idx": 41,
+      "content_idx": 10,
+      "style_idx": 2,
+      "content_file": "11_fancy_boot.png",
+      "style_file": "03_cyberpunk.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A boot",
+      "level3_style_description_prompt": "A boot in cyberpunk neon style"
+    },
+    {
+      "pair_idx": 42,
+      "content_idx": 11,
+      "style_idx": 2,
+      "content_file": "12_pink_sunglasses.png",
+      "style_file": "03_cyberpunk.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A pair of sunglasses",
+      "level3_style_description_prompt": "A pair of sunglasses in cyberpunk neon style"
+    },
+    {
+      "pair_idx": 43,
+      "content_idx": 12,
+      "style_idx": 2,
+      "content_file": "13_poop_emoji.png",
+      "style_file": "03_cyberpunk.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A poop emoji toy",
+      "level3_style_description_prompt": "A poop emoji toy in cyberpunk neon style"
+    },
+    {
+      "pair_idx": 44,
+      "content_idx": 13,
+      "style_idx": 2,
+      "content_file": "14_ceramic_teapot.png",
+      "style_file": "03_cyberpunk.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teapot",
+      "level3_style_description_prompt": "A teapot in cyberpunk neon style"
+    },
+    {
+      "pair_idx": 45,
+      "content_idx": 14,
+      "style_idx": 2,
+      "content_file": "15_decorative_vase.png",
+      "style_file": "03_cyberpunk.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A vase",
+      "level3_style_description_prompt": "A vase in cyberpunk neon style"
+    },
+    {
+      "pair_idx": 46,
+      "content_idx": 0,
+      "style_idx": 3,
+      "content_file": "01_backpack_dog.png",
+      "style_file": "04_flat_illustration.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A backpack with a dog print",
+      "level3_style_description_prompt": "A backpack with a dog print in flat vector illustration style"
+    },
+    {
+      "pair_idx": 47,
+      "content_idx": 1,
+      "style_idx": 3,
+      "content_file": "02_bear_plushie.png",
+      "style_file": "04_flat_illustration.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teddy bear plushie",
+      "level3_style_description_prompt": "A teddy bear plushie in flat vector illustration style"
+    },
+    {
+      "pair_idx": 48,
+      "content_idx": 2,
+      "style_idx": 3,
+      "content_file": "03_berry_bowl.png",
+      "style_file": "04_flat_illustration.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A bowl of berries",
+      "level3_style_description_prompt": "A bowl of berries in flat vector illustration style"
+    },
+    {
+      "pair_idx": 49,
+      "content_idx": 3,
+      "style_idx": 3,
+      "content_file": "04_can.png",
+      "style_file": "04_flat_illustration.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A can",
+      "level3_style_description_prompt": "A can in flat vector illustration style"
+    },
+    {
+      "pair_idx": 50,
+      "content_idx": 4,
+      "style_idx": 3,
+      "content_file": "05_cat_laying.png",
+      "style_file": "04_flat_illustration.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat laying down",
+      "level3_style_description_prompt": "A cat laying down in flat vector illustration style"
+    },
+    {
+      "pair_idx": 51,
+      "content_idx": 5,
+      "style_idx": 3,
+      "content_file": "06_cat_sitting.png",
+      "style_file": "04_flat_illustration.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat sitting",
+      "level3_style_description_prompt": "A cat sitting in flat vector illustration style"
+    },
+    {
+      "pair_idx": 52,
+      "content_idx": 6,
+      "style_idx": 3,
+      "content_file": "07_vintage_clock.png",
+      "style_file": "04_flat_illustration.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A clock",
+      "level3_style_description_prompt": "A clock in flat vector illustration style"
+    },
+    {
+      "pair_idx": 53,
+      "content_idx": 7,
+      "style_idx": 3,
+      "content_file": "08_colorful_sneaker.png",
+      "style_file": "04_flat_illustration.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A sneaker",
+      "level3_style_description_prompt": "A sneaker in flat vector illustration style"
+    },
+    {
+      "pair_idx": 54,
+      "content_idx": 8,
+      "style_idx": 3,
+      "content_file": "09_dog_sitting.png",
+      "style_file": "04_flat_illustration.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A dog",
+      "level3_style_description_prompt": "A dog in flat vector illustration style"
+    },
+    {
+      "pair_idx": 55,
+      "content_idx": 9,
+      "style_idx": 3,
+      "content_file": "10_rubber_duck.png",
+      "style_file": "04_flat_illustration.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A rubber duck toy",
+      "level3_style_description_prompt": "A rubber duck toy in flat vector illustration style"
+    },
+    {
+      "pair_idx": 56,
+      "content_idx": 10,
+      "style_idx": 3,
+      "content_file": "11_fancy_boot.png",
+      "style_file": "04_flat_illustration.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A boot",
+      "level3_style_description_prompt": "A boot in flat vector illustration style"
+    },
+    {
+      "pair_idx": 57,
+      "content_idx": 11,
+      "style_idx": 3,
+      "content_file": "12_pink_sunglasses.png",
+      "style_file": "04_flat_illustration.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A pair of sunglasses",
+      "level3_style_description_prompt": "A pair of sunglasses in flat vector illustration style"
+    },
+    {
+      "pair_idx": 58,
+      "content_idx": 12,
+      "style_idx": 3,
+      "content_file": "13_poop_emoji.png",
+      "style_file": "04_flat_illustration.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A poop emoji toy",
+      "level3_style_description_prompt": "A poop emoji toy in flat vector illustration style"
+    },
+    {
+      "pair_idx": 59,
+      "content_idx": 13,
+      "style_idx": 3,
+      "content_file": "14_ceramic_teapot.png",
+      "style_file": "04_flat_illustration.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teapot",
+      "level3_style_description_prompt": "A teapot in flat vector illustration style"
+    },
+    {
+      "pair_idx": 60,
+      "content_idx": 14,
+      "style_idx": 3,
+      "content_file": "15_decorative_vase.png",
+      "style_file": "04_flat_illustration.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A vase",
+      "level3_style_description_prompt": "A vase in flat vector illustration style"
+    },
+    {
+      "pair_idx": 61,
+      "content_idx": 0,
+      "style_idx": 4,
+      "content_file": "01_backpack_dog.png",
+      "style_file": "05_glowing_neon.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A backpack with a dog print",
+      "level3_style_description_prompt": "A backpack with a dog print in glowing neon luminous style"
+    },
+    {
+      "pair_idx": 62,
+      "content_idx": 1,
+      "style_idx": 4,
+      "content_file": "02_bear_plushie.png",
+      "style_file": "05_glowing_neon.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teddy bear plushie",
+      "level3_style_description_prompt": "A teddy bear plushie in glowing neon luminous style"
+    },
+    {
+      "pair_idx": 63,
+      "content_idx": 2,
+      "style_idx": 4,
+      "content_file": "03_berry_bowl.png",
+      "style_file": "05_glowing_neon.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A bowl of berries",
+      "level3_style_description_prompt": "A bowl of berries in glowing neon luminous style"
+    },
+    {
+      "pair_idx": 64,
+      "content_idx": 3,
+      "style_idx": 4,
+      "content_file": "04_can.png",
+      "style_file": "05_glowing_neon.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A can",
+      "level3_style_description_prompt": "A can in glowing neon luminous style"
+    },
+    {
+      "pair_idx": 65,
+      "content_idx": 4,
+      "style_idx": 4,
+      "content_file": "05_cat_laying.png",
+      "style_file": "05_glowing_neon.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat laying down",
+      "level3_style_description_prompt": "A cat laying down in glowing neon luminous style"
+    },
+    {
+      "pair_idx": 66,
+      "content_idx": 5,
+      "style_idx": 4,
+      "content_file": "06_cat_sitting.png",
+      "style_file": "05_glowing_neon.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat sitting",
+      "level3_style_description_prompt": "A cat sitting in glowing neon luminous style"
+    },
+    {
+      "pair_idx": 67,
+      "content_idx": 6,
+      "style_idx": 4,
+      "content_file": "07_vintage_clock.png",
+      "style_file": "05_glowing_neon.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A clock",
+      "level3_style_description_prompt": "A clock in glowing neon luminous style"
+    },
+    {
+      "pair_idx": 68,
+      "content_idx": 7,
+      "style_idx": 4,
+      "content_file": "08_colorful_sneaker.png",
+      "style_file": "05_glowing_neon.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A sneaker",
+      "level3_style_description_prompt": "A sneaker in glowing neon luminous style"
+    },
+    {
+      "pair_idx": 69,
+      "content_idx": 8,
+      "style_idx": 4,
+      "content_file": "09_dog_sitting.png",
+      "style_file": "05_glowing_neon.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A dog",
+      "level3_style_description_prompt": "A dog in glowing neon luminous style"
+    },
+    {
+      "pair_idx": 70,
+      "content_idx": 9,
+      "style_idx": 4,
+      "content_file": "10_rubber_duck.png",
+      "style_file": "05_glowing_neon.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A rubber duck toy",
+      "level3_style_description_prompt": "A rubber duck toy in glowing neon luminous style"
+    },
+    {
+      "pair_idx": 71,
+      "content_idx": 10,
+      "style_idx": 4,
+      "content_file": "11_fancy_boot.png",
+      "style_file": "05_glowing_neon.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A boot",
+      "level3_style_description_prompt": "A boot in glowing neon luminous style"
+    },
+    {
+      "pair_idx": 72,
+      "content_idx": 11,
+      "style_idx": 4,
+      "content_file": "12_pink_sunglasses.png",
+      "style_file": "05_glowing_neon.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A pair of sunglasses",
+      "level3_style_description_prompt": "A pair of sunglasses in glowing neon luminous style"
+    },
+    {
+      "pair_idx": 73,
+      "content_idx": 12,
+      "style_idx": 4,
+      "content_file": "13_poop_emoji.png",
+      "style_file": "05_glowing_neon.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A poop emoji toy",
+      "level3_style_description_prompt": "A poop emoji toy in glowing neon luminous style"
+    },
+    {
+      "pair_idx": 74,
+      "content_idx": 13,
+      "style_idx": 4,
+      "content_file": "14_ceramic_teapot.png",
+      "style_file": "05_glowing_neon.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teapot",
+      "level3_style_description_prompt": "A teapot in glowing neon luminous style"
+    },
+    {
+      "pair_idx": 75,
+      "content_idx": 14,
+      "style_idx": 4,
+      "content_file": "15_decorative_vase.png",
+      "style_file": "05_glowing_neon.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A vase",
+      "level3_style_description_prompt": "A vase in glowing neon luminous style"
+    },
+    {
+      "pair_idx": 76,
+      "content_idx": 0,
+      "style_idx": 5,
+      "content_file": "01_backpack_dog.png",
+      "style_file": "06_historical_oil.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A backpack with a dog print",
+      "level3_style_description_prompt": "A backpack with a dog print in classical historical oil painting style"
+    },
+    {
+      "pair_idx": 77,
+      "content_idx": 1,
+      "style_idx": 5,
+      "content_file": "02_bear_plushie.png",
+      "style_file": "06_historical_oil.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teddy bear plushie",
+      "level3_style_description_prompt": "A teddy bear plushie in classical historical oil painting style"
+    },
+    {
+      "pair_idx": 78,
+      "content_idx": 2,
+      "style_idx": 5,
+      "content_file": "03_berry_bowl.png",
+      "style_file": "06_historical_oil.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A bowl of berries",
+      "level3_style_description_prompt": "A bowl of berries in classical historical oil painting style"
+    },
+    {
+      "pair_idx": 79,
+      "content_idx": 3,
+      "style_idx": 5,
+      "content_file": "04_can.png",
+      "style_file": "06_historical_oil.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A can",
+      "level3_style_description_prompt": "A can in classical historical oil painting style"
+    },
+    {
+      "pair_idx": 80,
+      "content_idx": 4,
+      "style_idx": 5,
+      "content_file": "05_cat_laying.png",
+      "style_file": "06_historical_oil.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat laying down",
+      "level3_style_description_prompt": "A cat laying down in classical historical oil painting style"
+    },
+    {
+      "pair_idx": 81,
+      "content_idx": 5,
+      "style_idx": 5,
+      "content_file": "06_cat_sitting.png",
+      "style_file": "06_historical_oil.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat sitting",
+      "level3_style_description_prompt": "A cat sitting in classical historical oil painting style"
+    },
+    {
+      "pair_idx": 82,
+      "content_idx": 6,
+      "style_idx": 5,
+      "content_file": "07_vintage_clock.png",
+      "style_file": "06_historical_oil.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A clock",
+      "level3_style_description_prompt": "A clock in classical historical oil painting style"
+    },
+    {
+      "pair_idx": 83,
+      "content_idx": 7,
+      "style_idx": 5,
+      "content_file": "08_colorful_sneaker.png",
+      "style_file": "06_historical_oil.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A sneaker",
+      "level3_style_description_prompt": "A sneaker in classical historical oil painting style"
+    },
+    {
+      "pair_idx": 84,
+      "content_idx": 8,
+      "style_idx": 5,
+      "content_file": "09_dog_sitting.png",
+      "style_file": "06_historical_oil.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A dog",
+      "level3_style_description_prompt": "A dog in classical historical oil painting style"
+    },
+    {
+      "pair_idx": 85,
+      "content_idx": 9,
+      "style_idx": 5,
+      "content_file": "10_rubber_duck.png",
+      "style_file": "06_historical_oil.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A rubber duck toy",
+      "level3_style_description_prompt": "A rubber duck toy in classical historical oil painting style"
+    },
+    {
+      "pair_idx": 86,
+      "content_idx": 10,
+      "style_idx": 5,
+      "content_file": "11_fancy_boot.png",
+      "style_file": "06_historical_oil.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A boot",
+      "level3_style_description_prompt": "A boot in classical historical oil painting style"
+    },
+    {
+      "pair_idx": 87,
+      "content_idx": 11,
+      "style_idx": 5,
+      "content_file": "12_pink_sunglasses.png",
+      "style_file": "06_historical_oil.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A pair of sunglasses",
+      "level3_style_description_prompt": "A pair of sunglasses in classical historical oil painting style"
+    },
+    {
+      "pair_idx": 88,
+      "content_idx": 12,
+      "style_idx": 5,
+      "content_file": "13_poop_emoji.png",
+      "style_file": "06_historical_oil.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A poop emoji toy",
+      "level3_style_description_prompt": "A poop emoji toy in classical historical oil painting style"
+    },
+    {
+      "pair_idx": 89,
+      "content_idx": 13,
+      "style_idx": 5,
+      "content_file": "14_ceramic_teapot.png",
+      "style_file": "06_historical_oil.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teapot",
+      "level3_style_description_prompt": "A teapot in classical historical oil painting style"
+    },
+    {
+      "pair_idx": 90,
+      "content_idx": 14,
+      "style_idx": 5,
+      "content_file": "15_decorative_vase.png",
+      "style_file": "06_historical_oil.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A vase",
+      "level3_style_description_prompt": "A vase in classical historical oil painting style"
+    },
+    {
+      "pair_idx": 91,
+      "content_idx": 0,
+      "style_idx": 6,
+      "content_file": "01_backpack_dog.png",
+      "style_file": "07_graphic_poster.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A backpack with a dog print",
+      "level3_style_description_prompt": "A backpack with a dog print in graphic vintage poster style"
+    },
+    {
+      "pair_idx": 92,
+      "content_idx": 1,
+      "style_idx": 6,
+      "content_file": "02_bear_plushie.png",
+      "style_file": "07_graphic_poster.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teddy bear plushie",
+      "level3_style_description_prompt": "A teddy bear plushie in graphic vintage poster style"
+    },
+    {
+      "pair_idx": 93,
+      "content_idx": 2,
+      "style_idx": 6,
+      "content_file": "03_berry_bowl.png",
+      "style_file": "07_graphic_poster.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A bowl of berries",
+      "level3_style_description_prompt": "A bowl of berries in graphic vintage poster style"
+    },
+    {
+      "pair_idx": 94,
+      "content_idx": 3,
+      "style_idx": 6,
+      "content_file": "04_can.png",
+      "style_file": "07_graphic_poster.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A can",
+      "level3_style_description_prompt": "A can in graphic vintage poster style"
+    },
+    {
+      "pair_idx": 95,
+      "content_idx": 4,
+      "style_idx": 6,
+      "content_file": "05_cat_laying.png",
+      "style_file": "07_graphic_poster.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat laying down",
+      "level3_style_description_prompt": "A cat laying down in graphic vintage poster style"
+    },
+    {
+      "pair_idx": 96,
+      "content_idx": 5,
+      "style_idx": 6,
+      "content_file": "06_cat_sitting.png",
+      "style_file": "07_graphic_poster.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat sitting",
+      "level3_style_description_prompt": "A cat sitting in graphic vintage poster style"
+    },
+    {
+      "pair_idx": 97,
+      "content_idx": 6,
+      "style_idx": 6,
+      "content_file": "07_vintage_clock.png",
+      "style_file": "07_graphic_poster.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A clock",
+      "level3_style_description_prompt": "A clock in graphic vintage poster style"
+    },
+    {
+      "pair_idx": 98,
+      "content_idx": 7,
+      "style_idx": 6,
+      "content_file": "08_colorful_sneaker.png",
+      "style_file": "07_graphic_poster.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A sneaker",
+      "level3_style_description_prompt": "A sneaker in graphic vintage poster style"
+    },
+    {
+      "pair_idx": 99,
+      "content_idx": 8,
+      "style_idx": 6,
+      "content_file": "09_dog_sitting.png",
+      "style_file": "07_graphic_poster.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A dog",
+      "level3_style_description_prompt": "A dog in graphic vintage poster style"
+    },
+    {
+      "pair_idx": 100,
+      "content_idx": 9,
+      "style_idx": 6,
+      "content_file": "10_rubber_duck.png",
+      "style_file": "07_graphic_poster.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A rubber duck toy",
+      "level3_style_description_prompt": "A rubber duck toy in graphic vintage poster style"
+    },
+    {
+      "pair_idx": 101,
+      "content_idx": 10,
+      "style_idx": 6,
+      "content_file": "11_fancy_boot.png",
+      "style_file": "07_graphic_poster.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A boot",
+      "level3_style_description_prompt": "A boot in graphic vintage poster style"
+    },
+    {
+      "pair_idx": 102,
+      "content_idx": 11,
+      "style_idx": 6,
+      "content_file": "12_pink_sunglasses.png",
+      "style_file": "07_graphic_poster.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A pair of sunglasses",
+      "level3_style_description_prompt": "A pair of sunglasses in graphic vintage poster style"
+    },
+    {
+      "pair_idx": 103,
+      "content_idx": 12,
+      "style_idx": 6,
+      "content_file": "13_poop_emoji.png",
+      "style_file": "07_graphic_poster.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A poop emoji toy",
+      "level3_style_description_prompt": "A poop emoji toy in graphic vintage poster style"
+    },
+    {
+      "pair_idx": 104,
+      "content_idx": 13,
+      "style_idx": 6,
+      "content_file": "14_ceramic_teapot.png",
+      "style_file": "07_graphic_poster.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teapot",
+      "level3_style_description_prompt": "A teapot in graphic vintage poster style"
+    },
+    {
+      "pair_idx": 105,
+      "content_idx": 14,
+      "style_idx": 6,
+      "content_file": "15_decorative_vase.png",
+      "style_file": "07_graphic_poster.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A vase",
+      "level3_style_description_prompt": "A vase in graphic vintage poster style"
+    },
+    {
+      "pair_idx": 106,
+      "content_idx": 0,
+      "style_idx": 7,
+      "content_file": "01_backpack_dog.png",
+      "style_file": "08_pencil_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A backpack with a dog print",
+      "level3_style_description_prompt": "A backpack with a dog print in pencil sketch drawing style"
+    },
+    {
+      "pair_idx": 107,
+      "content_idx": 1,
+      "style_idx": 7,
+      "content_file": "02_bear_plushie.png",
+      "style_file": "08_pencil_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teddy bear plushie",
+      "level3_style_description_prompt": "A teddy bear plushie in pencil sketch drawing style"
+    },
+    {
+      "pair_idx": 108,
+      "content_idx": 2,
+      "style_idx": 7,
+      "content_file": "03_berry_bowl.png",
+      "style_file": "08_pencil_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A bowl of berries",
+      "level3_style_description_prompt": "A bowl of berries in pencil sketch drawing style"
+    },
+    {
+      "pair_idx": 109,
+      "content_idx": 3,
+      "style_idx": 7,
+      "content_file": "04_can.png",
+      "style_file": "08_pencil_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A can",
+      "level3_style_description_prompt": "A can in pencil sketch drawing style"
+    },
+    {
+      "pair_idx": 110,
+      "content_idx": 4,
+      "style_idx": 7,
+      "content_file": "05_cat_laying.png",
+      "style_file": "08_pencil_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat laying down",
+      "level3_style_description_prompt": "A cat laying down in pencil sketch drawing style"
+    },
+    {
+      "pair_idx": 111,
+      "content_idx": 5,
+      "style_idx": 7,
+      "content_file": "06_cat_sitting.png",
+      "style_file": "08_pencil_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat sitting",
+      "level3_style_description_prompt": "A cat sitting in pencil sketch drawing style"
+    },
+    {
+      "pair_idx": 112,
+      "content_idx": 6,
+      "style_idx": 7,
+      "content_file": "07_vintage_clock.png",
+      "style_file": "08_pencil_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A clock",
+      "level3_style_description_prompt": "A clock in pencil sketch drawing style"
+    },
+    {
+      "pair_idx": 113,
+      "content_idx": 7,
+      "style_idx": 7,
+      "content_file": "08_colorful_sneaker.png",
+      "style_file": "08_pencil_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A sneaker",
+      "level3_style_description_prompt": "A sneaker in pencil sketch drawing style"
+    },
+    {
+      "pair_idx": 114,
+      "content_idx": 8,
+      "style_idx": 7,
+      "content_file": "09_dog_sitting.png",
+      "style_file": "08_pencil_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A dog",
+      "level3_style_description_prompt": "A dog in pencil sketch drawing style"
+    },
+    {
+      "pair_idx": 115,
+      "content_idx": 9,
+      "style_idx": 7,
+      "content_file": "10_rubber_duck.png",
+      "style_file": "08_pencil_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A rubber duck toy",
+      "level3_style_description_prompt": "A rubber duck toy in pencil sketch drawing style"
+    },
+    {
+      "pair_idx": 116,
+      "content_idx": 10,
+      "style_idx": 7,
+      "content_file": "11_fancy_boot.png",
+      "style_file": "08_pencil_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A boot",
+      "level3_style_description_prompt": "A boot in pencil sketch drawing style"
+    },
+    {
+      "pair_idx": 117,
+      "content_idx": 11,
+      "style_idx": 7,
+      "content_file": "12_pink_sunglasses.png",
+      "style_file": "08_pencil_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A pair of sunglasses",
+      "level3_style_description_prompt": "A pair of sunglasses in pencil sketch drawing style"
+    },
+    {
+      "pair_idx": 118,
+      "content_idx": 12,
+      "style_idx": 7,
+      "content_file": "13_poop_emoji.png",
+      "style_file": "08_pencil_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A poop emoji toy",
+      "level3_style_description_prompt": "A poop emoji toy in pencil sketch drawing style"
+    },
+    {
+      "pair_idx": 119,
+      "content_idx": 13,
+      "style_idx": 7,
+      "content_file": "14_ceramic_teapot.png",
+      "style_file": "08_pencil_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teapot",
+      "level3_style_description_prompt": "A teapot in pencil sketch drawing style"
+    },
+    {
+      "pair_idx": 120,
+      "content_idx": 14,
+      "style_idx": 7,
+      "content_file": "15_decorative_vase.png",
+      "style_file": "08_pencil_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A vase",
+      "level3_style_description_prompt": "A vase in pencil sketch drawing style"
+    },
+    {
+      "pair_idx": 121,
+      "content_idx": 0,
+      "style_idx": 8,
+      "content_file": "01_backpack_dog.png",
+      "style_file": "09_sticker.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A backpack with a dog print",
+      "level3_style_description_prompt": "A backpack with a dog print in die-cut sticker style"
+    },
+    {
+      "pair_idx": 122,
+      "content_idx": 1,
+      "style_idx": 8,
+      "content_file": "02_bear_plushie.png",
+      "style_file": "09_sticker.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teddy bear plushie",
+      "level3_style_description_prompt": "A teddy bear plushie in die-cut sticker style"
+    },
+    {
+      "pair_idx": 123,
+      "content_idx": 2,
+      "style_idx": 8,
+      "content_file": "03_berry_bowl.png",
+      "style_file": "09_sticker.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A bowl of berries",
+      "level3_style_description_prompt": "A bowl of berries in die-cut sticker style"
+    },
+    {
+      "pair_idx": 124,
+      "content_idx": 3,
+      "style_idx": 8,
+      "content_file": "04_can.png",
+      "style_file": "09_sticker.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A can",
+      "level3_style_description_prompt": "A can in die-cut sticker style"
+    },
+    {
+      "pair_idx": 125,
+      "content_idx": 4,
+      "style_idx": 8,
+      "content_file": "05_cat_laying.png",
+      "style_file": "09_sticker.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat laying down",
+      "level3_style_description_prompt": "A cat laying down in die-cut sticker style"
+    },
+    {
+      "pair_idx": 126,
+      "content_idx": 5,
+      "style_idx": 8,
+      "content_file": "06_cat_sitting.png",
+      "style_file": "09_sticker.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat sitting",
+      "level3_style_description_prompt": "A cat sitting in die-cut sticker style"
+    },
+    {
+      "pair_idx": 127,
+      "content_idx": 6,
+      "style_idx": 8,
+      "content_file": "07_vintage_clock.png",
+      "style_file": "09_sticker.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A clock",
+      "level3_style_description_prompt": "A clock in die-cut sticker style"
+    },
+    {
+      "pair_idx": 128,
+      "content_idx": 7,
+      "style_idx": 8,
+      "content_file": "08_colorful_sneaker.png",
+      "style_file": "09_sticker.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A sneaker",
+      "level3_style_description_prompt": "A sneaker in die-cut sticker style"
+    },
+    {
+      "pair_idx": 129,
+      "content_idx": 8,
+      "style_idx": 8,
+      "content_file": "09_dog_sitting.png",
+      "style_file": "09_sticker.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A dog",
+      "level3_style_description_prompt": "A dog in die-cut sticker style"
+    },
+    {
+      "pair_idx": 130,
+      "content_idx": 9,
+      "style_idx": 8,
+      "content_file": "10_rubber_duck.png",
+      "style_file": "09_sticker.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A rubber duck toy",
+      "level3_style_description_prompt": "A rubber duck toy in die-cut sticker style"
+    },
+    {
+      "pair_idx": 131,
+      "content_idx": 10,
+      "style_idx": 8,
+      "content_file": "11_fancy_boot.png",
+      "style_file": "09_sticker.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A boot",
+      "level3_style_description_prompt": "A boot in die-cut sticker style"
+    },
+    {
+      "pair_idx": 132,
+      "content_idx": 11,
+      "style_idx": 8,
+      "content_file": "12_pink_sunglasses.png",
+      "style_file": "09_sticker.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A pair of sunglasses",
+      "level3_style_description_prompt": "A pair of sunglasses in die-cut sticker style"
+    },
+    {
+      "pair_idx": 133,
+      "content_idx": 12,
+      "style_idx": 8,
+      "content_file": "13_poop_emoji.png",
+      "style_file": "09_sticker.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A poop emoji toy",
+      "level3_style_description_prompt": "A poop emoji toy in die-cut sticker style"
+    },
+    {
+      "pair_idx": 134,
+      "content_idx": 13,
+      "style_idx": 8,
+      "content_file": "14_ceramic_teapot.png",
+      "style_file": "09_sticker.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teapot",
+      "level3_style_description_prompt": "A teapot in die-cut sticker style"
+    },
+    {
+      "pair_idx": 135,
+      "content_idx": 14,
+      "style_idx": 8,
+      "content_file": "15_decorative_vase.png",
+      "style_file": "09_sticker.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A vase",
+      "level3_style_description_prompt": "A vase in die-cut sticker style"
+    },
+    {
+      "pair_idx": 136,
+      "content_idx": 0,
+      "style_idx": 9,
+      "content_file": "01_backpack_dog.png",
+      "style_file": "10_starry_night_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A backpack with a dog print",
+      "level3_style_description_prompt": "A backpack with a dog print in Van Gogh Starry Night sketch style"
+    },
+    {
+      "pair_idx": 137,
+      "content_idx": 1,
+      "style_idx": 9,
+      "content_file": "02_bear_plushie.png",
+      "style_file": "10_starry_night_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teddy bear plushie",
+      "level3_style_description_prompt": "A teddy bear plushie in Van Gogh Starry Night sketch style"
+    },
+    {
+      "pair_idx": 138,
+      "content_idx": 2,
+      "style_idx": 9,
+      "content_file": "03_berry_bowl.png",
+      "style_file": "10_starry_night_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A bowl of berries",
+      "level3_style_description_prompt": "A bowl of berries in Van Gogh Starry Night sketch style"
+    },
+    {
+      "pair_idx": 139,
+      "content_idx": 3,
+      "style_idx": 9,
+      "content_file": "04_can.png",
+      "style_file": "10_starry_night_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A can",
+      "level3_style_description_prompt": "A can in Van Gogh Starry Night sketch style"
+    },
+    {
+      "pair_idx": 140,
+      "content_idx": 4,
+      "style_idx": 9,
+      "content_file": "05_cat_laying.png",
+      "style_file": "10_starry_night_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat laying down",
+      "level3_style_description_prompt": "A cat laying down in Van Gogh Starry Night sketch style"
+    },
+    {
+      "pair_idx": 141,
+      "content_idx": 5,
+      "style_idx": 9,
+      "content_file": "06_cat_sitting.png",
+      "style_file": "10_starry_night_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat sitting",
+      "level3_style_description_prompt": "A cat sitting in Van Gogh Starry Night sketch style"
+    },
+    {
+      "pair_idx": 142,
+      "content_idx": 6,
+      "style_idx": 9,
+      "content_file": "07_vintage_clock.png",
+      "style_file": "10_starry_night_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A clock",
+      "level3_style_description_prompt": "A clock in Van Gogh Starry Night sketch style"
+    },
+    {
+      "pair_idx": 143,
+      "content_idx": 7,
+      "style_idx": 9,
+      "content_file": "08_colorful_sneaker.png",
+      "style_file": "10_starry_night_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A sneaker",
+      "level3_style_description_prompt": "A sneaker in Van Gogh Starry Night sketch style"
+    },
+    {
+      "pair_idx": 144,
+      "content_idx": 8,
+      "style_idx": 9,
+      "content_file": "09_dog_sitting.png",
+      "style_file": "10_starry_night_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A dog",
+      "level3_style_description_prompt": "A dog in Van Gogh Starry Night sketch style"
+    },
+    {
+      "pair_idx": 145,
+      "content_idx": 9,
+      "style_idx": 9,
+      "content_file": "10_rubber_duck.png",
+      "style_file": "10_starry_night_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A rubber duck toy",
+      "level3_style_description_prompt": "A rubber duck toy in Van Gogh Starry Night sketch style"
+    },
+    {
+      "pair_idx": 146,
+      "content_idx": 10,
+      "style_idx": 9,
+      "content_file": "11_fancy_boot.png",
+      "style_file": "10_starry_night_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A boot",
+      "level3_style_description_prompt": "A boot in Van Gogh Starry Night sketch style"
+    },
+    {
+      "pair_idx": 147,
+      "content_idx": 11,
+      "style_idx": 9,
+      "content_file": "12_pink_sunglasses.png",
+      "style_file": "10_starry_night_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A pair of sunglasses",
+      "level3_style_description_prompt": "A pair of sunglasses in Van Gogh Starry Night sketch style"
+    },
+    {
+      "pair_idx": 148,
+      "content_idx": 12,
+      "style_idx": 9,
+      "content_file": "13_poop_emoji.png",
+      "style_file": "10_starry_night_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A poop emoji toy",
+      "level3_style_description_prompt": "A poop emoji toy in Van Gogh Starry Night sketch style"
+    },
+    {
+      "pair_idx": 149,
+      "content_idx": 13,
+      "style_idx": 9,
+      "content_file": "14_ceramic_teapot.png",
+      "style_file": "10_starry_night_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teapot",
+      "level3_style_description_prompt": "A teapot in Van Gogh Starry Night sketch style"
+    },
+    {
+      "pair_idx": 150,
+      "content_idx": 14,
+      "style_idx": 9,
+      "content_file": "15_decorative_vase.png",
+      "style_file": "10_starry_night_sketch.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A vase",
+      "level3_style_description_prompt": "A vase in Van Gogh Starry Night sketch style"
+    },
+    {
+      "pair_idx": 151,
+      "content_idx": 0,
+      "style_idx": 10,
+      "content_file": "01_backpack_dog.png",
+      "style_file": "11_abstract_3d_render.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A backpack with a dog print",
+      "level3_style_description_prompt": "A backpack with a dog print in 3D abstract digital render style"
+    },
+    {
+      "pair_idx": 152,
+      "content_idx": 1,
+      "style_idx": 10,
+      "content_file": "02_bear_plushie.png",
+      "style_file": "11_abstract_3d_render.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teddy bear plushie",
+      "level3_style_description_prompt": "A teddy bear plushie in 3D abstract digital render style"
+    },
+    {
+      "pair_idx": 153,
+      "content_idx": 2,
+      "style_idx": 10,
+      "content_file": "03_berry_bowl.png",
+      "style_file": "11_abstract_3d_render.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A bowl of berries",
+      "level3_style_description_prompt": "A bowl of berries in 3D abstract digital render style"
+    },
+    {
+      "pair_idx": 154,
+      "content_idx": 3,
+      "style_idx": 10,
+      "content_file": "04_can.png",
+      "style_file": "11_abstract_3d_render.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A can",
+      "level3_style_description_prompt": "A can in 3D abstract digital render style"
+    },
+    {
+      "pair_idx": 155,
+      "content_idx": 4,
+      "style_idx": 10,
+      "content_file": "05_cat_laying.png",
+      "style_file": "11_abstract_3d_render.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat laying down",
+      "level3_style_description_prompt": "A cat laying down in 3D abstract digital render style"
+    },
+    {
+      "pair_idx": 156,
+      "content_idx": 5,
+      "style_idx": 10,
+      "content_file": "06_cat_sitting.png",
+      "style_file": "11_abstract_3d_render.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat sitting",
+      "level3_style_description_prompt": "A cat sitting in 3D abstract digital render style"
+    },
+    {
+      "pair_idx": 157,
+      "content_idx": 6,
+      "style_idx": 10,
+      "content_file": "07_vintage_clock.png",
+      "style_file": "11_abstract_3d_render.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A clock",
+      "level3_style_description_prompt": "A clock in 3D abstract digital render style"
+    },
+    {
+      "pair_idx": 158,
+      "content_idx": 7,
+      "style_idx": 10,
+      "content_file": "08_colorful_sneaker.png",
+      "style_file": "11_abstract_3d_render.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A sneaker",
+      "level3_style_description_prompt": "A sneaker in 3D abstract digital render style"
+    },
+    {
+      "pair_idx": 159,
+      "content_idx": 8,
+      "style_idx": 10,
+      "content_file": "09_dog_sitting.png",
+      "style_file": "11_abstract_3d_render.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A dog",
+      "level3_style_description_prompt": "A dog in 3D abstract digital render style"
+    },
+    {
+      "pair_idx": 160,
+      "content_idx": 9,
+      "style_idx": 10,
+      "content_file": "10_rubber_duck.png",
+      "style_file": "11_abstract_3d_render.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A rubber duck toy",
+      "level3_style_description_prompt": "A rubber duck toy in 3D abstract digital render style"
+    },
+    {
+      "pair_idx": 161,
+      "content_idx": 10,
+      "style_idx": 10,
+      "content_file": "11_fancy_boot.png",
+      "style_file": "11_abstract_3d_render.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A boot",
+      "level3_style_description_prompt": "A boot in 3D abstract digital render style"
+    },
+    {
+      "pair_idx": 162,
+      "content_idx": 11,
+      "style_idx": 10,
+      "content_file": "12_pink_sunglasses.png",
+      "style_file": "11_abstract_3d_render.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A pair of sunglasses",
+      "level3_style_description_prompt": "A pair of sunglasses in 3D abstract digital render style"
+    },
+    {
+      "pair_idx": 163,
+      "content_idx": 12,
+      "style_idx": 10,
+      "content_file": "13_poop_emoji.png",
+      "style_file": "11_abstract_3d_render.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A poop emoji toy",
+      "level3_style_description_prompt": "A poop emoji toy in 3D abstract digital render style"
+    },
+    {
+      "pair_idx": 164,
+      "content_idx": 13,
+      "style_idx": 10,
+      "content_file": "14_ceramic_teapot.png",
+      "style_file": "11_abstract_3d_render.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teapot",
+      "level3_style_description_prompt": "A teapot in 3D abstract digital render style"
+    },
+    {
+      "pair_idx": 165,
+      "content_idx": 14,
+      "style_idx": 10,
+      "content_file": "15_decorative_vase.png",
+      "style_file": "11_abstract_3d_render.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A vase",
+      "level3_style_description_prompt": "A vase in 3D abstract digital render style"
+    },
+    {
+      "pair_idx": 166,
+      "content_idx": 0,
+      "style_idx": 11,
+      "content_file": "01_backpack_dog.png",
+      "style_file": "12_vintage_woodcut.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A backpack with a dog print",
+      "level3_style_description_prompt": "A backpack with a dog print in vintage woodcut print style"
+    },
+    {
+      "pair_idx": 167,
+      "content_idx": 1,
+      "style_idx": 11,
+      "content_file": "02_bear_plushie.png",
+      "style_file": "12_vintage_woodcut.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teddy bear plushie",
+      "level3_style_description_prompt": "A teddy bear plushie in vintage woodcut print style"
+    },
+    {
+      "pair_idx": 168,
+      "content_idx": 2,
+      "style_idx": 11,
+      "content_file": "03_berry_bowl.png",
+      "style_file": "12_vintage_woodcut.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A bowl of berries",
+      "level3_style_description_prompt": "A bowl of berries in vintage woodcut print style"
+    },
+    {
+      "pair_idx": 169,
+      "content_idx": 3,
+      "style_idx": 11,
+      "content_file": "04_can.png",
+      "style_file": "12_vintage_woodcut.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A can",
+      "level3_style_description_prompt": "A can in vintage woodcut print style"
+    },
+    {
+      "pair_idx": 170,
+      "content_idx": 4,
+      "style_idx": 11,
+      "content_file": "05_cat_laying.png",
+      "style_file": "12_vintage_woodcut.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat laying down",
+      "level3_style_description_prompt": "A cat laying down in vintage woodcut print style"
+    },
+    {
+      "pair_idx": 171,
+      "content_idx": 5,
+      "style_idx": 11,
+      "content_file": "06_cat_sitting.png",
+      "style_file": "12_vintage_woodcut.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat sitting",
+      "level3_style_description_prompt": "A cat sitting in vintage woodcut print style"
+    },
+    {
+      "pair_idx": 172,
+      "content_idx": 6,
+      "style_idx": 11,
+      "content_file": "07_vintage_clock.png",
+      "style_file": "12_vintage_woodcut.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A clock",
+      "level3_style_description_prompt": "A clock in vintage woodcut print style"
+    },
+    {
+      "pair_idx": 173,
+      "content_idx": 7,
+      "style_idx": 11,
+      "content_file": "08_colorful_sneaker.png",
+      "style_file": "12_vintage_woodcut.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A sneaker",
+      "level3_style_description_prompt": "A sneaker in vintage woodcut print style"
+    },
+    {
+      "pair_idx": 174,
+      "content_idx": 8,
+      "style_idx": 11,
+      "content_file": "09_dog_sitting.png",
+      "style_file": "12_vintage_woodcut.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A dog",
+      "level3_style_description_prompt": "A dog in vintage woodcut print style"
+    },
+    {
+      "pair_idx": 175,
+      "content_idx": 9,
+      "style_idx": 11,
+      "content_file": "10_rubber_duck.png",
+      "style_file": "12_vintage_woodcut.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A rubber duck toy",
+      "level3_style_description_prompt": "A rubber duck toy in vintage woodcut print style"
+    },
+    {
+      "pair_idx": 176,
+      "content_idx": 10,
+      "style_idx": 11,
+      "content_file": "11_fancy_boot.png",
+      "style_file": "12_vintage_woodcut.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A boot",
+      "level3_style_description_prompt": "A boot in vintage woodcut print style"
+    },
+    {
+      "pair_idx": 177,
+      "content_idx": 11,
+      "style_idx": 11,
+      "content_file": "12_pink_sunglasses.png",
+      "style_file": "12_vintage_woodcut.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A pair of sunglasses",
+      "level3_style_description_prompt": "A pair of sunglasses in vintage woodcut print style"
+    },
+    {
+      "pair_idx": 178,
+      "content_idx": 12,
+      "style_idx": 11,
+      "content_file": "13_poop_emoji.png",
+      "style_file": "12_vintage_woodcut.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A poop emoji toy",
+      "level3_style_description_prompt": "A poop emoji toy in vintage woodcut print style"
+    },
+    {
+      "pair_idx": 179,
+      "content_idx": 13,
+      "style_idx": 11,
+      "content_file": "14_ceramic_teapot.png",
+      "style_file": "12_vintage_woodcut.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teapot",
+      "level3_style_description_prompt": "A teapot in vintage woodcut print style"
+    },
+    {
+      "pair_idx": 180,
+      "content_idx": 14,
+      "style_idx": 11,
+      "content_file": "15_decorative_vase.png",
+      "style_file": "12_vintage_woodcut.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A vase",
+      "level3_style_description_prompt": "A vase in vintage woodcut print style"
+    },
+    {
+      "pair_idx": 181,
+      "content_idx": 0,
+      "style_idx": 12,
+      "content_file": "01_backpack_dog.png",
+      "style_file": "13_3d_isometric.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A backpack with a dog print",
+      "level3_style_description_prompt": "A backpack with a dog print in 3D isometric miniature style"
+    },
+    {
+      "pair_idx": 182,
+      "content_idx": 1,
+      "style_idx": 12,
+      "content_file": "02_bear_plushie.png",
+      "style_file": "13_3d_isometric.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teddy bear plushie",
+      "level3_style_description_prompt": "A teddy bear plushie in 3D isometric miniature style"
+    },
+    {
+      "pair_idx": 183,
+      "content_idx": 2,
+      "style_idx": 12,
+      "content_file": "03_berry_bowl.png",
+      "style_file": "13_3d_isometric.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A bowl of berries",
+      "level3_style_description_prompt": "A bowl of berries in 3D isometric miniature style"
+    },
+    {
+      "pair_idx": 184,
+      "content_idx": 3,
+      "style_idx": 12,
+      "content_file": "04_can.png",
+      "style_file": "13_3d_isometric.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A can",
+      "level3_style_description_prompt": "A can in 3D isometric miniature style"
+    },
+    {
+      "pair_idx": 185,
+      "content_idx": 4,
+      "style_idx": 12,
+      "content_file": "05_cat_laying.png",
+      "style_file": "13_3d_isometric.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat laying down",
+      "level3_style_description_prompt": "A cat laying down in 3D isometric miniature style"
+    },
+    {
+      "pair_idx": 186,
+      "content_idx": 5,
+      "style_idx": 12,
+      "content_file": "06_cat_sitting.png",
+      "style_file": "13_3d_isometric.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat sitting",
+      "level3_style_description_prompt": "A cat sitting in 3D isometric miniature style"
+    },
+    {
+      "pair_idx": 187,
+      "content_idx": 6,
+      "style_idx": 12,
+      "content_file": "07_vintage_clock.png",
+      "style_file": "13_3d_isometric.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A clock",
+      "level3_style_description_prompt": "A clock in 3D isometric miniature style"
+    },
+    {
+      "pair_idx": 188,
+      "content_idx": 7,
+      "style_idx": 12,
+      "content_file": "08_colorful_sneaker.png",
+      "style_file": "13_3d_isometric.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A sneaker",
+      "level3_style_description_prompt": "A sneaker in 3D isometric miniature style"
+    },
+    {
+      "pair_idx": 189,
+      "content_idx": 8,
+      "style_idx": 12,
+      "content_file": "09_dog_sitting.png",
+      "style_file": "13_3d_isometric.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A dog",
+      "level3_style_description_prompt": "A dog in 3D isometric miniature style"
+    },
+    {
+      "pair_idx": 190,
+      "content_idx": 9,
+      "style_idx": 12,
+      "content_file": "10_rubber_duck.png",
+      "style_file": "13_3d_isometric.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A rubber duck toy",
+      "level3_style_description_prompt": "A rubber duck toy in 3D isometric miniature style"
+    },
+    {
+      "pair_idx": 191,
+      "content_idx": 10,
+      "style_idx": 12,
+      "content_file": "11_fancy_boot.png",
+      "style_file": "13_3d_isometric.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A boot",
+      "level3_style_description_prompt": "A boot in 3D isometric miniature style"
+    },
+    {
+      "pair_idx": 192,
+      "content_idx": 11,
+      "style_idx": 12,
+      "content_file": "12_pink_sunglasses.png",
+      "style_file": "13_3d_isometric.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A pair of sunglasses",
+      "level3_style_description_prompt": "A pair of sunglasses in 3D isometric miniature style"
+    },
+    {
+      "pair_idx": 193,
+      "content_idx": 12,
+      "style_idx": 12,
+      "content_file": "13_poop_emoji.png",
+      "style_file": "13_3d_isometric.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A poop emoji toy",
+      "level3_style_description_prompt": "A poop emoji toy in 3D isometric miniature style"
+    },
+    {
+      "pair_idx": 194,
+      "content_idx": 13,
+      "style_idx": 12,
+      "content_file": "14_ceramic_teapot.png",
+      "style_file": "13_3d_isometric.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teapot",
+      "level3_style_description_prompt": "A teapot in 3D isometric miniature style"
+    },
+    {
+      "pair_idx": 195,
+      "content_idx": 14,
+      "style_idx": 12,
+      "content_file": "15_decorative_vase.png",
+      "style_file": "13_3d_isometric.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A vase",
+      "level3_style_description_prompt": "A vase in 3D isometric miniature style"
+    },
+    {
+      "pair_idx": 196,
+      "content_idx": 0,
+      "style_idx": 13,
+      "content_file": "01_backpack_dog.png",
+      "style_file": "14_crayon_drawing.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A backpack with a dog print",
+      "level3_style_description_prompt": "A backpack with a dog print in children's crayon sketch style"
+    },
+    {
+      "pair_idx": 197,
+      "content_idx": 1,
+      "style_idx": 13,
+      "content_file": "02_bear_plushie.png",
+      "style_file": "14_crayon_drawing.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teddy bear plushie",
+      "level3_style_description_prompt": "A teddy bear plushie in children's crayon sketch style"
+    },
+    {
+      "pair_idx": 198,
+      "content_idx": 2,
+      "style_idx": 13,
+      "content_file": "03_berry_bowl.png",
+      "style_file": "14_crayon_drawing.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A bowl of berries",
+      "level3_style_description_prompt": "A bowl of berries in children's crayon sketch style"
+    },
+    {
+      "pair_idx": 199,
+      "content_idx": 3,
+      "style_idx": 13,
+      "content_file": "04_can.png",
+      "style_file": "14_crayon_drawing.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A can",
+      "level3_style_description_prompt": "A can in children's crayon sketch style"
+    },
+    {
+      "pair_idx": 200,
+      "content_idx": 4,
+      "style_idx": 13,
+      "content_file": "05_cat_laying.png",
+      "style_file": "14_crayon_drawing.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat laying down",
+      "level3_style_description_prompt": "A cat laying down in children's crayon sketch style"
+    },
+    {
+      "pair_idx": 201,
+      "content_idx": 5,
+      "style_idx": 13,
+      "content_file": "06_cat_sitting.png",
+      "style_file": "14_crayon_drawing.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat sitting",
+      "level3_style_description_prompt": "A cat sitting in children's crayon sketch style"
+    },
+    {
+      "pair_idx": 202,
+      "content_idx": 6,
+      "style_idx": 13,
+      "content_file": "07_vintage_clock.png",
+      "style_file": "14_crayon_drawing.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A clock",
+      "level3_style_description_prompt": "A clock in children's crayon sketch style"
+    },
+    {
+      "pair_idx": 203,
+      "content_idx": 7,
+      "style_idx": 13,
+      "content_file": "08_colorful_sneaker.png",
+      "style_file": "14_crayon_drawing.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A sneaker",
+      "level3_style_description_prompt": "A sneaker in children's crayon sketch style"
+    },
+    {
+      "pair_idx": 204,
+      "content_idx": 8,
+      "style_idx": 13,
+      "content_file": "09_dog_sitting.png",
+      "style_file": "14_crayon_drawing.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A dog",
+      "level3_style_description_prompt": "A dog in children's crayon sketch style"
+    },
+    {
+      "pair_idx": 205,
+      "content_idx": 9,
+      "style_idx": 13,
+      "content_file": "10_rubber_duck.png",
+      "style_file": "14_crayon_drawing.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A rubber duck toy",
+      "level3_style_description_prompt": "A rubber duck toy in children's crayon sketch style"
+    },
+    {
+      "pair_idx": 206,
+      "content_idx": 10,
+      "style_idx": 13,
+      "content_file": "11_fancy_boot.png",
+      "style_file": "14_crayon_drawing.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A boot",
+      "level3_style_description_prompt": "A boot in children's crayon sketch style"
+    },
+    {
+      "pair_idx": 207,
+      "content_idx": 11,
+      "style_idx": 13,
+      "content_file": "12_pink_sunglasses.png",
+      "style_file": "14_crayon_drawing.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A pair of sunglasses",
+      "level3_style_description_prompt": "A pair of sunglasses in children's crayon sketch style"
+    },
+    {
+      "pair_idx": 208,
+      "content_idx": 12,
+      "style_idx": 13,
+      "content_file": "13_poop_emoji.png",
+      "style_file": "14_crayon_drawing.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A poop emoji toy",
+      "level3_style_description_prompt": "A poop emoji toy in children's crayon sketch style"
+    },
+    {
+      "pair_idx": 209,
+      "content_idx": 13,
+      "style_idx": 13,
+      "content_file": "14_ceramic_teapot.png",
+      "style_file": "14_crayon_drawing.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teapot",
+      "level3_style_description_prompt": "A teapot in children's crayon sketch style"
+    },
+    {
+      "pair_idx": 210,
+      "content_idx": 14,
+      "style_idx": 13,
+      "content_file": "15_decorative_vase.png",
+      "style_file": "14_crayon_drawing.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A vase",
+      "level3_style_description_prompt": "A vase in children's crayon sketch style"
+    },
+    {
+      "pair_idx": 211,
+      "content_idx": 0,
+      "style_idx": 14,
+      "content_file": "01_backpack_dog.png",
+      "style_file": "15_oil_pastels.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A backpack with a dog print",
+      "level3_style_description_prompt": "A backpack with a dog print in oil pastel painting style"
+    },
+    {
+      "pair_idx": 212,
+      "content_idx": 1,
+      "style_idx": 14,
+      "content_file": "02_bear_plushie.png",
+      "style_file": "15_oil_pastels.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teddy bear plushie",
+      "level3_style_description_prompt": "A teddy bear plushie in oil pastel painting style"
+    },
+    {
+      "pair_idx": 213,
+      "content_idx": 2,
+      "style_idx": 14,
+      "content_file": "03_berry_bowl.png",
+      "style_file": "15_oil_pastels.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A bowl of berries",
+      "level3_style_description_prompt": "A bowl of berries in oil pastel painting style"
+    },
+    {
+      "pair_idx": 214,
+      "content_idx": 3,
+      "style_idx": 14,
+      "content_file": "04_can.png",
+      "style_file": "15_oil_pastels.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A can",
+      "level3_style_description_prompt": "A can in oil pastel painting style"
+    },
+    {
+      "pair_idx": 215,
+      "content_idx": 4,
+      "style_idx": 14,
+      "content_file": "05_cat_laying.png",
+      "style_file": "15_oil_pastels.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat laying down",
+      "level3_style_description_prompt": "A cat laying down in oil pastel painting style"
+    },
+    {
+      "pair_idx": 216,
+      "content_idx": 5,
+      "style_idx": 14,
+      "content_file": "06_cat_sitting.png",
+      "style_file": "15_oil_pastels.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A cat sitting",
+      "level3_style_description_prompt": "A cat sitting in oil pastel painting style"
+    },
+    {
+      "pair_idx": 217,
+      "content_idx": 6,
+      "style_idx": 14,
+      "content_file": "07_vintage_clock.png",
+      "style_file": "15_oil_pastels.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A clock",
+      "level3_style_description_prompt": "A clock in oil pastel painting style"
+    },
+    {
+      "pair_idx": 218,
+      "content_idx": 7,
+      "style_idx": 14,
+      "content_file": "08_colorful_sneaker.png",
+      "style_file": "15_oil_pastels.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A sneaker",
+      "level3_style_description_prompt": "A sneaker in oil pastel painting style"
+    },
+    {
+      "pair_idx": 219,
+      "content_idx": 8,
+      "style_idx": 14,
+      "content_file": "09_dog_sitting.png",
+      "style_file": "15_oil_pastels.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A dog",
+      "level3_style_description_prompt": "A dog in oil pastel painting style"
+    },
+    {
+      "pair_idx": 220,
+      "content_idx": 9,
+      "style_idx": 14,
+      "content_file": "10_rubber_duck.png",
+      "style_file": "15_oil_pastels.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A rubber duck toy",
+      "level3_style_description_prompt": "A rubber duck toy in oil pastel painting style"
+    },
+    {
+      "pair_idx": 221,
+      "content_idx": 10,
+      "style_idx": 14,
+      "content_file": "11_fancy_boot.png",
+      "style_file": "15_oil_pastels.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A boot",
+      "level3_style_description_prompt": "A boot in oil pastel painting style"
+    },
+    {
+      "pair_idx": 222,
+      "content_idx": 11,
+      "style_idx": 14,
+      "content_file": "12_pink_sunglasses.png",
+      "style_file": "15_oil_pastels.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A pair of sunglasses",
+      "level3_style_description_prompt": "A pair of sunglasses in oil pastel painting style"
+    },
+    {
+      "pair_idx": 223,
+      "content_idx": 12,
+      "style_idx": 14,
+      "content_file": "13_poop_emoji.png",
+      "style_file": "15_oil_pastels.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A poop emoji toy",
+      "level3_style_description_prompt": "A poop emoji toy in oil pastel painting style"
+    },
+    {
+      "pair_idx": 224,
+      "content_idx": 13,
+      "style_idx": 14,
+      "content_file": "14_ceramic_teapot.png",
+      "style_file": "15_oil_pastels.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A teapot",
+      "level3_style_description_prompt": "A teapot in oil pastel painting style"
+    },
+    {
+      "pair_idx": 225,
+      "content_idx": 14,
+      "style_idx": 14,
+      "content_file": "15_decorative_vase.png",
+      "style_file": "15_oil_pastels.png",
+      "level1_null_prompt": "",
+      "level2_object_prompt": "A vase",
+      "level3_style_description_prompt": "A vase in oil pastel painting style"
+    }
+  ]
+}

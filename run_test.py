@@ -1,0 +1,543 @@
+#!/usr/bin/env python3
+"""
+OrthoStyle Test Runner: 1 Style x 15 Contents (1-GPU Sequential Offload, VRAM < 24GB)
+Loads models once, executes sequential GPU/CPU offloading between Stage C and Stage B.
+Timestep logging is completely disabled for efficiency.
+"""
+
+import os
+import sys
+sys.path.append("third_party/")
+sys.path.append("third_party/StableCascade/")
+
+import argparse
+import copy
+import gc
+import json
+from pathlib import Path
+
+import numpy as np
+import PIL.Image
+import torch
+import torch.nn.functional as F
+import torchvision
+import yaml
+from accelerate.utils import set_module_tensor_to_device
+from tqdm import tqdm
+
+from core.utils import load_or_fail
+from gdf import AdaptiveLossWeight, CosineTNoiseCond, DDPMSampler, VPScaler
+from gdf.schedulers import CosineSchedule
+from gdf.targets import EpsilonTarget
+from gdf_rbm import RBM, setup_dino
+from inference.utils import calculate_latent_sizes, resize_image, save_images
+from modules.controlnet import CannyFilter, ControlNet
+from stage_c_rbm import StageCRBM
+from train import WurstCoreB
+from utils import WurstCoreCRBM
+
+import rembg
+
+
+# -----------------------------------------------------------------------------
+# Memory Management & GPU Swapping
+# -----------------------------------------------------------------------------
+
+def hard_clear_cuda():
+    gc.collect()
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+        try:
+            torch.cuda.ipc_collect()
+        except Exception:
+            pass
+
+
+def move_stage_c_to_gpu(models_rbm, controlnet, dino_model, device):
+    if getattr(models_rbm, "generator", None) is not None:
+        models_rbm.generator.to(device)
+    if getattr(models_rbm, "effnet", None) is not None:
+        models_rbm.effnet.to(device)
+    if getattr(models_rbm, "text_model", None) is not None:
+        models_rbm.text_model.to(device)
+    if getattr(models_rbm, "image_model", None) is not None:
+        models_rbm.image_model.to(device)
+    if getattr(models_rbm, "previewer", None) is not None:
+        models_rbm.previewer.to(device)
+    if controlnet is not None:
+        controlnet.to(device)
+    if dino_model is not None:
+        dino_model.to(device)
+
+
+def move_stage_c_condition_models_to_cpu(models_rbm, controlnet):
+    if getattr(models_rbm, "effnet", None) is not None:
+        models_rbm.effnet.to("cpu")
+    if getattr(models_rbm, "text_model", None) is not None:
+        models_rbm.text_model.to("cpu")
+    if getattr(models_rbm, "image_model", None) is not None:
+        models_rbm.image_model.to("cpu")
+    if controlnet is not None:
+        controlnet.to("cpu")
+
+
+def move_stage_c_to_cpu(models_rbm, controlnet, dino_model):
+    if getattr(models_rbm, "generator", None) is not None:
+        models_rbm.generator.to("cpu")
+    if getattr(models_rbm, "effnet", None) is not None:
+        models_rbm.effnet.to("cpu")
+    if getattr(models_rbm, "text_model", None) is not None:
+        models_rbm.text_model.to("cpu")
+    if getattr(models_rbm, "image_model", None) is not None:
+        models_rbm.image_model.to("cpu")
+    if getattr(models_rbm, "previewer", None) is not None:
+        models_rbm.previewer.to("cpu")
+    if controlnet is not None:
+        controlnet.to("cpu")
+    if dino_model is not None:
+        dino_model.to("cpu")
+
+
+def move_stage_b_to_gpu(models_b, device):
+    if getattr(models_b, "generator", None) is not None:
+        models_b.generator.to(device, dtype=torch.bfloat16)
+    if getattr(models_b, "stage_a", None) is not None:
+        models_b.stage_a.to(device)
+    if getattr(models_b, "text_model", None) is not None:
+        models_b.text_model.to(device)
+
+
+def move_stage_b_to_cpu(models_b):
+    if getattr(models_b, "generator", None) is not None:
+        models_b.generator.to("cpu")
+    if getattr(models_b, "stage_a", None) is not None:
+        models_b.stage_a.to("cpu")
+    if getattr(models_b, "text_model", None) is not None:
+        models_b.text_model.to("cpu")
+
+
+def get_clean_canny(rgb_image_pil: PIL.Image.Image, noisy_canny_tensor: torch.Tensor, use_semantic_gating: bool = True) -> torch.Tensor:
+    if not use_semantic_gating:
+        return noisy_canny_tensor
+
+    mask_pil = rembg.remove(rgb_image_pil, only_mask=True)
+    mask_np = np.array(mask_pil, dtype=np.float32) / 255.0
+    mask_tensor = torch.from_numpy(mask_np).unsqueeze(0).unsqueeze(0).to(
+        device=noisy_canny_tensor.device, dtype=noisy_canny_tensor.dtype
+    )
+
+    if mask_tensor.shape[-2:] != noisy_canny_tensor.shape[-2:]:
+        mask_tensor = F.interpolate(
+            mask_tensor,
+            size=noisy_canny_tensor.shape[-2:],
+            mode="bilinear",
+            align_corners=False,
+        )
+
+    dilated_mask = F.max_pool2d(mask_tensor, kernel_size=5, stride=1, padding=2)
+    hard_mask = (dilated_mask > 0.5).to(dtype=noisy_canny_tensor.dtype)
+    return noisy_canny_tensor * hard_mask
+
+
+# -----------------------------------------------------------------------------
+# Setup & Model Loader (Run ONCE)
+# -----------------------------------------------------------------------------
+
+def setup_all_models(device_str: str = "cuda:0", use_controlnet_canny: bool = True):
+    device = torch.device(device_str if torch.cuda.is_available() else "cpu")
+    print(f"[*] Initializing OrthoStyle models on {device} with sequential CPU offload...")
+
+    # Stage C config
+    config_file_c = "third_party/StableCascade/configs/inference/stage_c_3b.yaml"
+    with open(config_file_c, "r", encoding="utf-8") as f:
+        loaded_config_c = yaml.safe_load(f)
+
+    core_c = WurstCoreCRBM(config_dict=loaded_config_c, device=device, training=False)
+
+    # Stage B config
+    config_file_b = "third_party/StableCascade/configs/inference/stage_b_3b.yaml"
+    with open(config_file_b, "r", encoding="utf-8") as f:
+        loaded_config_b = yaml.safe_load(f)
+
+    core_b = WurstCoreB(config_dict=loaded_config_b, device=device, training=False)
+
+    extras_pre = core_c.setup_extras_pre()
+    gdf_rbm = RBM(
+        schedule=CosineSchedule(clamp_range=[0.0001, 0.9999]),
+        input_scaler=VPScaler(),
+        target=EpsilonTarget(),
+        noise_cond=CosineTNoiseCond(),
+        loss_weight=AdaptiveLossWeight(),
+    )
+    sampling_configs = {
+        "cfg": 4.0,
+        "sampler": DDPMSampler(gdf_rbm),
+        "shift": 2,
+        "timesteps": 20,
+        "t_start": 1.0,
+    }
+
+    extras = core_c.Extras(
+        gdf=gdf_rbm,
+        sampling_configs=sampling_configs,
+        transforms=extras_pre.transforms,
+        effnet_preprocess=extras_pre.effnet_preprocess,
+        clip_preprocess=extras_pre.clip_preprocess,
+    )
+
+    models_c = core_c.setup_models(extras)
+    models_c.generator.eval().requires_grad_(False)
+
+    extras_b = core_b.setup_extras_pre()
+    extras_b.sampling_configs["cfg"] = 1.1
+    extras_b.sampling_configs["shift"] = 1
+    extras_b.sampling_configs["timesteps"] = 10
+    extras_b.sampling_configs["t_start"] = 1.0
+
+    models_b = core_b.setup_models(extras_b, skip_clip=True)
+    models_b = WurstCoreB.Models(
+        **{
+            **models_b.to_dict(),
+            "tokenizer": models_c.tokenizer,
+            "text_model": copy.deepcopy(models_c.text_model),
+        }
+    )
+    models_b.generator.eval().requires_grad_(False)
+
+    generator_rbm = StageCRBM()
+    for param_name, param in load_or_fail(core_c.config.generator_checkpoint_path).items():
+        set_module_tensor_to_device(generator_rbm, param_name, "cpu", value=param)
+    generator_rbm = generator_rbm.to(getattr(torch, core_c.config.dtype)).to(device)
+    generator_rbm = core_c.load_model(generator_rbm, "generator")
+
+    models_rbm = core_c.Models(
+        effnet=models_c.effnet,
+        previewer=models_c.previewer,
+        generator=generator_rbm,
+        generator_ema=models_c.generator_ema,
+        tokenizer=models_c.tokenizer,
+        text_model=models_c.text_model,
+        image_model=models_c.image_model,
+    )
+    models_rbm.generator.eval().requires_grad_(False)
+
+    controlnet = None
+    canny_filter = None
+    if use_controlnet_canny:
+        controlnet = ControlNet(c_in=1, proj_blocks=[0, 4, 8, 12, 51, 55, 59, 63], bottleneck_mode=None)
+        canny_ckpt_path = "third_party/StableCascade/models/canny.safetensors"
+        cnet_ckpt = load_or_fail(canny_ckpt_path)
+        controlnet.load_state_dict(cnet_ckpt if "state_dict" not in cnet_ckpt else cnet_ckpt["state_dict"])
+        controlnet = controlnet.to(getattr(torch, core_c.config.dtype)).eval().requires_grad_(False)
+        canny_filter = CannyFilter(device, resize=224)
+
+    dino_model = setup_dino(device=str(device))
+
+    # Keep all models offloaded to CPU initially
+    move_stage_c_to_cpu(models_rbm, controlnet, dino_model)
+    move_stage_b_to_cpu(models_b)
+    hard_clear_cuda()
+
+    print("[*] Models initialized and offloaded to CPU successfully.")
+    return {
+        "device": device,
+        "core_c": core_c,
+        "core_b": core_b,
+        "extras": extras,
+        "extras_b": extras_b,
+        "models_rbm": models_rbm,
+        "models_b": models_b,
+        "controlnet": controlnet,
+        "canny_filter": canny_filter,
+        "dino_model": dino_model,
+    }
+
+
+# -----------------------------------------------------------------------------
+# Single Inference
+# -----------------------------------------------------------------------------
+
+def run_single_inference(
+    state: dict,
+    content_path: str,
+    style_path: str,
+    prompt: str,
+    save_path: str,
+    save_grid_path: str = None,
+    tau_pushforward: int = 5,
+    cnet_strength: float = 0.8,
+    use_semantic_gating: bool = True,
+):
+    device = state["device"]
+    core_c = state["core_c"]
+    core_b = state["core_b"]
+    extras = state["extras"]
+    extras_b = state["extras_b"]
+    models_rbm = state["models_rbm"]
+    models_b = state["models_b"]
+    controlnet = state["controlnet"]
+    canny_filter = state["canny_filter"]
+    dino_model = state["dino_model"]
+
+    batch_size = 1
+    height, width = 1024, 1024
+    stage_c_latent_shape, stage_b_latent_shape = calculate_latent_sizes(height, width, batch_size=batch_size)
+
+    ref_sub_pil = PIL.Image.open(content_path).convert("RGB")
+    ref_sty_pil = PIL.Image.open(style_path).convert("RGB")
+
+    ref_images = resize_image(ref_sub_pil).unsqueeze(0).expand(batch_size, -1, -1, -1).to(device)
+    ref_style = resize_image(ref_sty_pil).unsqueeze(0).expand(batch_size, -1, -1, -1).to(device)
+
+    # 1. STAGE C ON GPU
+    move_stage_b_to_cpu(models_b)
+    move_stage_c_to_gpu(models_rbm, controlnet, dino_model, device)
+    hard_clear_cuda()
+
+    batch_c = {
+        "captions": [prompt] * batch_size,
+        "style": ref_style,
+        "images": ref_images,
+    }
+
+    x0_forward = models_rbm.effnet(extras.effnet_preprocess(ref_images))
+    x0_style_forward = models_rbm.effnet(extras.effnet_preprocess(ref_style))
+    random_latent = torch.randn_like(x0_forward, device=device)
+    extras.sampling_configs["x_init"] = random_latent
+    extras.sampling_configs["t_start"] = 1.0
+    extras.sampling_configs["timesteps"] = 20
+
+    with torch.no_grad():
+        conditions = core_c.get_conditions(
+            batch_c,
+            models_rbm,
+            extras,
+            is_eval=True,
+            is_unconditional=False,
+            eval_image_embeds=True,
+            eval_subject_style=True,
+            eval_csd=False,
+        )
+        unconditions = core_c.get_conditions(
+            batch_c,
+            models_rbm,
+            extras,
+            is_eval=True,
+            is_unconditional=True,
+            eval_image_embeds=False,
+            eval_subject_style=True,
+        )
+
+        if controlnet is not None and canny_filter is not None:
+            noisy_canny = canny_filter(ref_images).to(device).to(getattr(torch, core_c.config.dtype))
+            cnet_input = get_clean_canny(ref_sub_pil, noisy_canny, use_semantic_gating=use_semantic_gating)
+            cnet = controlnet(cnet_input)
+            cnet = [p * cnet_strength if p is not None else None for p in cnet]
+            conditions["controlnet"] = cnet
+            unconditions["controlnet"] = cnet
+
+    move_stage_c_condition_models_to_cpu(models_rbm, controlnet)
+    hard_clear_cuda()
+
+    x0_forward = x0_forward.to(device)
+    x0_style_forward = x0_style_forward.to(device)
+    models_rbm.previewer.to(device)
+
+    sampling_c = extras.gdf.sample(
+        models_rbm.generator,
+        conditions,
+        stage_c_latent_shape,
+        unconditions,
+        device=device,
+        device_2=device,
+        **extras.sampling_configs,
+        x0_style_forward=x0_style_forward,
+        x0_forward=x0_forward,
+        apply_pushforward=(tau_pushforward > 0),
+        tau_pushforward=tau_pushforward,
+        tau_pushforward_csd=10,
+        num_iter=3,
+        eta=0.2,
+        tau=20,
+        eval_sub_csd=True,
+        guidance_mode=os.environ.get("GUIDANCE_MODE", "dino"),
+        extras=extras,
+        models=models_rbm,
+        use_attn_mask=False,
+        save_attn_mask=False,
+        lam_content=0.0,
+        lam_style=1.0,
+        gamma_nc=0.0,
+        gamma_ns=0.0,
+        sam_mask=None,
+        use_sam_mask=False,
+        sam_prompt="",
+        Lambda=1.0,
+    )
+
+    sampled_c = None
+    for (step_latent, _, _) in tqdm(sampling_c, total=extras.sampling_configs["timesteps"], desc="Stage C"):
+        sampled_c = step_latent
+
+    sampled_c_cpu = sampled_c.detach().to("cpu")
+    del sampled_c, conditions, unconditions, x0_forward, x0_style_forward
+    move_stage_c_to_cpu(models_rbm, controlnet, dino_model)
+    hard_clear_cuda()
+
+    # 2. STAGE B ON GPU
+    move_stage_b_to_gpu(models_b, device)
+    hard_clear_cuda()
+
+    batch_b = {
+        "captions": [prompt] * batch_size,
+        "style": ref_style.to(device),
+        "images": ref_images.to(device),
+    }
+
+    with torch.no_grad():
+        conditions_b = core_b.get_conditions(batch_b, models_b, extras_b, is_eval=True, is_unconditional=False)
+        unconditions_b = core_b.get_conditions(batch_b, models_b, extras_b, is_eval=True, is_unconditional=True)
+
+    sampled_c_gpu = sampled_c_cpu.to(device)
+
+    with torch.no_grad(), torch.amp.autocast("cuda", dtype=torch.bfloat16):
+        conditions_b["effnet"] = sampled_c_gpu
+        unconditions_b["effnet"] = torch.zeros_like(sampled_c_gpu, device=device)
+
+        sampling_b = extras_b.gdf.sample(
+            models_b.generator,
+            conditions_b,
+            stage_b_latent_shape,
+            unconditions_b,
+            device=device,
+            **extras_b.sampling_configs,
+        )
+
+        sampled_b = None
+        for (step_b, _, _) in tqdm(sampling_b, total=extras_b.sampling_configs["timesteps"], desc="Stage B"):
+            sampled_b = step_b
+
+        sampled_rgb = models_b.stage_a.decode(sampled_b).float().cpu()
+
+    # Save output
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+    save_images(sampled_rgb, save_path)
+    print(f"[+] Saved output: {save_path}")
+
+    # Save 3-panel grid if requested
+    if save_grid_path is not None:
+        grid_tensor = torch.cat(
+            [
+                F.interpolate(ref_images.cpu(), size=height),
+                F.interpolate(ref_style.cpu(), size=height),
+                sampled_rgb,
+            ],
+            dim=0,
+        )
+        os.makedirs(os.path.dirname(save_grid_path), exist_ok=True)
+        save_images(grid_tensor, save_grid_path)
+        print(f"[+] Saved grid: {save_grid_path}")
+
+    del conditions_b, unconditions_b, sampled_c_gpu, sampled_b, sampled_rgb
+    del ref_images, ref_style, batch_b
+    move_stage_b_to_cpu(models_b)
+    hard_clear_cuda()
+
+
+# -----------------------------------------------------------------------------
+# Main Loop (1 Style x 15 Contents)
+# -----------------------------------------------------------------------------
+
+def main():
+    parser = argparse.ArgumentParser(description="Run 1 Style x 15 Contents with 1-GPU Sequential Offload")
+    parser.add_argument("--config_path", type=str, default="data/benchmark_config.json")
+    parser.add_argument("--device", type=str, default="cuda:0")
+    parser.add_argument("--style_file", type=str, default="01_antimonocromatismo.png",
+                        help="Style image filename in data/style/ (or full path)")
+    parser.add_argument("--prompt_levels", nargs="+", default=["null"],
+                        choices=["null", "object", "style_desc"],
+                        help="Prompt level(s) to run (default: null prompt)")
+    parser.add_argument("--output_root", type=str, default="output/test_1style_15content")
+    parser.add_argument("--save_grids", action="store_true", default=True, help="Save 3-panel comparison grids")
+
+    args = parser.parse_args()
+
+    # Normalize style path
+    if not os.path.exists(args.style_file):
+        candidate = os.path.join("data/style", args.style_file)
+        if os.path.exists(candidate):
+            style_path = candidate
+        else:
+            raise FileNotFoundError(f"Style file not found: {args.style_file}")
+    else:
+        style_path = args.style_file
+
+    style_filename = os.path.basename(style_path)
+    style_stem = Path(style_filename).stem
+
+    # Read benchmark config
+    with open(args.config_path, "r", encoding="utf-8") as f:
+        benchmark_cfg = json.load(f)
+
+    # Filter pairs that match the selected style_file
+    target_pairs = [p for p in benchmark_cfg["pairs"] if p["style_file"] == style_filename]
+    if len(target_pairs) == 0:
+        # Fallback: find by partial name match
+        target_pairs = [p for p in benchmark_cfg["pairs"] if style_stem in p["style_file"]]
+
+    print(f"[*] Testing Style: {style_filename} across {len(target_pairs)} contents.")
+    print(f"[*] Prompt levels: {args.prompt_levels}")
+    print(f"[*] Output directory: {args.output_root}")
+
+    # Initialize models once
+    state = setup_all_models(device_str=args.device, use_controlnet_canny=True)
+
+    level_map = {
+        "null": ("level1_null", "level1_null_prompt"),
+        "object": ("level2_object", "level2_object_prompt"),
+        "style_desc": ("level3_style_desc", "level3_style_description_prompt"),
+    }
+
+    total_runs = len(target_pairs) * len(args.prompt_levels)
+    completed_runs = 0
+
+    for idx, item in enumerate(target_pairs, start=1):
+        content_file = item["content_file"]
+        content_stem = Path(content_file).stem
+        content_path = os.path.join("data/content", content_file)
+
+        for level_key in args.prompt_levels:
+            completed_runs += 1
+            folder_name, prompt_field = level_map[level_key]
+            prompt = item[prompt_field]
+
+            filename = f"{idx:02d}_{content_stem}_{style_stem}.png"
+            out_path = os.path.join(args.output_root, folder_name, filename)
+            grid_path = os.path.join(args.output_root, f"{folder_name}_grid", filename) if args.save_grids else None
+
+            # Skip if output already exists
+            if os.path.exists(out_path):
+                print(f"[{completed_runs}/{total_runs}] Skipping existing: {out_path}")
+                continue
+
+            print(f"\n[{completed_runs}/{total_runs}] [{idx}/{len(target_pairs)}] Content: {content_stem} | Style: {style_stem} | Level: {level_key.upper()}")
+            print(f"    Prompt: '{prompt}'")
+            print(f"    Output: {out_path}")
+
+            run_single_inference(
+                state=state,
+                content_path=content_path,
+                style_path=style_path,
+                prompt=prompt,
+                save_path=out_path,
+                save_grid_path=grid_path,
+                tau_pushforward=5,
+                cnet_strength=0.8,
+                use_semantic_gating=True,
+            )
+
+    print("\n[✔] Finished testing 1 Style x 15 Contents successfully!")
+
+
+if __name__ == "__main__":
+    main()

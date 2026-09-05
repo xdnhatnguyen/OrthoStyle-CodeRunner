@@ -1,7 +1,27 @@
-#private file
+# Private & Temporary files
+Code.md
+RULES.md
+
+# Output and results
+output/
+results/
+our_results/
 out_images/
-third_party/StableCascade/models
+out_result/
+logs/
+*.log
+run_all_afa_cfgs.log
+
+# References & Papers
+reference/
+ref_paper/
+ref_gdf_rbm.py
+
+# Models & Checkpoints
+third_party/StableCascade/models/
 third_party/CSD/checkpoint.pth
+*.safetensors
+*.ckpt
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

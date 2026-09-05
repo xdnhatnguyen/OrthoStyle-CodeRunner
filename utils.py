@@ -17,10 +17,19 @@ from train import WurstCoreC
 from CSD.model import CSD_CLIP
 from CSD.utils import convert_state_dict
 from modules.common import LayerNorm2d, Linear
+import os
+import math
 import numpy as np
 import torch
 import torch.nn as nn
-from train import WurstCoreC
+from torch.nn.init import trunc_normal_
+
+
+class Style_Storage:
+  current_step: int = 0
+  num_steps: int = 20
+  last_logged_step: int = -1
+  mu_s: float = 0.0
 
 def setup_csd(device: str = "cpu") -> nn.Module:
   """Sets up the CSD model.
@@ -315,6 +324,8 @@ class Attention2D(nn.Module):
       style: bool = False,
       img_style: bool = False,
       clip_size: int = 4,
+      i: int = None,
+      num_steps: int = None,
   ) -> torch.Tensor:
     """Forward pass of the Attention2D module.
 
@@ -325,6 +336,8 @@ class Attention2D(nn.Module):
         style: Flag for style attention.
         img_style: Flag for content style attention.
         clip_size: Size of the clip.
+        i: Current step index.
+        num_steps: Total number of steps.
 
     Returns:
         Output tensor.
@@ -333,67 +346,96 @@ class Attention2D(nn.Module):
     orig_shape = x.shape
     x = x.view(x.size(0), x.size(1), -1).permute(
         0, 2, 1
-    )  # Bx4xHxW -> Bx(HxW)x4
+    )  # shape: [B, H*W, C]
 
     if self_attn:
-      kv = torch.cat([x, kv], dim=1)
+      kv = torch.cat([x, kv], dim=1)  # shape: [B, Seq_all, C]
     if style:
-      mean = kv[:, -clip_size:, :].mean(axis=1).unsqueeze(dim=1)
+      mean = kv[:, -clip_size:, :].mean(axis=1).unsqueeze(dim=1)  # shape: [B, 1, C]
       ## for style only
-      kv[:, -clip_size:, :] = torch.cat([mean] * (clip_size), dim=1)
+      kv[:, -clip_size:, :] = torch.cat([mean] * (clip_size), dim=1)  # shape: [B, Seq, C]
 
       # KV for text only to better align with the prompt
       x_txt = self.attn(
           x, kv[:, :-clip_size, :], kv[:, :-clip_size, :], need_weights=False
-      )[0]
+      )[0]  # shape: [B, H*W, C]
 
       # KV for text+reference_style(img)
-      x_txt_style = self.attn(x, kv, kv, need_weights=False)[0]
+      x_txt_style = self.attn(x, kv, kv, need_weights=False)[0]  # shape: [B, H*W, C]
 
       # KV for reference_style(img)
-      kv[:, -2 * clip_size : -clip_size, :] = kv[:, -clip_size:, :]
+      kv[:, -2 * clip_size : -clip_size, :] = kv[:, -clip_size:, :]  # shape: [B, Seq, C]
       x_style = self.attn(
           x, kv[:, :-clip_size, :], kv[:, :-clip_size, :], need_weights=False
-      )[0]
+      )[0]  # shape: [B, H*W, C]
 
       ## simple average
-      x = (x_txt + x_txt_style + x_style) / 3
-      ## PROPOSAL
+      x = (x_txt + x_txt_style + x_style) / 3  # shape: [B, H*W, C]
     elif img_style:
-      alpha_style = 0.85
-      w_txt = 0.0
-      w_sub = 0.15
-      w_style = 0.45
-      w_sub_style = 0.40
+      # Adaptive Attention Weights qua Hàm Sigmoid
+      i = getattr(Style_Storage, "current_step", 0) if i is None else i
+      num_steps = getattr(Style_Storage, "num_steps", 20) if num_steps is None else num_steps
 
-      style_tokens = kv[:, -clip_size:, :].clone()
-      mean = style_tokens.mean(axis=1).unsqueeze(dim=1)
-      blended_style = alpha_style * style_tokens + (1 - alpha_style) * torch.cat([mean] * clip_size, dim=1)
-      
-      kv_txt = kv.clone()
+      p = i / num_steps
+      p_switch = float(os.environ.get("P_SWITCH", "0.10"))
+      k_steepness = 50.0
+      S_p = 1.0 / (1.0 + math.exp(-k_steepness * (p - p_switch)))
+      w_txt = 0.0
+      w_sub = 1.0 - (0.85 * S_p)
+      w_style = 0.45 * S_p
+      w_sub_style = 0.40 * S_p
+
+      alpha_style = float(os.environ.get("ALPHA_STYLE", "0.85"))
+      style_tokens = kv[:, -clip_size:, :].clone()  # shape: [B, clip_size, C]
+
+      # Null Space Projection qua SVD trên Token Covariance
+      # content_tokens = kv[:, :-clip_size, :]  # shape: [B, Seq - clip_size, C]
+      # cent_style = style_tokens - style_tokens.mean(dim=1, keepdim=True)  # shape: [B, clip_size, C]
+      # cent_content = content_tokens - content_tokens.mean(dim=1, keepdim=True)  # shape: [B, Seq - clip_size, C]
+
+      # cov_style = torch.bmm(cent_style.transpose(1, 2), cent_style) / (cent_style.shape[1] - 1)  # shape: [B, C, C]
+      # cov_content = torch.bmm(cent_content.transpose(1, 2), cent_content) / (cent_content.shape[1] - 1)  # shape: [B, C, C]
+
+      # U_s, _, V_s = torch.svd(cov_style.float())  # shape: [B, C, C]
+      # U_c, _, V_c = torch.svd(cov_content.float())  # shape: [B, C, C]
+
+      # V_s = V_s.to(dtype=style_tokens.dtype)  # shape: [B, C, C]
+      # V_c = V_c.to(dtype=style_tokens.dtype)  # shape: [B, C, C]
+
+      # style_tokens_null = torch.bmm(style_tokens, V_s)  # shape: [B, clip_size, C]
+      # style_tokens_aligned = torch.bmm(style_tokens_null, V_c.transpose(1, 2))  # shape: [B, clip_size, C]
+      # style_tokens = style_tokens_aligned  # shape: [B, clip_size, C]
+
+      mean = style_tokens.mean(axis=1).unsqueeze(dim=1)  # shape: [B, 1, C]
+      blended_style = alpha_style * style_tokens + (1 - alpha_style) * torch.cat([mean] * clip_size, dim=1)  # shape: [B, clip_size, C]
+
+      kv_txt = kv.clone()  # shape: [B, Seq, C]
       x_txt = self.attn(
           x,
           kv_txt[:, : -2 * clip_size, :],
           kv_txt[:, : -2 * clip_size, :],
           need_weights=False,
-      )[0]
-      
-      kv_sub = kv.clone()
+      )[0]  # shape: [B, H*W, C]
+
+      kv_sub = kv.clone()  # shape: [B, Seq, C]
       x_sub = self.attn(
           x, kv_sub[:, :-clip_size, :], kv_sub[:, :-clip_size, :], need_weights=False
-      )[0]
+      )[0]  # shape: [B, H*W, C]
 
-      kv_mixed = kv.clone()
-      kv_mixed[:, -clip_size:, :] = blended_style
-      x_sub_style, att_map = self.attn(x, kv_mixed, kv_mixed, need_weights=True)
+      kv_mixed = kv.clone()  # shape: [B, Seq, C]
+      kv_mixed[:, -clip_size:, :] = blended_style  # shape: [B, Seq, C]
+      x_sub_style, att_map = self.attn(x, kv_mixed, kv_mixed, need_weights=True)  # shape: [B, H*W, C]
 
-      kv_pure_style = kv.clone()
-      kv_pure_style[:, -2 * clip_size : -clip_size, :] = blended_style
+      kv_pure_style = kv.clone()  # shape: [B, Seq, C]
+      kv_pure_style[:, -2 * clip_size : -clip_size, :] = blended_style  # shape: [B, Seq, C]
       x_style = self.attn(
           x, kv_pure_style[:, :-clip_size, :], kv_pure_style[:, :-clip_size, :], need_weights=False
-      )[0]
+      )[0]  # shape: [B, H*W, C]
 
-      x = (w_txt * x_txt) + (w_sub * x_sub) + (w_style * x_style) + (w_sub_style * x_sub_style)
+      x = (w_txt * x_txt) + (w_sub * x_sub) + (w_style * x_style) + (w_sub_style * x_sub_style)  # shape: [B, H*W, C]
+      if i in [0, 1, 2, 3, 4, 15] and Style_Storage.last_logged_step != i:
+        print(f"[Adaptive Sigmoid Weights] Step i={i}: S_p={S_p:.4f}, w_sub={w_sub:.4f}, w_style={w_style:.4f}")
+        Style_Storage.last_logged_step = i
   #   elif img_style:
   #     mean = kv[:, -clip_size:, :].mean(axis=1).unsqueeze(dim=1)
 
@@ -462,6 +504,8 @@ class AttnBlock(nn.Module):
       kv: torch.Tensor,
       style: bool = False,
       img_style: bool = False,
+      i: int = None,
+      num_steps: int = None,
   ) -> torch.Tensor:
     """Forward pass of the AttnBlock module.
 
@@ -470,17 +514,21 @@ class AttnBlock(nn.Module):
         kv: Key-value tensor.
         style: Flag for style attention.
         img_style: Flag for content style attention.
+        i: Current step index.
+        num_steps: Total number of steps.
 
     Returns:
         Output tensor.
     """
-    kv = self.kv_mapper(kv)
+    kv = self.kv_mapper(kv)  # shape: [B, Seq, C]
     x_out = self.attention(
-        self.norm(x),
-        kv,
+        self.norm(x),  # shape: [B, C, H, W]
+        kv,  # shape: [B, Seq, C]
         self_attn=self.self_attn,
         style=style,
         img_style=img_style,
-    )
-    x = x + x_out
-    return x
+        i=i,
+        num_steps=num_steps,
+    )  # shape: [B, C, H, W]
+    x = x + x_out  # shape: [B, C, H, W]
+    return x  # shape: [B, C, H, W]

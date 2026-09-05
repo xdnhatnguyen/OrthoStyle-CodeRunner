@@ -17,7 +17,11 @@ class UpDownBlock2d(nn.Module):
 
     def forward(self, x):
         for block in self.blocks:
-            x = block(x.float())
+            if isinstance(block, nn.Upsample):
+                orig_dtype = x.dtype
+                x = block(x.float()).to(orig_dtype)
+            else:
+                x = block(x)
         return x
 
 
