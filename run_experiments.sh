@@ -107,7 +107,7 @@ if [[ "${PHASE:-0}" == "2" || "$CMD" == "phase2" || "$CMD" == "run_phase2" ]]; t
   exit 0
 fi
 
-if [[ "$CMD" =~ ^(run_all|all|run_ablations|ablations|run_sweeps|sweeps|run_table2|table2|run_main|main)$ ]]; then
+if [[ "$CMD" =~ ^(run_all|all|run_ablations|ablations|run_sweeps|sweeps|run_table2|table2|run_main|main|run_levels|levels)$ ]]; then
   shift || true
   SUITE="${CMD#run_}"
   GPUS=("$@")
