@@ -155,7 +155,10 @@ SUITE_MAP = {
     "ablations": TASKS_SWEEPS + TASKS_TABLE2,
     "main": TASKS_MAIN_BENCHMARK,
     "levels": TASKS_OTHER_LEVELS,
-    "all": TASKS_SWEEPS + TASKS_TABLE2 + TASKS_MAIN_BENCHMARK + TASKS_OTHER_LEVELS,
+    # 2 lần chạy, mỗi lần 2 card:
+    "phase1": TASKS_MAIN_BENCHMARK + TASKS_OTHER_LEVELS + TASKS_SWEEPS,  # Lần 1 (10 tasks, 871 ảnh): Main + Prompt Levels + Sweeps
+    "phase2": TASKS_TABLE2,                                              # Lần 2 (10 tasks, 1,125 ảnh): Toàn bộ Table 2 Component Ablations
+    "all": TASKS_MAIN_BENCHMARK + TASKS_OTHER_LEVELS + TASKS_SWEEPS + TASKS_TABLE2,
 }
 
 
@@ -231,8 +234,8 @@ def worker_loop(gpu_id: str, task_queue: queue.Queue, results: list, lock: threa
 
 def main():
     parser = argparse.ArgumentParser(description="OrthoStyle Dynamic Multi-GPU Task Queue Runner")
-    parser.add_argument("--suite", type=str, default="all", choices=list(SUITE_MAP.keys()),
-                        help="Suite to run: 'all', 'ablations', 'sweeps', 'table2', 'main', 'levels'")
+    parser.add_argument("--suite", choices=["all", "ablations", "sweeps", "table2", "main", "levels", "phase1", "phase2"], default="all",
+                        help="Suite to run: 'all', 'phase1', 'phase2', 'ablations', 'sweeps', 'table2', 'main', 'levels'")
     parser.add_argument("--gpus", nargs="+", default=["0", "1"],
                         help="GPU IDs to utilize concurrently (e.g. --gpus 0 1)")
     args = parser.parse_args()

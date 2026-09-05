@@ -51,16 +51,41 @@ run_task () {
 }
 
 # ============================================================
-# Multi-GPU Queue Mode (Tự động chia tải song song qua 2 GPU)
+# Multi-GPU Queue Mode (2 lần chạy, mỗi lần 2 card song song)
 # Cách dùng:
-#   ./run_experiments.sh run_all 0 1
-#   ./run_experiments.sh run_ablations 0 1
-#   ./run_experiments.sh run_sweeps 0 1
-#   ./run_experiments.sh run_table2 0 1
-#   ./run_experiments.sh run_main 0 1
+#   Lần 1: ./run_experiments.sh phase1 0 1   (hoặc PHASE=1 ./run_experiments.sh)
+#   Lần 2: ./run_experiments.sh phase2 0 1   (hoặc PHASE=2 ./run_experiments.sh)
+#   Tất cả: ./run_experiments.sh run_all 0 1
 # ============================================================
 CMD="${1:-none}"
-if [[ "$CMD" =~ ^(run_all|run_ablations|run_sweeps|run_table2|run_main)$ ]]; then
+
+# Lần 1: Main Benchmark + 2 Prompt Levels + Tau Sweeps (10 tasks, 871 ảnh)
+if [[ "${PHASE:-0}" == "1" || "$CMD" == "phase1" || "$CMD" == "run_phase1" ]]; then
+  [[ "$CMD" =~ ^(phase1|run_phase1)$ ]] && shift || true
+  GPUS=("$@")
+  [ ${#GPUS[@]} -eq 0 ] && GPUS=("0" "1")
+  echo "============================================================"
+  echo "[LẦN CHẠY 1 / 2 CARD]: Main Benchmark + Prompt Levels + Sweeps (871 ảnh)"
+  echo "GPUs: ${GPUS[*]}"
+  echo "============================================================"
+  "$PYTHON" "$QUEUE_RUNNER" --suite "phase1" --gpus "${GPUS[@]}"
+  exit 0
+fi
+
+# Lần 2: Toàn bộ Table 2 Component Ablation (10 tasks, 1,125 ảnh)
+if [[ "${PHASE:-0}" == "2" || "$CMD" == "phase2" || "$CMD" == "run_phase2" ]]; then
+  [[ "$CMD" =~ ^(phase2|run_phase2)$ ]] && shift || true
+  GPUS=("$@")
+  [ ${#GPUS[@]} -eq 0 ] && GPUS=("0" "1")
+  echo "============================================================"
+  echo "[LẦN CHẠY 2 / 2 CARD]: Full Table 2 Component Ablation (1,125 ảnh)"
+  echo "GPUs: ${GPUS[*]}"
+  echo "============================================================"
+  "$PYTHON" "$QUEUE_RUNNER" --suite "phase2" --gpus "${GPUS[@]}"
+  exit 0
+fi
+
+if [[ "$CMD" =~ ^(run_all|all|run_ablations|ablations|run_sweeps|sweeps|run_table2|table2|run_main|main)$ ]]; then
   shift || true
   SUITE="${CMD#run_}"
   GPUS=("$@")
