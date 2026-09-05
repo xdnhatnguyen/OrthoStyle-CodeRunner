@@ -187,14 +187,19 @@ def worker_loop(gpu_id: str, task_queue: queue.Queue, results: list, lock: threa
             print(f"  Log File:    {log_file}")
             print(f"{'='*70}\n")
 
-        cmd = [PYTHON_BIN, "batch_runner.py", "--device", device_str] + task["args"]
+        sub_env = os.environ.copy()
+        sub_env["PYTHONUNBUFFERED"] = "1"
+        if gpu_id.isdigit():
+            sub_env["CUDA_VISIBLE_DEVICES"] = str(gpu_id)
+            target_device = "cuda:0"
+        else:
+            target_device = device_str
+
+        cmd = [PYTHON_BIN, "batch_runner.py", "--device", target_device] + task["args"]
 
         start_time = time.time()
         success = False
         error_msg = ""
-
-        sub_env = os.environ.copy()
-        sub_env["PYTHONUNBUFFERED"] = "1"
 
         try:
             with open(log_file, "w", encoding="utf-8") as f_log:

@@ -13,7 +13,9 @@ export DATA_ROOT=${DATA_ROOT:-$PROJECT_ROOT/data}
 export CONFIG_PATH=${CONFIG_PATH:-$PROJECT_ROOT/configs/benchmark_config.json}
 export RESULTS_ROOT=${RESULTS_ROOT:-$PROJECT_ROOT/output/benchmark}
 export PYTHONPATH=$PROJECT_ROOT:$THIRD_PARTY_ROOT:$THIRD_PARTY_ROOT/StableCascade:$CSD_REPO_DIR:${PYTHONPATH:-}
-export CUDA_VISIBLE_DEVICES=${GPU:-0}
+if [ -n "${GPU:-}" ]; then
+  export CUDA_VISIBLE_DEVICES="$GPU"
+fi
 
 cd "$PROJECT_ROOT"
 
