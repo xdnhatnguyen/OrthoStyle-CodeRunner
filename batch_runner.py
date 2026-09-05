@@ -45,6 +45,51 @@ import rembg
 
 
 # -----------------------------------------------------------------------------
+# File Integrity & Atomic Saving (Crash / Kill Prevention)
+# -----------------------------------------------------------------------------
+
+def is_valid_image(filepath: str) -> bool:
+    """
+    Check if a file exists, is non-empty (>100 bytes), and can be opened
+    and verified by PIL without corruption.
+    """
+    if not filepath or not os.path.exists(filepath):
+        return False
+    try:
+        if os.path.getsize(filepath) < 100:
+            return False
+        with PIL.Image.open(filepath) as img:
+            img.verify()
+        return True
+    except Exception:
+        return False
+
+
+def atomic_save_image(tensor, target_path: str):
+    """
+    Save image tensor to a temporary file first, verify integrity,
+    then atomically replace the target destination. This guarantees zero
+    corrupted or 0-byte files if the process is killed midway.
+    """
+    os.makedirs(os.path.dirname(os.path.abspath(target_path)), exist_ok=True)
+    rand_id = torch.randint(0, 1000000, (1,)).item()
+    temp_path = f"{target_path}.tmp_{os.getpid()}_{rand_id}.png"
+    try:
+        save_images(tensor, temp_path)
+        if is_valid_image(temp_path):
+            os.replace(temp_path, target_path)
+        else:
+            raise IOError(f"Failed to verify written temporary image: {temp_path}")
+    except Exception as e:
+        if os.path.exists(temp_path):
+            try:
+                os.remove(temp_path)
+            except Exception:
+                pass
+        raise e
+
+
+# -----------------------------------------------------------------------------
 # Memory Management & GPU Swapping
 # -----------------------------------------------------------------------------
 
@@ -152,19 +197,21 @@ def get_clean_canny(rgb_image_pil: PIL.Image.Image, noisy_canny_tensor: torch.Te
 # Setup & Model Loader (Run ONCE)
 # -----------------------------------------------------------------------------
 
-def setup_all_models(device_str: str = "cuda:0", use_controlnet_canny: bool = True):
+def setup_all_models(device_str: str = "cuda:0", use_controlnet_canny: bool = True, third_party_root: str = "third_party"):
+    if str(device_str).isdigit():
+        device_str = f"cuda:{device_str}"
     device = torch.device(device_str if torch.cuda.is_available() else "cpu")
     print(f"[*] Initializing OrthoStyle models on {device} (with CPU offload)...")
 
     # Stage C config
-    config_file_c = "third_party/StableCascade/configs/inference/stage_c_3b.yaml"
+    config_file_c = os.path.join(third_party_root, "StableCascade/configs/inference/stage_c_3b.yaml")
     with open(config_file_c, "r", encoding="utf-8") as f:
         loaded_config_c = yaml.safe_load(f)
 
     core_c = WurstCoreCRBM(config_dict=loaded_config_c, device=device, training=False)
 
     # Stage B config
-    config_file_b = "third_party/StableCascade/configs/inference/stage_b_3b.yaml"
+    config_file_b = os.path.join(third_party_root, "StableCascade/configs/inference/stage_b_3b.yaml")
     with open(config_file_b, "r", encoding="utf-8") as f:
         loaded_config_b = yaml.safe_load(f)
 
@@ -234,7 +281,7 @@ def setup_all_models(device_str: str = "cuda:0", use_controlnet_canny: bool = Tr
     canny_filter = None
     if use_controlnet_canny:
         controlnet = ControlNet(c_in=1, proj_blocks=[0, 4, 8, 12, 51, 55, 59, 63], bottleneck_mode=None)
-        canny_ckpt_path = "third_party/StableCascade/models/canny.safetensors"
+        canny_ckpt_path = os.path.join(third_party_root, "StableCascade/models/canny.safetensors")
         cnet_ckpt = load_or_fail(canny_ckpt_path)
         controlnet.load_state_dict(cnet_ckpt if "state_dict" not in cnet_ckpt else cnet_ckpt["state_dict"])
         controlnet = controlnet.to(getattr(torch, core_c.config.dtype)).eval().requires_grad_(False)
@@ -449,12 +496,11 @@ def run_single_inference(
 
         sampled_rgb = models_b.stage_a.decode(sampled_b).float().cpu()
 
-    # Save Output
-    os.makedirs(os.path.dirname(save_path), exist_ok=True)
-    save_images(sampled_rgb, save_path)
+    # Save Output atomically
+    atomic_save_image(sampled_rgb, save_path)
     print(f"[+] Saved output: {save_path}")
 
-    # Save 3-panel grid if requested
+    # Save 3-panel grid if requested atomically
     if save_grid_path is not None:
         grid_tensor = torch.cat(
             [
@@ -464,8 +510,7 @@ def run_single_inference(
             ],
             dim=0,
         )
-        os.makedirs(os.path.dirname(save_grid_path), exist_ok=True)
-        save_images(grid_tensor, save_grid_path)
+        atomic_save_image(grid_tensor, save_grid_path)
         print(f"[+] Saved grid: {save_grid_path}")
 
     # Clean Stage B
@@ -481,8 +526,11 @@ def run_single_inference(
 
 def main():
     parser = argparse.ArgumentParser(description="OrthoStyle Benchmark & Ablation Batch Runner (1-GPU Offload)")
-    parser.add_argument("--config_path", type=str, default="data/benchmark_config.json")
-    parser.add_argument("--device", type=str, default="cuda:0")
+    default_config = "configs/benchmark_config.json" if os.path.exists("configs/benchmark_config.json") else "data/benchmark_config.json"
+    parser.add_argument("--config_path", type=str, default=default_config, help="Path to benchmark JSON configuration")
+    parser.add_argument("--data_root", type=str, default="data", help="Root data folder containing content/ and style/")
+    parser.add_argument("--third_party_root", type=str, default="third_party", help="Root folder of third_party dependencies")
+    parser.add_argument("--device", type=str, default="cuda:0", help="GPU device ID or string (e.g. 0, 1, cuda:0, cuda:1)")
     parser.add_argument("--output_root", type=str, default="output/benchmark")
     parser.add_argument("--preview_root", type=str, default="output/previews")
     parser.add_argument("--prompt_levels", nargs="+", default=["null", "object", "style_desc"],
@@ -494,6 +542,7 @@ def main():
     parser.add_argument("--auto_previews_5x5", action="store_true", default=False,
                         help="Automatically save previews for the first 5 contents x 5 styles")
     parser.add_argument("--save_grids", action="store_true", default=True, help="Also save 3-panel [Content|Style|Output] grids")
+    parser.add_argument("--overwrite", action="store_true", help="Force recompute and overwrite existing completed outputs")
 
     # Ablation arguments
     parser.add_argument("--alpha_style", type=float, default=0.85, help="Alpha style blending (0.0=pure mean, 1.0=raw style)")
@@ -525,11 +574,16 @@ def main():
         target_pairs = [p for p in pairs if args.start_idx <= p["pair_idx"] <= args.end_idx]
 
     print(f"[*] Total pairs to evaluate: {len(target_pairs)} (Range: {args.start_idx} to {args.end_idx})")
+    print(f"[*] Target device: {args.device}")
     print(f"[*] Prompt levels to run: {args.prompt_levels}")
     print(f"[*] Ablation settings: alpha_style={args.alpha_style}, p_switch={args.p_switch}, ortho={not args.no_ortho}, pushforward={not args.no_pushforward}, canny={not args.no_canny}, semantic_gating={not args.no_semantic_gating}")
 
     # Initialize models
-    state = setup_all_models(device_str=args.device, use_controlnet_canny=(not args.no_canny))
+    state = setup_all_models(
+        device_str=args.device,
+        use_controlnet_canny=(not args.no_canny),
+        third_party_root=args.third_party_root
+    )
 
     level_map = {
         "null": ("level1_null", "level1_null_prompt"),
@@ -552,8 +606,14 @@ def main():
         content_stem = Path(content_file).stem
         style_stem = Path(style_file).stem
 
-        content_path = os.path.join("data/content", content_file)
-        style_path = os.path.join("data/style", style_file)
+        content_path = os.path.join(args.data_root, "content", content_file)
+        style_path = os.path.join(args.data_root, "style", style_file)
+
+        # Verify input assets exist
+        if not os.path.exists(content_path):
+            raise FileNotFoundError(f"Content file missing: {content_path}. Please check --data_root.")
+        if not os.path.exists(style_path):
+            raise FileNotFoundError(f"Style file missing: {style_path}. Please check --data_root.")
 
         # First 5 content x 5 style check
         is_first_5x5 = (content_idx < 5 and style_idx < 5)
@@ -571,9 +631,13 @@ def main():
             if (args.save_previews or (args.auto_previews_5x5 and is_first_5x5)) and level_key == args.prompt_levels[0]:
                 preview_dir = os.path.join(args.preview_root, f"{pair_idx:03d}_{content_stem}_{style_stem}")
 
-            # Check resume / skip
-            if os.path.exists(out_path):
-                print(f"[{completed_runs}/{total_runs}] Skipping existing: {out_path}")
+            # Safe Resume / Skip Check: Verifies file exists AND is an uncorrupted valid image
+            already_done = is_valid_image(out_path)
+            if args.save_grids and grid_path is not None:
+                already_done = already_done and is_valid_image(grid_path)
+
+            if not args.overwrite and already_done:
+                print(f"[{completed_runs}/{total_runs}] [SKIP ALREADY COMPLETED & VALID] Pair #{pair_idx:03d} | Level: {level_key.upper()} ({filename})")
                 continue
 
             print(f"\n[{completed_runs}/{total_runs}] Pair #{pair_idx:03d} | Level: {level_key.upper()} | Content: {content_stem} | Style: {style_stem}")

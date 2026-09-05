@@ -17,11 +17,15 @@ reference/
 ref_paper/
 ref_gdf_rbm.py
 
+# Heavy dependencies, Data & Local Test scripts
+third_party/
+data/
+run_test.py
+
 # Models & Checkpoints
-third_party/StableCascade/models/
-third_party/CSD/checkpoint.pth
 *.safetensors
 *.ckpt
+*.pth
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
