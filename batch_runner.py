@@ -623,13 +623,13 @@ def main():
             folder_name, prompt_field = level_map[level_key]
             prompt = item[prompt_field]
 
-            filename = f"{pair_idx:03d}_{content_stem}_{style_stem}.png"
+            filename = f"ortho_{content_stem}_{style_stem}.png"
             out_path = os.path.join(base_out_dir, folder_name, filename)
             grid_path = os.path.join(base_out_dir, f"{folder_name}_grid", filename) if args.save_grids else None
 
             preview_dir = None
             if (args.save_previews or (args.auto_previews_5x5 and is_first_5x5)) and level_key == args.prompt_levels[0]:
-                preview_dir = os.path.join(args.preview_root, f"{pair_idx:03d}_{content_stem}_{style_stem}")
+                preview_dir = os.path.join(args.preview_root, f"ortho_{content_stem}_{style_stem}")
 
             # Safe Resume / Skip Check: Verifies file exists AND is an uncorrupted valid image
             already_done = is_valid_image(out_path)
