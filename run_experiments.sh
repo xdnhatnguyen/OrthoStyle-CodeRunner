@@ -178,13 +178,13 @@ if [[ "${RUN_TABLE2:-0}" == "1" ]]; then
     --prompt_levels null \
     --ablation_tag ablation_C_raw_style
 
-  # (D) No Score-Orthogonal Guidance
-  run_task ablation_D_no_ortho \
-    --no_ortho \
+  # (D) No Guidance
+  run_task ablation_D_no_guidance \
+    --no_guidance \
     --start_idx 1 \
     --end_idx 225 \
     --prompt_levels null \
-    --ablation_tag ablation_D_no_ortho
+    --ablation_tag ablation_D_no_guidance
 
   # (E) No AdaIN Pushforward
   run_task ablation_E_no_pushforward \
@@ -194,13 +194,13 @@ if [[ "${RUN_TABLE2:-0}" == "1" ]]; then
     --prompt_levels null \
     --ablation_tag ablation_E_no_pushforward
 
-  # (F) No Semantic Gated Canny
-  run_task ablation_F_no_semantic_gating \
-    --no_semantic_gating \
+  # (F) No ControlNet & No Gating
+  run_task ablation_F_no_gating \
+    --no_canny \
     --start_idx 1 \
     --end_idx 225 \
     --prompt_levels null \
-    --ablation_tag ablation_F_no_semantic_gating
+    --ablation_tag ablation_F_no_gating
 fi
 
 echo

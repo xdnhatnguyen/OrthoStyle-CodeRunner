@@ -230,7 +230,9 @@ class RBM(GDF):
     psi_sub = None
     feat_sty_dino = None
 
-    if (eval_sub_csd or eval_csd) and x0_forward is not None and x0_style_forward is not None:
+    enable_guidance = (os.environ.get("ENABLE_GUIDANCE", "1") == "1")
+
+    if enable_guidance and (eval_sub_csd or eval_csd) and x0_forward is not None and x0_style_forward is not None:
       with torch.no_grad():
         org_image = models.previewer(x0_forward)  # shape: [B, 3, 1024, 1024]
         org_style = models.previewer(x0_style_forward)  # shape: [B, 3, 1024, 1024]
@@ -287,7 +289,7 @@ class RBM(GDF):
       x0, epsilon = self.undiffuse(x, logSNR_range[i], pred)
 
       # Style Guidance Block: DINO or CSD
-      if i < tau and (eval_sub_csd or eval_csd) and guidance_mode in ("dino", "csd") and lam_style > 0:
+      if enable_guidance and i < tau and (eval_sub_csd or eval_csd) and guidance_mode in ("dino", "csd") and lam_style > 0:
         z0 = x0.clone().detach().requires_grad_(True)  # shape: [B, 16, H, W]
 
         for _ in range(num_iter):
@@ -307,7 +309,7 @@ class RBM(GDF):
             loss = lam_style * loss_style  # shape: scalar
 
             # Score-Orthogonal Gradient Projection (Bảo vệ Đa tạp)
-            g = torch.autograd.grad(loss, z0, retain_graph=True)[0]  # shape: [B, 16, H, W]
+            g = torch.autograd.grad(loss, z0, retain_graph=False)[0]  # shape: [B, 16, H, W]
             if os.environ.get("USE_ORTHO_GUIDANCE", "1") == "1":
               dim_proj = tuple(range(1, g.ndim))
               dot_product = torch.sum(g * epsilon, dim=dim_proj, keepdim=True)  # shape: [B, 1, 1, 1]
@@ -320,10 +322,12 @@ class RBM(GDF):
             # Cập nhật latent an toàn trên đa tạp
             eta_dynamic = eta * (1.0 - i / timesteps)
             z0 = (z0 - eta_dynamic * g_ortho).detach().requires_grad_(True)  # shape: [B, 16, H, W]
+            del loss, g, g_ortho
 
         if loss_style is not None:
           x0 = z0.detach()  # shape: [B, 16, H, W]
           print(f"[{guidance_mode.upper()} Style Guidance] Step i={i}/{timesteps}: loss_style={loss_style.item():.4f}, eta_eff={eta_dynamic:.4f}")
+          del pred_image, loss_style
 
       # AdaIN Clean Latent Pushforward Block (Khóa màu/tone của ảnh style vào x0 ở các bước đầu)
       if i < tau_pushforward and x0_style_forward is not None and tau_pushforward > 0:

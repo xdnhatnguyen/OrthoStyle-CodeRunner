@@ -76,16 +76,16 @@ TASKS_TABLE2 = [
         "desc": "Table 2 (C): Raw Style Token (alpha_s=1.0, Pairs 113..225)",
         "args": ["--alpha_style", "1.0", "--start_idx", "113", "--end_idx", "225", "--prompt_levels", "null", "--ablation_tag", "ablation_C_raw_style"],
     },
-    # (D) No Score-Orthogonal Guidance
+    # (D) No Guidance (Tắt toàn bộ guidance: không DINO, không loss, không grad)
     {
-        "name": "ablation_D_no_ortho_part1",
-        "desc": "Table 2 (D): No Score-Ortho Guidance (Pairs 1..112)",
-        "args": ["--no_ortho", "--start_idx", "1", "--end_idx", "112", "--prompt_levels", "null", "--ablation_tag", "ablation_D_no_ortho"],
+        "name": "ablation_D_no_guidance_part1",
+        "desc": "Table 2 (D): No Guidance (Pairs 1..112)",
+        "args": ["--no_guidance", "--start_idx", "1", "--end_idx", "112", "--prompt_levels", "null", "--ablation_tag", "ablation_D_no_guidance"],
     },
     {
-        "name": "ablation_D_no_ortho_part2",
-        "desc": "Table 2 (D): No Score-Ortho Guidance (Pairs 113..225)",
-        "args": ["--no_ortho", "--start_idx", "113", "--end_idx", "225", "--prompt_levels", "null", "--ablation_tag", "ablation_D_no_ortho"],
+        "name": "ablation_D_no_guidance_part2",
+        "desc": "Table 2 (D): No Guidance (Pairs 113..225)",
+        "args": ["--no_guidance", "--start_idx", "113", "--end_idx", "225", "--prompt_levels", "null", "--ablation_tag", "ablation_D_no_guidance"],
     },
     # (E) No AdaIN Pushforward
     {
@@ -98,16 +98,16 @@ TASKS_TABLE2 = [
         "desc": "Table 2 (E): No AdaIN Pushforward (Pairs 113..225)",
         "args": ["--no_pushforward", "--start_idx", "113", "--end_idx", "225", "--prompt_levels", "null", "--ablation_tag", "ablation_E_no_pushforward"],
     },
-    # (F) No Semantic Gated Canny
+    # (F) No ControlNet & No Gating (không ControlNet, không rembg)
     {
-        "name": "ablation_F_no_semantic_gating_part1",
-        "desc": "Table 2 (F): No Semantic Gated Canny (Pairs 1..112)",
-        "args": ["--no_semantic_gating", "--start_idx", "1", "--end_idx", "112", "--prompt_levels", "null", "--ablation_tag", "ablation_F_no_semantic_gating"],
+        "name": "ablation_F_no_gating_part1",
+        "desc": "Table 2 (F): No ControlNet & No Gating (Pairs 1..112)",
+        "args": ["--no_canny", "--start_idx", "1", "--end_idx", "112", "--prompt_levels", "null", "--ablation_tag", "ablation_F_no_gating"],
     },
     {
-        "name": "ablation_F_no_semantic_gating_part2",
-        "desc": "Table 2 (F): No Semantic Gated Canny (Pairs 113..225)",
-        "args": ["--no_semantic_gating", "--start_idx", "113", "--end_idx", "225", "--prompt_levels", "null", "--ablation_tag", "ablation_F_no_semantic_gating"],
+        "name": "ablation_F_no_gating_part2",
+        "desc": "Table 2 (F): No ControlNet & No Gating (Pairs 113..225)",
+        "args": ["--no_canny", "--start_idx", "113", "--end_idx", "225", "--prompt_levels", "null", "--ablation_tag", "ablation_F_no_gating"],
     },
 ]
 
@@ -189,6 +189,7 @@ def worker_loop(gpu_id: str, task_queue: queue.Queue, results: list, lock: threa
 
         sub_env = os.environ.copy()
         sub_env["PYTHONUNBUFFERED"] = "1"
+        sub_env["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
         if gpu_id.isdigit():
             sub_env["CUDA_VISIBLE_DEVICES"] = str(gpu_id)
             target_device = "cuda:0"
