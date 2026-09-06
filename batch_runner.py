@@ -306,6 +306,9 @@ def setup_all_models(device_str: str = "cuda:0", use_controlnet_canny: bool = Tr
 
     models_c = core_c.setup_models(extras)
     models_c.generator.eval().requires_grad_(False)
+    if hasattr(models_c.generator, "to"):
+        models_c.generator.to("cpu")
+    hard_clear_cuda()
 
     extras_b = core_b.setup_extras_pre()
     extras_b.sampling_configs["cfg"] = 1.1
@@ -322,6 +325,11 @@ def setup_all_models(device_str: str = "cuda:0", use_controlnet_canny: bool = Tr
         }
     )
     models_b.generator.eval().requires_grad_(False)
+    if hasattr(models_b.generator, "to"):
+        models_b.generator.to("cpu")
+    if hasattr(models_b.stage_a, "to"):
+        models_b.stage_a.to("cpu")
+    hard_clear_cuda()
 
     print(f"[*] [3/5] Loading StageCRBM generator weights...", flush=True)
     generator_rbm = StageCRBM()
@@ -330,8 +338,10 @@ def setup_all_models(device_str: str = "cuda:0", use_controlnet_canny: bool = Tr
         raise FileNotFoundError(f"[ERROR] Could not load generator checkpoint: {core_c.config.generator_checkpoint_path}")
     for param_name, param in c_ckpt.items():
         set_module_tensor_to_device(generator_rbm, param_name, "cpu", value=param)
-    generator_rbm = generator_rbm.to(getattr(torch, core_c.config.dtype)).to(device)
+    generator_rbm = generator_rbm.to(getattr(torch, core_c.config.dtype))
     generator_rbm = core_c.load_model(generator_rbm, "generator")
+    generator_rbm.to("cpu")
+    hard_clear_cuda()
 
     models_rbm = core_c.Models(
         effnet=models_c.effnet,
@@ -343,6 +353,16 @@ def setup_all_models(device_str: str = "cuda:0", use_controlnet_canny: bool = Tr
         image_model=models_c.image_model,
     )
     models_rbm.generator.eval().requires_grad_(False)
+    # Free redundant models_c.generator and checkpoint dictionary from RAM immediately
+    try:
+        del models_c.generator
+    except Exception:
+        pass
+    try:
+        del c_ckpt
+    except Exception:
+        pass
+    hard_clear_cuda()
 
     controlnet = None
     canny_filter = None
