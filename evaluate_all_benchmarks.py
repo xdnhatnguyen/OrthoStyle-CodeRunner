@@ -140,6 +140,43 @@ TASK_REGISTRY = {
         "category": "tau_sweeps",
         "prefix": "ortho",
     },
+    # 4. Baselines Comparison (Table 1: 225 pairs per baseline)
+    "baseline_attenst": {
+        "desc": "Baseline: AttnST (Attention-based Style Transfer)",
+        "generated_dir": "baseline_results/outputs_attenst_soictdata",
+        "category": "baselines",
+        "prefix": "attenst",
+    },
+    "baseline_diffuseIT": {
+        "desc": "Baseline: DiffuseIT",
+        "generated_dir": "baseline_results/outputs_diffuseIT_soictdata",
+        "category": "baselines",
+        "prefix": "DiffuseIT",
+    },
+    "baseline_instantstyle": {
+        "desc": "Baseline: InstantStyle",
+        "generated_dir": "baseline_results/outputs_instantstyle_soictdata",
+        "category": "baselines",
+        "prefix": "instantstyle",
+    },
+    "baseline_itoc": {
+        "desc": "Baseline: ITOC",
+        "generated_dir": "baseline_results/outputs_itoc_soictdata",
+        "category": "baselines",
+        "prefix": "itoc",
+    },
+    "baseline_rb_modulation": {
+        "desc": "Baseline: RB-Modulation",
+        "generated_dir": "baseline_results/outputs_rb_soictdata",
+        "category": "baselines",
+        "prefix": "outputs_rb_soictdata",
+    },
+    "baseline_styleid": {
+        "desc": "Baseline: StyleID",
+        "generated_dir": "baseline_results/outputs_styleid_soictdata",
+        "category": "baselines",
+        "prefix": "styleid",
+    },
 }
 
 SUITES = {
@@ -153,6 +190,15 @@ SUITES = {
         "table2_F_no_gating",
     ],
     "sweeps": ["sweep_tau_1", "sweep_tau_2", "sweep_tau_3", "sweep_tau_4"],
+    "baselines": [
+        "table2_A_full_ours",
+        "baseline_attenst",
+        "baseline_diffuseIT",
+        "baseline_instantstyle",
+        "baseline_itoc",
+        "baseline_rb_modulation",
+        "baseline_styleid",
+    ],
     "all": list(TASK_REGISTRY.keys()),
 }
 
@@ -426,10 +472,18 @@ def main():
             "cfsd",
             "dcl",
         ]
+        # Merge with existing master if present
+        master_path = os.path.join(args.output_dir, "master_all_metrics.csv")
+        if os.path.exists(master_path):
+            try:
+                old_master = pd.read_csv(master_path)
+                combined = pd.concat([old_master, master_df], ignore_index=True)
+                master_df = combined.drop_duplicates(subset=["task_name"], keep="last")
+            except Exception:
+                pass
+
         cols = [c for c in col_order if c in master_df.columns] + [c for c in master_df.columns if c not in col_order]
         master_df = master_df[cols]
-
-        master_path = os.path.join(args.output_dir, "master_all_metrics.csv")
         master_df.to_csv(master_path, index=False)
 
         # Categorized master reports
@@ -453,6 +507,15 @@ def main():
             p3 = os.path.join(args.output_dir, "master_sweeps_tau.csv")
             df_sweeps.to_csv(p3, index=False)
             print(f"[✔] Tau Sweeps Summary saved to: {p3}")
+
+        # Baselines Comparison (Ours vs Baselines)
+        df_baselines = master_df[
+            (master_df["category"] == "baselines") | (master_df["task_name"].isin(["table2_A_full_ours", "level1_null"]))
+        ].drop_duplicates(subset=["task_name"], keep="last")
+        if len(df_baselines) > 0:
+            p_base = os.path.join(args.output_dir, "master_baselines_comparison.csv")
+            df_baselines.to_csv(p_base, index=False)
+            print(f"[✔] Baselines Comparison Summary saved to: {p_base}")
 
         print(f"\n{'='*80}")
         print("MASTER BENCHMARK METRICS SUMMARY:")
