@@ -244,8 +244,8 @@ def resolve_data_path(file_path: str, default_dir: str) -> str:
 
 
 # Inputs
-ref_style_file = resolve_data_path(os.environ.get("REF_STYLE_FILE", "08_pencil_sketch.png"), "data/style")
-ref_sub_file = resolve_data_path(os.environ.get("REF_SUB_FILE", "01_backpack_dog.png"), "data/content")
+ref_style_file = resolve_data_path(os.environ.get("REF_STYLE_FILE", "con_lon.jpeg"), "data/style")
+ref_sub_file = resolve_data_path(os.environ.get("REF_SUB_FILE", "06_cat_sitting.png"), "data/content")
 save_path = os.environ.get("SAVE_PATH", "output/figs/exp_full.png")
 caption = os.environ.get("PROMPT", os.environ.get("CAPTION", ""))
 org_caption = os.environ.get("ORG_CAPTION", caption)

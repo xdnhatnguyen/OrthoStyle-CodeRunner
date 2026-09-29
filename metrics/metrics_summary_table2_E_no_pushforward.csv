@@ -1,0 +1,2 @@
+task_name,task_desc,category,num_evaluated,csd_style_similarity,style_retrieval_correct,style_retrieval_accuracy,clip_i_content_similarity,dino_content_similarity,dino_style_similarity,dino,lpips,cfsd,dcl
+table2_E_no_pushforward,Table 2 (E): No AdaIN Pushforward (tau=0),table2_ablation,225,0.6586670041084289,0.9866666666666667,,0.5874002452691396,0.201005428623822,0.495331148174074,0.495331148174074,0.7489215846856435,0.02074194133695624,0.6473468516932593

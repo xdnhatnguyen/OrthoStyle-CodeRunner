@@ -1,0 +1,2 @@
+task_name,task_desc,category,num_evaluated,csd_style_similarity,style_retrieval_correct,style_retrieval_accuracy,clip_i_content_similarity,dino_content_similarity,dino_style_similarity,dino,lpips,cfsd,dcl
+level3_style_desc,Main Benchmark: Level 3 Style Description (Full 225 pairs),table1_benchmark,225,0.4022455745438735,0.5822222222222222,,0.7800683297051324,0.5402594417995876,0.25211240024202397,0.25211240024202397,0.599757885005739,0.01581187455294028,0.29996955080164805

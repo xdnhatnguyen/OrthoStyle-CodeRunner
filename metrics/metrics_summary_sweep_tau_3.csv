@@ -1,0 +1,2 @@
+task_name,task_desc,category,num_evaluated,csd_style_similarity,style_retrieval_correct,style_retrieval_accuracy,clip_i_content_similarity,dino_content_similarity,dino_style_similarity,dino,lpips,cfsd,dcl
+sweep_tau_3,"Tau Sweep: tau=3 (p_switch=0.15, 49 pairs)",tau_sweeps,49,0.40400731662402345,0.5714285714285714,,0.7843515155266743,0.6263249546897655,0.24536272883415222,0.24536272883415222,0.555047301005344,0.012360462367686644,0.23515467558588302

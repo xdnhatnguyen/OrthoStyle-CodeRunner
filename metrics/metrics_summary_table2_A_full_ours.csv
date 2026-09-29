@@ -1,0 +1,2 @@
+task_name,task_desc,category,num_evaluated,csd_style_similarity,style_retrieval_correct,style_retrieval_accuracy,clip_i_content_similarity,dino_content_similarity,dino_style_similarity,dino,lpips,cfsd,dcl
+table2_A_full_ours,Table 2 (A): Full Proposed OrthoStyle,table2_ablation,225,0.3949346148926351,0.6088888888888889,,0.7986496845881145,0.6047714023457633,0.2386146528687742,0.2386146528687742,0.5621993141041861,0.014071956649422603,0.2637093850639131

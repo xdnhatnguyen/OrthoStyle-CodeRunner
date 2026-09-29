@@ -1,0 +1,2 @@
+task_name,task_desc,category,num_evaluated,csd_style_similarity,style_retrieval_correct,style_retrieval_accuracy,clip_i_content_similarity,dino_content_similarity,dino_style_similarity,dino,lpips,cfsd,dcl
+table2_D2_no_ortho,Table 2 (D2): Standard Guidance (No Score-Orthogonal Projection),table2_bonus,60,0.45177995041012764,0.6833333333333333,,0.7851600875457128,0.5816375123957793,0.2883955587943395,0.2883955587943395,0.587794215977192,0.013916653747825525,0.269911850305895

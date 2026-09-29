@@ -1,0 +1,2 @@
+task_name,task_desc,category,num_evaluated,csd_style_similarity,style_retrieval_correct,style_retrieval_accuracy,clip_i_content_similarity,dino_content_similarity,dino_style_similarity,dino,lpips,cfsd,dcl
+baseline_itoc,Baseline: ITOC,baselines,225,0.14619249981724552,0.24888888888888888,,0.8656654556592306,0.6988341536124547,0.16034655443082252,0.16034655443082252,0.33856634749306574,0.007522007379059941,0.19392488041685688

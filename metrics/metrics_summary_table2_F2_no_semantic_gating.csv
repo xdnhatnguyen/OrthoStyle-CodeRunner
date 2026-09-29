@@ -1,0 +1,2 @@
+task_name,task_desc,category,num_evaluated,csd_style_similarity,style_retrieval_correct,style_retrieval_accuracy,clip_i_content_similarity,dino_content_similarity,dino_style_similarity,dino,lpips,cfsd,dcl
+table2_F2_no_semantic_gating,Table 2 (F2): Standard Canny ControlNet (No Semantic rembg Gating),table2_bonus,113,0.32325746949795076,0.5309734513274337,,0.8397102915080248,0.6970016692591979,0.18791297523189435,0.18791297523189435,0.42170750409100966,0.008471206100492696,0.18882921038080105

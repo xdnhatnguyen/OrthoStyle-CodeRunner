@@ -1,0 +1,2 @@
+task_name,task_desc,category,num_evaluated,csd_style_similarity,style_retrieval_correct,style_retrieval_accuracy,clip_i_content_similarity,dino_content_similarity,dino_style_similarity,dino,lpips,cfsd,dcl
+baseline_attenst,Baseline: AttnST (Attention-based Style Transfer),baselines,225,0.4144189057664739,0.88,,0.771726680861579,0.5913757019655572,0.24803346541192797,0.24803346541192797,0.43467620472113294,0.0063329414661145375,0.2607316399117311

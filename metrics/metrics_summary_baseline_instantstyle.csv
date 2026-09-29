@@ -1,0 +1,2 @@
+task_name,task_desc,category,num_evaluated,csd_style_similarity,style_retrieval_correct,style_retrieval_accuracy,clip_i_content_similarity,dino_content_similarity,dino_style_similarity,dino,lpips,cfsd,dcl
+baseline_instantstyle,Baseline: InstantStyle,baselines,225,0.47673318720526164,0.9155555555555556,,0.682743382718828,0.41524714721573724,0.27799669196208315,0.27799669196208315,0.6155177123016782,0.011022729787768538,0.3649271773629718

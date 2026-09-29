@@ -1,0 +1,959 @@
+# ==========================================================================
+# SOICT 2026 BENCHMARK PROMPTS: TRAINING-FREE STYLE TRANSFER (15x15 = 225)
+# Format: {Object List} in <style> style
+# ==========================================================================
+
+## GROUPED FORMAT PER STYLE (15 STYLES x 15 OBJECTS):
+{A backpack with a dog print, A teddy bear plushie, A bowl of berries, A can, A cat laying down, A cat sitting, A clock, A sneaker, A dog, A rubber duck toy, A boot, A pair of sunglasses, A poop emoji toy, A teapot, A vase} in colorful geometric abstract art style.
+{A backpack with a dog print, A teddy bear plushie, A bowl of berries, A can, A cat laying down, A cat sitting, A clock, A sneaker, A dog, A rubber duck toy, A boot, A pair of sunglasses, A poop emoji toy, A teapot, A vase} in vibrant colorful abstract splash style.
+{A backpack with a dog print, A teddy bear plushie, A bowl of berries, A can, A cat laying down, A cat sitting, A clock, A sneaker, A dog, A rubber duck toy, A boot, A pair of sunglasses, A poop emoji toy, A teapot, A vase} in cyberpunk neon style.
+{A backpack with a dog print, A teddy bear plushie, A bowl of berries, A can, A cat laying down, A cat sitting, A clock, A sneaker, A dog, A rubber duck toy, A boot, A pair of sunglasses, A poop emoji toy, A teapot, A vase} in flat vector illustration style.
+{A backpack with a dog print, A teddy bear plushie, A bowl of berries, A can, A cat laying down, A cat sitting, A clock, A sneaker, A dog, A rubber duck toy, A boot, A pair of sunglasses, A poop emoji toy, A teapot, A vase} in glowing neon luminous style.
+{A backpack with a dog print, A teddy bear plushie, A bowl of berries, A can, A cat laying down, A cat sitting, A clock, A sneaker, A dog, A rubber duck toy, A boot, A pair of sunglasses, A poop emoji toy, A teapot, A vase} in classical historical oil painting style.
+{A backpack with a dog print, A teddy bear plushie, A bowl of berries, A can, A cat laying down, A cat sitting, A clock, A sneaker, A dog, A rubber duck toy, A boot, A pair of sunglasses, A poop emoji toy, A teapot, A vase} in graphic vintage poster style.
+{A backpack with a dog print, A teddy bear plushie, A bowl of berries, A can, A cat laying down, A cat sitting, A clock, A sneaker, A dog, A rubber duck toy, A boot, A pair of sunglasses, A poop emoji toy, A teapot, A vase} in pencil sketch drawing style.
+{A backpack with a dog print, A teddy bear plushie, A bowl of berries, A can, A cat laying down, A cat sitting, A clock, A sneaker, A dog, A rubber duck toy, A boot, A pair of sunglasses, A poop emoji toy, A teapot, A vase} in die-cut sticker style.
+{A backpack with a dog print, A teddy bear plushie, A bowl of berries, A can, A cat laying down, A cat sitting, A clock, A sneaker, A dog, A rubber duck toy, A boot, A pair of sunglasses, A poop emoji toy, A teapot, A vase} in Van Gogh Starry Night sketch style.
+{A backpack with a dog print, A teddy bear plushie, A bowl of berries, A can, A cat laying down, A cat sitting, A clock, A sneaker, A dog, A rubber duck toy, A boot, A pair of sunglasses, A poop emoji toy, A teapot, A vase} in 3D abstract digital render style.
+{A backpack with a dog print, A teddy bear plushie, A bowl of berries, A can, A cat laying down, A cat sitting, A clock, A sneaker, A dog, A rubber duck toy, A boot, A pair of sunglasses, A poop emoji toy, A teapot, A vase} in vintage woodcut print style.
+{A backpack with a dog print, A teddy bear plushie, A bowl of berries, A can, A cat laying down, A cat sitting, A clock, A sneaker, A dog, A rubber duck toy, A boot, A pair of sunglasses, A poop emoji toy, A teapot, A vase} in 3D isometric miniature style.
+{A backpack with a dog print, A teddy bear plushie, A bowl of berries, A can, A cat laying down, A cat sitting, A clock, A sneaker, A dog, A rubber duck toy, A boot, A pair of sunglasses, A poop emoji toy, A teapot, A vase} in children's crayon sketch style.
+{A backpack with a dog print, A teddy bear plushie, A bowl of berries, A can, A cat laying down, A cat sitting, A clock, A sneaker, A dog, A rubber duck toy, A boot, A pair of sunglasses, A poop emoji toy, A teapot, A vase} in oil pastel painting style.
+
+================================================================================
+
+## DETAILED 3 PROMPT LEVELS MATRIX (15x15 = 225 PAIRS):
+# Level 1: NULL prompt: ''
+# Level 2: Object prompt: e.g. 'A cat laying down'
+# Level 3: Style description prompt: e.g. 'A cat laying down in cyberpunk neon style'
+
+
+--- STYLE 01: Colorful Geometric Abstract (01_antimonocromatismo.png) ---
+[001] Content: 01_backpack_dog.png | Style: 01_antimonocromatismo.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A backpack with a dog print"
+      Level 3 (Style Desc):  "A backpack with a dog print in colorful geometric abstract art style"
+[002] Content: 02_bear_plushie.png | Style: 01_antimonocromatismo.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teddy bear plushie"
+      Level 3 (Style Desc):  "A teddy bear plushie in colorful geometric abstract art style"
+[003] Content: 03_berry_bowl.png | Style: 01_antimonocromatismo.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A bowl of berries"
+      Level 3 (Style Desc):  "A bowl of berries in colorful geometric abstract art style"
+[004] Content: 04_can.png | Style: 01_antimonocromatismo.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A can"
+      Level 3 (Style Desc):  "A can in colorful geometric abstract art style"
+[005] Content: 05_cat_laying.png | Style: 01_antimonocromatismo.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat laying down"
+      Level 3 (Style Desc):  "A cat laying down in colorful geometric abstract art style"
+[006] Content: 06_cat_sitting.png | Style: 01_antimonocromatismo.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat sitting"
+      Level 3 (Style Desc):  "A cat sitting in colorful geometric abstract art style"
+[007] Content: 07_vintage_clock.png | Style: 01_antimonocromatismo.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A clock"
+      Level 3 (Style Desc):  "A clock in colorful geometric abstract art style"
+[008] Content: 08_colorful_sneaker.png | Style: 01_antimonocromatismo.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A sneaker"
+      Level 3 (Style Desc):  "A sneaker in colorful geometric abstract art style"
+[009] Content: 09_dog_sitting.png | Style: 01_antimonocromatismo.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A dog"
+      Level 3 (Style Desc):  "A dog in colorful geometric abstract art style"
+[010] Content: 10_rubber_duck.png | Style: 01_antimonocromatismo.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A rubber duck toy"
+      Level 3 (Style Desc):  "A rubber duck toy in colorful geometric abstract art style"
+[011] Content: 11_fancy_boot.png | Style: 01_antimonocromatismo.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A boot"
+      Level 3 (Style Desc):  "A boot in colorful geometric abstract art style"
+[012] Content: 12_pink_sunglasses.png | Style: 01_antimonocromatismo.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A pair of sunglasses"
+      Level 3 (Style Desc):  "A pair of sunglasses in colorful geometric abstract art style"
+[013] Content: 13_poop_emoji.png | Style: 01_antimonocromatismo.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A poop emoji toy"
+      Level 3 (Style Desc):  "A poop emoji toy in colorful geometric abstract art style"
+[014] Content: 14_ceramic_teapot.png | Style: 01_antimonocromatismo.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teapot"
+      Level 3 (Style Desc):  "A teapot in colorful geometric abstract art style"
+[015] Content: 15_decorative_vase.png | Style: 01_antimonocromatismo.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A vase"
+      Level 3 (Style Desc):  "A vase in colorful geometric abstract art style"
+
+--- STYLE 02: Colorful Splash (02_color_splash.png) ---
+[016] Content: 01_backpack_dog.png | Style: 02_color_splash.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A backpack with a dog print"
+      Level 3 (Style Desc):  "A backpack with a dog print in vibrant colorful abstract splash style"
+[017] Content: 02_bear_plushie.png | Style: 02_color_splash.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teddy bear plushie"
+      Level 3 (Style Desc):  "A teddy bear plushie in vibrant colorful abstract splash style"
+[018] Content: 03_berry_bowl.png | Style: 02_color_splash.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A bowl of berries"
+      Level 3 (Style Desc):  "A bowl of berries in vibrant colorful abstract splash style"
+[019] Content: 04_can.png | Style: 02_color_splash.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A can"
+      Level 3 (Style Desc):  "A can in vibrant colorful abstract splash style"
+[020] Content: 05_cat_laying.png | Style: 02_color_splash.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat laying down"
+      Level 3 (Style Desc):  "A cat laying down in vibrant colorful abstract splash style"
+[021] Content: 06_cat_sitting.png | Style: 02_color_splash.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat sitting"
+      Level 3 (Style Desc):  "A cat sitting in vibrant colorful abstract splash style"
+[022] Content: 07_vintage_clock.png | Style: 02_color_splash.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A clock"
+      Level 3 (Style Desc):  "A clock in vibrant colorful abstract splash style"
+[023] Content: 08_colorful_sneaker.png | Style: 02_color_splash.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A sneaker"
+      Level 3 (Style Desc):  "A sneaker in vibrant colorful abstract splash style"
+[024] Content: 09_dog_sitting.png | Style: 02_color_splash.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A dog"
+      Level 3 (Style Desc):  "A dog in vibrant colorful abstract splash style"
+[025] Content: 10_rubber_duck.png | Style: 02_color_splash.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A rubber duck toy"
+      Level 3 (Style Desc):  "A rubber duck toy in vibrant colorful abstract splash style"
+[026] Content: 11_fancy_boot.png | Style: 02_color_splash.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A boot"
+      Level 3 (Style Desc):  "A boot in vibrant colorful abstract splash style"
+[027] Content: 12_pink_sunglasses.png | Style: 02_color_splash.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A pair of sunglasses"
+      Level 3 (Style Desc):  "A pair of sunglasses in vibrant colorful abstract splash style"
+[028] Content: 13_poop_emoji.png | Style: 02_color_splash.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A poop emoji toy"
+      Level 3 (Style Desc):  "A poop emoji toy in vibrant colorful abstract splash style"
+[029] Content: 14_ceramic_teapot.png | Style: 02_color_splash.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teapot"
+      Level 3 (Style Desc):  "A teapot in vibrant colorful abstract splash style"
+[030] Content: 15_decorative_vase.png | Style: 02_color_splash.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A vase"
+      Level 3 (Style Desc):  "A vase in vibrant colorful abstract splash style"
+
+--- STYLE 03: Cyberpunk (03_cyberpunk.png) ---
+[031] Content: 01_backpack_dog.png | Style: 03_cyberpunk.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A backpack with a dog print"
+      Level 3 (Style Desc):  "A backpack with a dog print in cyberpunk neon style"
+[032] Content: 02_bear_plushie.png | Style: 03_cyberpunk.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teddy bear plushie"
+      Level 3 (Style Desc):  "A teddy bear plushie in cyberpunk neon style"
+[033] Content: 03_berry_bowl.png | Style: 03_cyberpunk.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A bowl of berries"
+      Level 3 (Style Desc):  "A bowl of berries in cyberpunk neon style"
+[034] Content: 04_can.png | Style: 03_cyberpunk.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A can"
+      Level 3 (Style Desc):  "A can in cyberpunk neon style"
+[035] Content: 05_cat_laying.png | Style: 03_cyberpunk.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat laying down"
+      Level 3 (Style Desc):  "A cat laying down in cyberpunk neon style"
+[036] Content: 06_cat_sitting.png | Style: 03_cyberpunk.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat sitting"
+      Level 3 (Style Desc):  "A cat sitting in cyberpunk neon style"
+[037] Content: 07_vintage_clock.png | Style: 03_cyberpunk.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A clock"
+      Level 3 (Style Desc):  "A clock in cyberpunk neon style"
+[038] Content: 08_colorful_sneaker.png | Style: 03_cyberpunk.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A sneaker"
+      Level 3 (Style Desc):  "A sneaker in cyberpunk neon style"
+[039] Content: 09_dog_sitting.png | Style: 03_cyberpunk.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A dog"
+      Level 3 (Style Desc):  "A dog in cyberpunk neon style"
+[040] Content: 10_rubber_duck.png | Style: 03_cyberpunk.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A rubber duck toy"
+      Level 3 (Style Desc):  "A rubber duck toy in cyberpunk neon style"
+[041] Content: 11_fancy_boot.png | Style: 03_cyberpunk.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A boot"
+      Level 3 (Style Desc):  "A boot in cyberpunk neon style"
+[042] Content: 12_pink_sunglasses.png | Style: 03_cyberpunk.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A pair of sunglasses"
+      Level 3 (Style Desc):  "A pair of sunglasses in cyberpunk neon style"
+[043] Content: 13_poop_emoji.png | Style: 03_cyberpunk.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A poop emoji toy"
+      Level 3 (Style Desc):  "A poop emoji toy in cyberpunk neon style"
+[044] Content: 14_ceramic_teapot.png | Style: 03_cyberpunk.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teapot"
+      Level 3 (Style Desc):  "A teapot in cyberpunk neon style"
+[045] Content: 15_decorative_vase.png | Style: 03_cyberpunk.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A vase"
+      Level 3 (Style Desc):  "A vase in cyberpunk neon style"
+
+--- STYLE 04: Flat Illustration (04_flat_illustration.png) ---
+[046] Content: 01_backpack_dog.png | Style: 04_flat_illustration.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A backpack with a dog print"
+      Level 3 (Style Desc):  "A backpack with a dog print in flat vector illustration style"
+[047] Content: 02_bear_plushie.png | Style: 04_flat_illustration.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teddy bear plushie"
+      Level 3 (Style Desc):  "A teddy bear plushie in flat vector illustration style"
+[048] Content: 03_berry_bowl.png | Style: 04_flat_illustration.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A bowl of berries"
+      Level 3 (Style Desc):  "A bowl of berries in flat vector illustration style"
+[049] Content: 04_can.png | Style: 04_flat_illustration.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A can"
+      Level 3 (Style Desc):  "A can in flat vector illustration style"
+[050] Content: 05_cat_laying.png | Style: 04_flat_illustration.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat laying down"
+      Level 3 (Style Desc):  "A cat laying down in flat vector illustration style"
+[051] Content: 06_cat_sitting.png | Style: 04_flat_illustration.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat sitting"
+      Level 3 (Style Desc):  "A cat sitting in flat vector illustration style"
+[052] Content: 07_vintage_clock.png | Style: 04_flat_illustration.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A clock"
+      Level 3 (Style Desc):  "A clock in flat vector illustration style"
+[053] Content: 08_colorful_sneaker.png | Style: 04_flat_illustration.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A sneaker"
+      Level 3 (Style Desc):  "A sneaker in flat vector illustration style"
+[054] Content: 09_dog_sitting.png | Style: 04_flat_illustration.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A dog"
+      Level 3 (Style Desc):  "A dog in flat vector illustration style"
+[055] Content: 10_rubber_duck.png | Style: 04_flat_illustration.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A rubber duck toy"
+      Level 3 (Style Desc):  "A rubber duck toy in flat vector illustration style"
+[056] Content: 11_fancy_boot.png | Style: 04_flat_illustration.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A boot"
+      Level 3 (Style Desc):  "A boot in flat vector illustration style"
+[057] Content: 12_pink_sunglasses.png | Style: 04_flat_illustration.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A pair of sunglasses"
+      Level 3 (Style Desc):  "A pair of sunglasses in flat vector illustration style"
+[058] Content: 13_poop_emoji.png | Style: 04_flat_illustration.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A poop emoji toy"
+      Level 3 (Style Desc):  "A poop emoji toy in flat vector illustration style"
+[059] Content: 14_ceramic_teapot.png | Style: 04_flat_illustration.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teapot"
+      Level 3 (Style Desc):  "A teapot in flat vector illustration style"
+[060] Content: 15_decorative_vase.png | Style: 04_flat_illustration.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A vase"
+      Level 3 (Style Desc):  "A vase in flat vector illustration style"
+
+--- STYLE 05: Glowing Lines (05_glowing_neon.png) ---
+[061] Content: 01_backpack_dog.png | Style: 05_glowing_neon.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A backpack with a dog print"
+      Level 3 (Style Desc):  "A backpack with a dog print in glowing neon luminous style"
+[062] Content: 02_bear_plushie.png | Style: 05_glowing_neon.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teddy bear plushie"
+      Level 3 (Style Desc):  "A teddy bear plushie in glowing neon luminous style"
+[063] Content: 03_berry_bowl.png | Style: 05_glowing_neon.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A bowl of berries"
+      Level 3 (Style Desc):  "A bowl of berries in glowing neon luminous style"
+[064] Content: 04_can.png | Style: 05_glowing_neon.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A can"
+      Level 3 (Style Desc):  "A can in glowing neon luminous style"
+[065] Content: 05_cat_laying.png | Style: 05_glowing_neon.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat laying down"
+      Level 3 (Style Desc):  "A cat laying down in glowing neon luminous style"
+[066] Content: 06_cat_sitting.png | Style: 05_glowing_neon.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat sitting"
+      Level 3 (Style Desc):  "A cat sitting in glowing neon luminous style"
+[067] Content: 07_vintage_clock.png | Style: 05_glowing_neon.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A clock"
+      Level 3 (Style Desc):  "A clock in glowing neon luminous style"
+[068] Content: 08_colorful_sneaker.png | Style: 05_glowing_neon.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A sneaker"
+      Level 3 (Style Desc):  "A sneaker in glowing neon luminous style"
+[069] Content: 09_dog_sitting.png | Style: 05_glowing_neon.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A dog"
+      Level 3 (Style Desc):  "A dog in glowing neon luminous style"
+[070] Content: 10_rubber_duck.png | Style: 05_glowing_neon.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A rubber duck toy"
+      Level 3 (Style Desc):  "A rubber duck toy in glowing neon luminous style"
+[071] Content: 11_fancy_boot.png | Style: 05_glowing_neon.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A boot"
+      Level 3 (Style Desc):  "A boot in glowing neon luminous style"
+[072] Content: 12_pink_sunglasses.png | Style: 05_glowing_neon.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A pair of sunglasses"
+      Level 3 (Style Desc):  "A pair of sunglasses in glowing neon luminous style"
+[073] Content: 13_poop_emoji.png | Style: 05_glowing_neon.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A poop emoji toy"
+      Level 3 (Style Desc):  "A poop emoji toy in glowing neon luminous style"
+[074] Content: 14_ceramic_teapot.png | Style: 05_glowing_neon.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teapot"
+      Level 3 (Style Desc):  "A teapot in glowing neon luminous style"
+[075] Content: 15_decorative_vase.png | Style: 05_glowing_neon.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A vase"
+      Level 3 (Style Desc):  "A vase in glowing neon luminous style"
+
+--- STYLE 06: Historical Oil Painting (06_historical_oil.png) ---
+[076] Content: 01_backpack_dog.png | Style: 06_historical_oil.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A backpack with a dog print"
+      Level 3 (Style Desc):  "A backpack with a dog print in classical historical oil painting style"
+[077] Content: 02_bear_plushie.png | Style: 06_historical_oil.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teddy bear plushie"
+      Level 3 (Style Desc):  "A teddy bear plushie in classical historical oil painting style"
+[078] Content: 03_berry_bowl.png | Style: 06_historical_oil.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A bowl of berries"
+      Level 3 (Style Desc):  "A bowl of berries in classical historical oil painting style"
+[079] Content: 04_can.png | Style: 06_historical_oil.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A can"
+      Level 3 (Style Desc):  "A can in classical historical oil painting style"
+[080] Content: 05_cat_laying.png | Style: 06_historical_oil.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat laying down"
+      Level 3 (Style Desc):  "A cat laying down in classical historical oil painting style"
+[081] Content: 06_cat_sitting.png | Style: 06_historical_oil.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat sitting"
+      Level 3 (Style Desc):  "A cat sitting in classical historical oil painting style"
+[082] Content: 07_vintage_clock.png | Style: 06_historical_oil.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A clock"
+      Level 3 (Style Desc):  "A clock in classical historical oil painting style"
+[083] Content: 08_colorful_sneaker.png | Style: 06_historical_oil.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A sneaker"
+      Level 3 (Style Desc):  "A sneaker in classical historical oil painting style"
+[084] Content: 09_dog_sitting.png | Style: 06_historical_oil.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A dog"
+      Level 3 (Style Desc):  "A dog in classical historical oil painting style"
+[085] Content: 10_rubber_duck.png | Style: 06_historical_oil.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A rubber duck toy"
+      Level 3 (Style Desc):  "A rubber duck toy in classical historical oil painting style"
+[086] Content: 11_fancy_boot.png | Style: 06_historical_oil.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A boot"
+      Level 3 (Style Desc):  "A boot in classical historical oil painting style"
+[087] Content: 12_pink_sunglasses.png | Style: 06_historical_oil.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A pair of sunglasses"
+      Level 3 (Style Desc):  "A pair of sunglasses in classical historical oil painting style"
+[088] Content: 13_poop_emoji.png | Style: 06_historical_oil.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A poop emoji toy"
+      Level 3 (Style Desc):  "A poop emoji toy in classical historical oil painting style"
+[089] Content: 14_ceramic_teapot.png | Style: 06_historical_oil.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teapot"
+      Level 3 (Style Desc):  "A teapot in classical historical oil painting style"
+[090] Content: 15_decorative_vase.png | Style: 06_historical_oil.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A vase"
+      Level 3 (Style Desc):  "A vase in classical historical oil painting style"
+
+--- STYLE 07: Graphic Poster (07_graphic_poster.png) ---
+[091] Content: 01_backpack_dog.png | Style: 07_graphic_poster.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A backpack with a dog print"
+      Level 3 (Style Desc):  "A backpack with a dog print in graphic vintage poster style"
+[092] Content: 02_bear_plushie.png | Style: 07_graphic_poster.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teddy bear plushie"
+      Level 3 (Style Desc):  "A teddy bear plushie in graphic vintage poster style"
+[093] Content: 03_berry_bowl.png | Style: 07_graphic_poster.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A bowl of berries"
+      Level 3 (Style Desc):  "A bowl of berries in graphic vintage poster style"
+[094] Content: 04_can.png | Style: 07_graphic_poster.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A can"
+      Level 3 (Style Desc):  "A can in graphic vintage poster style"
+[095] Content: 05_cat_laying.png | Style: 07_graphic_poster.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat laying down"
+      Level 3 (Style Desc):  "A cat laying down in graphic vintage poster style"
+[096] Content: 06_cat_sitting.png | Style: 07_graphic_poster.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat sitting"
+      Level 3 (Style Desc):  "A cat sitting in graphic vintage poster style"
+[097] Content: 07_vintage_clock.png | Style: 07_graphic_poster.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A clock"
+      Level 3 (Style Desc):  "A clock in graphic vintage poster style"
+[098] Content: 08_colorful_sneaker.png | Style: 07_graphic_poster.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A sneaker"
+      Level 3 (Style Desc):  "A sneaker in graphic vintage poster style"
+[099] Content: 09_dog_sitting.png | Style: 07_graphic_poster.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A dog"
+      Level 3 (Style Desc):  "A dog in graphic vintage poster style"
+[100] Content: 10_rubber_duck.png | Style: 07_graphic_poster.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A rubber duck toy"
+      Level 3 (Style Desc):  "A rubber duck toy in graphic vintage poster style"
+[101] Content: 11_fancy_boot.png | Style: 07_graphic_poster.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A boot"
+      Level 3 (Style Desc):  "A boot in graphic vintage poster style"
+[102] Content: 12_pink_sunglasses.png | Style: 07_graphic_poster.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A pair of sunglasses"
+      Level 3 (Style Desc):  "A pair of sunglasses in graphic vintage poster style"
+[103] Content: 13_poop_emoji.png | Style: 07_graphic_poster.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A poop emoji toy"
+      Level 3 (Style Desc):  "A poop emoji toy in graphic vintage poster style"
+[104] Content: 14_ceramic_teapot.png | Style: 07_graphic_poster.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teapot"
+      Level 3 (Style Desc):  "A teapot in graphic vintage poster style"
+[105] Content: 15_decorative_vase.png | Style: 07_graphic_poster.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A vase"
+      Level 3 (Style Desc):  "A vase in graphic vintage poster style"
+
+--- STYLE 08: Pencil Sketch (08_pencil_sketch.png) ---
+[106] Content: 01_backpack_dog.png | Style: 08_pencil_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A backpack with a dog print"
+      Level 3 (Style Desc):  "A backpack with a dog print in pencil sketch drawing style"
+[107] Content: 02_bear_plushie.png | Style: 08_pencil_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teddy bear plushie"
+      Level 3 (Style Desc):  "A teddy bear plushie in pencil sketch drawing style"
+[108] Content: 03_berry_bowl.png | Style: 08_pencil_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A bowl of berries"
+      Level 3 (Style Desc):  "A bowl of berries in pencil sketch drawing style"
+[109] Content: 04_can.png | Style: 08_pencil_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A can"
+      Level 3 (Style Desc):  "A can in pencil sketch drawing style"
+[110] Content: 05_cat_laying.png | Style: 08_pencil_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat laying down"
+      Level 3 (Style Desc):  "A cat laying down in pencil sketch drawing style"
+[111] Content: 06_cat_sitting.png | Style: 08_pencil_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat sitting"
+      Level 3 (Style Desc):  "A cat sitting in pencil sketch drawing style"
+[112] Content: 07_vintage_clock.png | Style: 08_pencil_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A clock"
+      Level 3 (Style Desc):  "A clock in pencil sketch drawing style"
+[113] Content: 08_colorful_sneaker.png | Style: 08_pencil_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A sneaker"
+      Level 3 (Style Desc):  "A sneaker in pencil sketch drawing style"
+[114] Content: 09_dog_sitting.png | Style: 08_pencil_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A dog"
+      Level 3 (Style Desc):  "A dog in pencil sketch drawing style"
+[115] Content: 10_rubber_duck.png | Style: 08_pencil_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A rubber duck toy"
+      Level 3 (Style Desc):  "A rubber duck toy in pencil sketch drawing style"
+[116] Content: 11_fancy_boot.png | Style: 08_pencil_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A boot"
+      Level 3 (Style Desc):  "A boot in pencil sketch drawing style"
+[117] Content: 12_pink_sunglasses.png | Style: 08_pencil_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A pair of sunglasses"
+      Level 3 (Style Desc):  "A pair of sunglasses in pencil sketch drawing style"
+[118] Content: 13_poop_emoji.png | Style: 08_pencil_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A poop emoji toy"
+      Level 3 (Style Desc):  "A poop emoji toy in pencil sketch drawing style"
+[119] Content: 14_ceramic_teapot.png | Style: 08_pencil_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teapot"
+      Level 3 (Style Desc):  "A teapot in pencil sketch drawing style"
+[120] Content: 15_decorative_vase.png | Style: 08_pencil_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A vase"
+      Level 3 (Style Desc):  "A vase in pencil sketch drawing style"
+
+--- STYLE 09: Sticker (09_sticker.png) ---
+[121] Content: 01_backpack_dog.png | Style: 09_sticker.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A backpack with a dog print"
+      Level 3 (Style Desc):  "A backpack with a dog print in die-cut sticker style"
+[122] Content: 02_bear_plushie.png | Style: 09_sticker.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teddy bear plushie"
+      Level 3 (Style Desc):  "A teddy bear plushie in die-cut sticker style"
+[123] Content: 03_berry_bowl.png | Style: 09_sticker.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A bowl of berries"
+      Level 3 (Style Desc):  "A bowl of berries in die-cut sticker style"
+[124] Content: 04_can.png | Style: 09_sticker.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A can"
+      Level 3 (Style Desc):  "A can in die-cut sticker style"
+[125] Content: 05_cat_laying.png | Style: 09_sticker.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat laying down"
+      Level 3 (Style Desc):  "A cat laying down in die-cut sticker style"
+[126] Content: 06_cat_sitting.png | Style: 09_sticker.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat sitting"
+      Level 3 (Style Desc):  "A cat sitting in die-cut sticker style"
+[127] Content: 07_vintage_clock.png | Style: 09_sticker.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A clock"
+      Level 3 (Style Desc):  "A clock in die-cut sticker style"
+[128] Content: 08_colorful_sneaker.png | Style: 09_sticker.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A sneaker"
+      Level 3 (Style Desc):  "A sneaker in die-cut sticker style"
+[129] Content: 09_dog_sitting.png | Style: 09_sticker.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A dog"
+      Level 3 (Style Desc):  "A dog in die-cut sticker style"
+[130] Content: 10_rubber_duck.png | Style: 09_sticker.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A rubber duck toy"
+      Level 3 (Style Desc):  "A rubber duck toy in die-cut sticker style"
+[131] Content: 11_fancy_boot.png | Style: 09_sticker.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A boot"
+      Level 3 (Style Desc):  "A boot in die-cut sticker style"
+[132] Content: 12_pink_sunglasses.png | Style: 09_sticker.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A pair of sunglasses"
+      Level 3 (Style Desc):  "A pair of sunglasses in die-cut sticker style"
+[133] Content: 13_poop_emoji.png | Style: 09_sticker.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A poop emoji toy"
+      Level 3 (Style Desc):  "A poop emoji toy in die-cut sticker style"
+[134] Content: 14_ceramic_teapot.png | Style: 09_sticker.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teapot"
+      Level 3 (Style Desc):  "A teapot in die-cut sticker style"
+[135] Content: 15_decorative_vase.png | Style: 09_sticker.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A vase"
+      Level 3 (Style Desc):  "A vase in die-cut sticker style"
+
+--- STYLE 10: Starry Night Sketch (10_starry_night_sketch.png) ---
+[136] Content: 01_backpack_dog.png | Style: 10_starry_night_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A backpack with a dog print"
+      Level 3 (Style Desc):  "A backpack with a dog print in Van Gogh Starry Night sketch style"
+[137] Content: 02_bear_plushie.png | Style: 10_starry_night_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teddy bear plushie"
+      Level 3 (Style Desc):  "A teddy bear plushie in Van Gogh Starry Night sketch style"
+[138] Content: 03_berry_bowl.png | Style: 10_starry_night_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A bowl of berries"
+      Level 3 (Style Desc):  "A bowl of berries in Van Gogh Starry Night sketch style"
+[139] Content: 04_can.png | Style: 10_starry_night_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A can"
+      Level 3 (Style Desc):  "A can in Van Gogh Starry Night sketch style"
+[140] Content: 05_cat_laying.png | Style: 10_starry_night_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat laying down"
+      Level 3 (Style Desc):  "A cat laying down in Van Gogh Starry Night sketch style"
+[141] Content: 06_cat_sitting.png | Style: 10_starry_night_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat sitting"
+      Level 3 (Style Desc):  "A cat sitting in Van Gogh Starry Night sketch style"
+[142] Content: 07_vintage_clock.png | Style: 10_starry_night_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A clock"
+      Level 3 (Style Desc):  "A clock in Van Gogh Starry Night sketch style"
+[143] Content: 08_colorful_sneaker.png | Style: 10_starry_night_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A sneaker"
+      Level 3 (Style Desc):  "A sneaker in Van Gogh Starry Night sketch style"
+[144] Content: 09_dog_sitting.png | Style: 10_starry_night_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A dog"
+      Level 3 (Style Desc):  "A dog in Van Gogh Starry Night sketch style"
+[145] Content: 10_rubber_duck.png | Style: 10_starry_night_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A rubber duck toy"
+      Level 3 (Style Desc):  "A rubber duck toy in Van Gogh Starry Night sketch style"
+[146] Content: 11_fancy_boot.png | Style: 10_starry_night_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A boot"
+      Level 3 (Style Desc):  "A boot in Van Gogh Starry Night sketch style"
+[147] Content: 12_pink_sunglasses.png | Style: 10_starry_night_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A pair of sunglasses"
+      Level 3 (Style Desc):  "A pair of sunglasses in Van Gogh Starry Night sketch style"
+[148] Content: 13_poop_emoji.png | Style: 10_starry_night_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A poop emoji toy"
+      Level 3 (Style Desc):  "A poop emoji toy in Van Gogh Starry Night sketch style"
+[149] Content: 14_ceramic_teapot.png | Style: 10_starry_night_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teapot"
+      Level 3 (Style Desc):  "A teapot in Van Gogh Starry Night sketch style"
+[150] Content: 15_decorative_vase.png | Style: 10_starry_night_sketch.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A vase"
+      Level 3 (Style Desc):  "A vase in Van Gogh Starry Night sketch style"
+
+--- STYLE 11: 3D Abstract Render (11_abstract_3d_render.png) ---
+[151] Content: 01_backpack_dog.png | Style: 11_abstract_3d_render.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A backpack with a dog print"
+      Level 3 (Style Desc):  "A backpack with a dog print in 3D abstract digital render style"
+[152] Content: 02_bear_plushie.png | Style: 11_abstract_3d_render.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teddy bear plushie"
+      Level 3 (Style Desc):  "A teddy bear plushie in 3D abstract digital render style"
+[153] Content: 03_berry_bowl.png | Style: 11_abstract_3d_render.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A bowl of berries"
+      Level 3 (Style Desc):  "A bowl of berries in 3D abstract digital render style"
+[154] Content: 04_can.png | Style: 11_abstract_3d_render.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A can"
+      Level 3 (Style Desc):  "A can in 3D abstract digital render style"
+[155] Content: 05_cat_laying.png | Style: 11_abstract_3d_render.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat laying down"
+      Level 3 (Style Desc):  "A cat laying down in 3D abstract digital render style"
+[156] Content: 06_cat_sitting.png | Style: 11_abstract_3d_render.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat sitting"
+      Level 3 (Style Desc):  "A cat sitting in 3D abstract digital render style"
+[157] Content: 07_vintage_clock.png | Style: 11_abstract_3d_render.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A clock"
+      Level 3 (Style Desc):  "A clock in 3D abstract digital render style"
+[158] Content: 08_colorful_sneaker.png | Style: 11_abstract_3d_render.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A sneaker"
+      Level 3 (Style Desc):  "A sneaker in 3D abstract digital render style"
+[159] Content: 09_dog_sitting.png | Style: 11_abstract_3d_render.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A dog"
+      Level 3 (Style Desc):  "A dog in 3D abstract digital render style"
+[160] Content: 10_rubber_duck.png | Style: 11_abstract_3d_render.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A rubber duck toy"
+      Level 3 (Style Desc):  "A rubber duck toy in 3D abstract digital render style"
+[161] Content: 11_fancy_boot.png | Style: 11_abstract_3d_render.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A boot"
+      Level 3 (Style Desc):  "A boot in 3D abstract digital render style"
+[162] Content: 12_pink_sunglasses.png | Style: 11_abstract_3d_render.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A pair of sunglasses"
+      Level 3 (Style Desc):  "A pair of sunglasses in 3D abstract digital render style"
+[163] Content: 13_poop_emoji.png | Style: 11_abstract_3d_render.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A poop emoji toy"
+      Level 3 (Style Desc):  "A poop emoji toy in 3D abstract digital render style"
+[164] Content: 14_ceramic_teapot.png | Style: 11_abstract_3d_render.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teapot"
+      Level 3 (Style Desc):  "A teapot in 3D abstract digital render style"
+[165] Content: 15_decorative_vase.png | Style: 11_abstract_3d_render.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A vase"
+      Level 3 (Style Desc):  "A vase in 3D abstract digital render style"
+
+--- STYLE 12: Vintage Woodcut (12_vintage_woodcut.png) ---
+[166] Content: 01_backpack_dog.png | Style: 12_vintage_woodcut.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A backpack with a dog print"
+      Level 3 (Style Desc):  "A backpack with a dog print in vintage woodcut print style"
+[167] Content: 02_bear_plushie.png | Style: 12_vintage_woodcut.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teddy bear plushie"
+      Level 3 (Style Desc):  "A teddy bear plushie in vintage woodcut print style"
+[168] Content: 03_berry_bowl.png | Style: 12_vintage_woodcut.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A bowl of berries"
+      Level 3 (Style Desc):  "A bowl of berries in vintage woodcut print style"
+[169] Content: 04_can.png | Style: 12_vintage_woodcut.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A can"
+      Level 3 (Style Desc):  "A can in vintage woodcut print style"
+[170] Content: 05_cat_laying.png | Style: 12_vintage_woodcut.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat laying down"
+      Level 3 (Style Desc):  "A cat laying down in vintage woodcut print style"
+[171] Content: 06_cat_sitting.png | Style: 12_vintage_woodcut.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat sitting"
+      Level 3 (Style Desc):  "A cat sitting in vintage woodcut print style"
+[172] Content: 07_vintage_clock.png | Style: 12_vintage_woodcut.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A clock"
+      Level 3 (Style Desc):  "A clock in vintage woodcut print style"
+[173] Content: 08_colorful_sneaker.png | Style: 12_vintage_woodcut.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A sneaker"
+      Level 3 (Style Desc):  "A sneaker in vintage woodcut print style"
+[174] Content: 09_dog_sitting.png | Style: 12_vintage_woodcut.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A dog"
+      Level 3 (Style Desc):  "A dog in vintage woodcut print style"
+[175] Content: 10_rubber_duck.png | Style: 12_vintage_woodcut.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A rubber duck toy"
+      Level 3 (Style Desc):  "A rubber duck toy in vintage woodcut print style"
+[176] Content: 11_fancy_boot.png | Style: 12_vintage_woodcut.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A boot"
+      Level 3 (Style Desc):  "A boot in vintage woodcut print style"
+[177] Content: 12_pink_sunglasses.png | Style: 12_vintage_woodcut.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A pair of sunglasses"
+      Level 3 (Style Desc):  "A pair of sunglasses in vintage woodcut print style"
+[178] Content: 13_poop_emoji.png | Style: 12_vintage_woodcut.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A poop emoji toy"
+      Level 3 (Style Desc):  "A poop emoji toy in vintage woodcut print style"
+[179] Content: 14_ceramic_teapot.png | Style: 12_vintage_woodcut.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teapot"
+      Level 3 (Style Desc):  "A teapot in vintage woodcut print style"
+[180] Content: 15_decorative_vase.png | Style: 12_vintage_woodcut.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A vase"
+      Level 3 (Style Desc):  "A vase in vintage woodcut print style"
+
+--- STYLE 13: 3D Isometric (13_3d_isometric.png) ---
+[181] Content: 01_backpack_dog.png | Style: 13_3d_isometric.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A backpack with a dog print"
+      Level 3 (Style Desc):  "A backpack with a dog print in 3D isometric miniature style"
+[182] Content: 02_bear_plushie.png | Style: 13_3d_isometric.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teddy bear plushie"
+      Level 3 (Style Desc):  "A teddy bear plushie in 3D isometric miniature style"
+[183] Content: 03_berry_bowl.png | Style: 13_3d_isometric.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A bowl of berries"
+      Level 3 (Style Desc):  "A bowl of berries in 3D isometric miniature style"
+[184] Content: 04_can.png | Style: 13_3d_isometric.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A can"
+      Level 3 (Style Desc):  "A can in 3D isometric miniature style"
+[185] Content: 05_cat_laying.png | Style: 13_3d_isometric.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat laying down"
+      Level 3 (Style Desc):  "A cat laying down in 3D isometric miniature style"
+[186] Content: 06_cat_sitting.png | Style: 13_3d_isometric.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat sitting"
+      Level 3 (Style Desc):  "A cat sitting in 3D isometric miniature style"
+[187] Content: 07_vintage_clock.png | Style: 13_3d_isometric.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A clock"
+      Level 3 (Style Desc):  "A clock in 3D isometric miniature style"
+[188] Content: 08_colorful_sneaker.png | Style: 13_3d_isometric.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A sneaker"
+      Level 3 (Style Desc):  "A sneaker in 3D isometric miniature style"
+[189] Content: 09_dog_sitting.png | Style: 13_3d_isometric.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A dog"
+      Level 3 (Style Desc):  "A dog in 3D isometric miniature style"
+[190] Content: 10_rubber_duck.png | Style: 13_3d_isometric.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A rubber duck toy"
+      Level 3 (Style Desc):  "A rubber duck toy in 3D isometric miniature style"
+[191] Content: 11_fancy_boot.png | Style: 13_3d_isometric.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A boot"
+      Level 3 (Style Desc):  "A boot in 3D isometric miniature style"
+[192] Content: 12_pink_sunglasses.png | Style: 13_3d_isometric.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A pair of sunglasses"
+      Level 3 (Style Desc):  "A pair of sunglasses in 3D isometric miniature style"
+[193] Content: 13_poop_emoji.png | Style: 13_3d_isometric.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A poop emoji toy"
+      Level 3 (Style Desc):  "A poop emoji toy in 3D isometric miniature style"
+[194] Content: 14_ceramic_teapot.png | Style: 13_3d_isometric.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teapot"
+      Level 3 (Style Desc):  "A teapot in 3D isometric miniature style"
+[195] Content: 15_decorative_vase.png | Style: 13_3d_isometric.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A vase"
+      Level 3 (Style Desc):  "A vase in 3D isometric miniature style"
+
+--- STYLE 14: Crayon Drawing (14_crayon_drawing.png) ---
+[196] Content: 01_backpack_dog.png | Style: 14_crayon_drawing.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A backpack with a dog print"
+      Level 3 (Style Desc):  "A backpack with a dog print in children's crayon sketch style"
+[197] Content: 02_bear_plushie.png | Style: 14_crayon_drawing.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teddy bear plushie"
+      Level 3 (Style Desc):  "A teddy bear plushie in children's crayon sketch style"
+[198] Content: 03_berry_bowl.png | Style: 14_crayon_drawing.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A bowl of berries"
+      Level 3 (Style Desc):  "A bowl of berries in children's crayon sketch style"
+[199] Content: 04_can.png | Style: 14_crayon_drawing.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A can"
+      Level 3 (Style Desc):  "A can in children's crayon sketch style"
+[200] Content: 05_cat_laying.png | Style: 14_crayon_drawing.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat laying down"
+      Level 3 (Style Desc):  "A cat laying down in children's crayon sketch style"
+[201] Content: 06_cat_sitting.png | Style: 14_crayon_drawing.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat sitting"
+      Level 3 (Style Desc):  "A cat sitting in children's crayon sketch style"
+[202] Content: 07_vintage_clock.png | Style: 14_crayon_drawing.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A clock"
+      Level 3 (Style Desc):  "A clock in children's crayon sketch style"
+[203] Content: 08_colorful_sneaker.png | Style: 14_crayon_drawing.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A sneaker"
+      Level 3 (Style Desc):  "A sneaker in children's crayon sketch style"
+[204] Content: 09_dog_sitting.png | Style: 14_crayon_drawing.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A dog"
+      Level 3 (Style Desc):  "A dog in children's crayon sketch style"
+[205] Content: 10_rubber_duck.png | Style: 14_crayon_drawing.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A rubber duck toy"
+      Level 3 (Style Desc):  "A rubber duck toy in children's crayon sketch style"
+[206] Content: 11_fancy_boot.png | Style: 14_crayon_drawing.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A boot"
+      Level 3 (Style Desc):  "A boot in children's crayon sketch style"
+[207] Content: 12_pink_sunglasses.png | Style: 14_crayon_drawing.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A pair of sunglasses"
+      Level 3 (Style Desc):  "A pair of sunglasses in children's crayon sketch style"
+[208] Content: 13_poop_emoji.png | Style: 14_crayon_drawing.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A poop emoji toy"
+      Level 3 (Style Desc):  "A poop emoji toy in children's crayon sketch style"
+[209] Content: 14_ceramic_teapot.png | Style: 14_crayon_drawing.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teapot"
+      Level 3 (Style Desc):  "A teapot in children's crayon sketch style"
+[210] Content: 15_decorative_vase.png | Style: 14_crayon_drawing.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A vase"
+      Level 3 (Style Desc):  "A vase in children's crayon sketch style"
+
+--- STYLE 15: Oil Pastels (15_oil_pastels.png) ---
+[211] Content: 01_backpack_dog.png | Style: 15_oil_pastels.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A backpack with a dog print"
+      Level 3 (Style Desc):  "A backpack with a dog print in oil pastel painting style"
+[212] Content: 02_bear_plushie.png | Style: 15_oil_pastels.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teddy bear plushie"
+      Level 3 (Style Desc):  "A teddy bear plushie in oil pastel painting style"
+[213] Content: 03_berry_bowl.png | Style: 15_oil_pastels.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A bowl of berries"
+      Level 3 (Style Desc):  "A bowl of berries in oil pastel painting style"
+[214] Content: 04_can.png | Style: 15_oil_pastels.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A can"
+      Level 3 (Style Desc):  "A can in oil pastel painting style"
+[215] Content: 05_cat_laying.png | Style: 15_oil_pastels.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat laying down"
+      Level 3 (Style Desc):  "A cat laying down in oil pastel painting style"
+[216] Content: 06_cat_sitting.png | Style: 15_oil_pastels.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A cat sitting"
+      Level 3 (Style Desc):  "A cat sitting in oil pastel painting style"
+[217] Content: 07_vintage_clock.png | Style: 15_oil_pastels.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A clock"
+      Level 3 (Style Desc):  "A clock in oil pastel painting style"
+[218] Content: 08_colorful_sneaker.png | Style: 15_oil_pastels.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A sneaker"
+      Level 3 (Style Desc):  "A sneaker in oil pastel painting style"
+[219] Content: 09_dog_sitting.png | Style: 15_oil_pastels.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A dog"
+      Level 3 (Style Desc):  "A dog in oil pastel painting style"
+[220] Content: 10_rubber_duck.png | Style: 15_oil_pastels.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A rubber duck toy"
+      Level 3 (Style Desc):  "A rubber duck toy in oil pastel painting style"
+[221] Content: 11_fancy_boot.png | Style: 15_oil_pastels.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A boot"
+      Level 3 (Style Desc):  "A boot in oil pastel painting style"
+[222] Content: 12_pink_sunglasses.png | Style: 15_oil_pastels.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A pair of sunglasses"
+      Level 3 (Style Desc):  "A pair of sunglasses in oil pastel painting style"
+[223] Content: 13_poop_emoji.png | Style: 15_oil_pastels.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A poop emoji toy"
+      Level 3 (Style Desc):  "A poop emoji toy in oil pastel painting style"
+[224] Content: 14_ceramic_teapot.png | Style: 15_oil_pastels.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A teapot"
+      Level 3 (Style Desc):  "A teapot in oil pastel painting style"
+[225] Content: 15_decorative_vase.png | Style: 15_oil_pastels.png
+      Level 1 (Null):        ""
+      Level 2 (Object):      "A vase"
+      Level 3 (Style Desc):  "A vase in oil pastel painting style"

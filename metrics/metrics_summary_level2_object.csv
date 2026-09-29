@@ -1,0 +1,2 @@
+task_name,task_desc,category,num_evaluated,csd_style_similarity,style_retrieval_correct,style_retrieval_accuracy,clip_i_content_similarity,dino_content_similarity,dino_style_similarity,dino,lpips,cfsd,dcl
+level2_object,Main Benchmark: Level 2 Object Prompt (Full 225 pairs),table1_benchmark,225,0.29103818653358354,0.4444444444444444,,0.8382177946302626,0.6543541906939613,0.1891707507769267,0.1891707507769267,0.5522455606857936,0.013658544652991773,0.2156715250511964

@@ -1,0 +1,13 @@
+\section{Conclusion and Future Work}
+\label{sec:conclusion}
+
+In this paper, we introduced \textbf{\method}, a training-free framework for high-fidelity, leakage-free visual style transfer on diffusion models. By addressing the dual bottlenecks of content leakage and structural degradation, \method fundamentally advances the state of the art through:
+\begin{enumerate}
+    \item \textbf{Attention-Level Orthogonal Feature Projection with Energy Compensation}, which mathematically prevents style-to-content semantic leakage while fully preserving the energetic magnitude of artistic textures.
+    \item \textbf{Score-Orthogonal DINO Latent Guidance}, which steers diffusion sampling strictly along the tangent space of the data manifold to maintain image sharpness and avoid out-of-distribution artifacts.
+    \item \textbf{Temporal Sigmoid-Scheduled AFA and Clean Latent AdaIN Pushforward}, which harmonizes early structural grounding with late-stage artistic rendering.
+\end{enumerate}
+We provided formal theoretical proofs demonstrating that our orthogonal decomposition guarantees zero mutual interference between content and style embeddings and maintains probability manifold stability. With extensive benchmark designs, evaluation metrics, and ablation protocols, \method establishes a new standard for training-free visual personalization.
+
+\paragraph{Future Work.}
+Future directions include extending \method to video diffusion models, investigating non-linear Riemannian orthogonal manifolds in cross-attention spaces, and applying orthogonal subspace decomposition to multi-concept personalized composition.

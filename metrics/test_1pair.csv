@@ -1,0 +1,3 @@
+content_name,style_name,content_path,style_path,generated_path,csd_style_similarity,style_retrieval_top1,style_retrieval_correct,clip_i_content_similarity,dino_content_similarity,lpips,cfsd,dcl,style_retrieval_accuracy
+01_backpack_dog,01_antimonocromatismo,data/content/01_backpack_dog.png,data/style/01_antimonocromatismo.png,output/benchmark/level1_null/ortho_01_backpack_dog_01_antimonocromatismo.png,0.4891654849052429,01_antimonocromatismo,1.0,0.7320203185081482,0.32063019275665283,0.6369057893753052,0.010860306210815907,0.45103341341018677,1.0
+AVERAGE,AVERAGE,,,,0.4891654849052429,,1.0,0.7320203185081482,0.32063019275665283,0.6369057893753052,0.010860306210815907,0.45103341341018677,1.0

@@ -1,0 +1,60 @@
+% This is main.tex, demonstrating the LLNCS macro package for Springer Computer Science proceedings;
+% Version 2.21 of 2022/01/12
+%
+\documentclass[runningheads]{llncs}
+%
+\usepackage[T1]{fontenc}
+% T1 fonts will be used to generate the final print and online PDFs,
+% so please use T1 fonts in your manuscript whenever possible.
+% Other font encondings may result in incorrect characters.
+%
+\usepackage{graphicx}
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+% Include custom macros and mathematical packages
+\input{macros}
+
+\begin{document}
+%
+\title{\method: Manifold-Preserving Training-Free Style Transfer via Score-Orthogonal Guidance}
+%
+\titlerunning{\method: Manifold-Preserving Training-Free Style Transfer}
+%
+\author{Nhat Minh Nguyen\inst{1,2} \and
+Quang Dang Pham\inst{1,2}\and
+Phuc Thien Vo\inst{1,2}\and
+Loc Phuc Dang\inst{1,2}\and
+Khoan Duc Le\inst{1,2}\thanks{Corresponding author}}
+%
+\authorrunning{N.Nhat et al.}
+% First names are abbreviated in the running head.
+% If there are more than two authors, 'et al.' is used.
+%
+\institute{Faculty of Information Technology, University of Science, Ho Chi Minh City, Vietnam \\
+\email{\{2512021580, 2512022643, 2512022237, 2512020320\}@student.hcmus.edu.vn}\\
+\email{ldkhoan@fit.hcmus.edu.vn}
+\and
+Vietnam National University, Ho Chi Minh City, Vietnam
+}
+%
+\maketitle
+%
+\begin{abstract}
+Reference-based style transfer with diffusion models aims to synthesize artistic textures while preserving the geometry and semantics of a target image. However, training-free methods face a trade-off between style fidelity and content preservation: strong style injection can distort structure and cause content leakage, while conservative transfer often leads to under-stylization. We introduce \method, a training-free framework that addresses this trade-off without network fine-tuning or DDIM inversion. \method consists of three components: Semantic Gating to preserve structural and semantic cues; Score-Orthogonal DINO Guidance to project style gradients orthogonally to the diffusion score direction, preserving the sampling trajectory near the data manifold; and an Early Step Controller that applies AdaIN-based clean-latent pushforward to establish color and layout before fine-grained stylization. Extensive quantitative and qualitative comparisons with both OC-based baselines and representative stylization methods show that \method achieves a favorable balance between style fidelity and content preservation while maintaining structural consistency. Most notably, it completely outperforms the baseline that uses the same Stable Cascade backbone.
+
+\keywords{Style Transfer \and Training-free \and Score-Orthogonal Guidance \and Diffusion Models.}
+\end{abstract}
+
+\input{sections/introduction}
+\input{sections/related_work}
+\input{sections/methodology}
+\input{sections/experimental_setup}
+\input{sections/results}
+\input{sections/ablation_study}
+\input{sections/conclusion}
+
+\bibliographystyle{splncs04}
+\bibliography{refs}
+
+\end{document}

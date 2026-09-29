@@ -1,0 +1,67 @@
+% ==============================================================================
+% Mathematical Notation and Custom Macros for OrthoStyle Paper
+% ==============================================================================
+
+% Springer LNCS and amsmath compatibility for \vec
+\let\accentvec\vec
+\usepackage{amsmath,amssymb,amsfonts}
+\let\spvec\vec
+\let\vec\accentvec
+\usepackage{bm}
+\usepackage{xspace}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% Method Name
+\newcommand{\method}{\textsc{OrthoStyle}\xspace}
+\newcommand{\ours}{\textsc{OrthoStyle}\xspace}
+
+% Math Vectors and Matrices
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\bz}{\mathbf{z}}
+\newcommand{\by}{\mathbf{y}}
+\newcommand{\bc}{\mathbf{c}}
+\newcommand{\bs}{\mathbf{s}}
+\newcommand{\bg}{\mathbf{g}}
+\newcommand{\bv}{\mathbf{v}}
+\newcommand{\bu}{\mathbf{u}}
+\newcommand{\bk}{\mathbf{k}}
+\newcommand{\bq}{\mathbf{q}}
+\newcommand{\beps}{\boldsymbol{\epsilon}}
+\newcommand{\btheta}{\boldsymbol{\theta}}
+\newcommand{\bmu}{\boldsymbol{\mu}}
+\newcommand{\bsigma}{\boldsymbol{\sigma}}
+
+% Subspaces and Operators
+\newcommand{\Vsub}{\mathcal{V}_{\text{sub}}}
+\newcommand{\Vortho}{\mathcal{V}_{\text{sub}}^\perp}
+\newcommand{\Proj}{\text{Proj}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\inner}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Loss}{\mathcal{L}}
+
+% Attention Variables
+\newcommand{\xtxt}{\mathbf{x}_{\text{txt}}}
+\newcommand{\xsub}{\mathbf{x}_{\text{sub}}}
+\newcommand{\xstyle}{\mathbf{x}_{\text{style}}}
+\newcommand{\xsubstyle}{\mathbf{x}_{\text{sub\_style}}}
+\newcommand{\xstyleortho}{\mathbf{x}_{\text{style}}^\perp}
+\newcommand{\xsubstyleortho}{\mathbf{x}_{\text{sub\_style}}^\perp}
+\newcommand{\wtxt}{w_{\text{txt}}}
+\newcommand{\wsub}{w_{\text{sub}}}
+\newcommand{\wstyle}{w_{\text{style}}}
+\newcommand{\wsubstyle}{w_{\text{sub\_style}}}
+
+% Formatting helpers
+\newcommand{\best}[1]{\textbf{#1}}
+\newcommand{\second}[1]{\underline{#1}}
+\newcommand{\fixme}[1]{\textcolor{red}{[FIXME: #1]}}
+\newcommand{\todo}[1]{\textcolor{blue}{[TODO: #1]}}

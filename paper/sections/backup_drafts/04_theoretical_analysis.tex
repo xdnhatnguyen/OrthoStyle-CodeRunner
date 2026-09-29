@@ -1,0 +1,107 @@
+\section{Theoretical Analysis and Justifications}
+\label{sec:theory}
+
+In this section, we provide formal mathematical proofs and geometric analyses establishing why \method guarantees zero content leakage, preserves stylistic energy, and ensures manifold stability during reverse diffusion sampling.
+
+\subsection{Elimination of Content Leakage via Subspace Orthogonality}
+\label{subsec:proof_leakage}
+
+Let $\bx_{\text{sub}} \in \R^C$ and $\bx_{\text{style}} \in \R^C$ be the localized feature representations of the content and style streams at a given spatial position. We define the 1-dimensional subject subspace as $\Vsub = \text{span}\{\bx_{\text{sub}}\} \subset \R^C$, and its orthogonal complement as:
+\begin{equation}
+    \Vortho = \left\{ \bv \in \R^C \mid \inner{\bv}{\bx_{\text{sub}}} = 0 \right\}.
+\end{equation}
+
+\begin{theorem}[Zero Content Leakage under Orthogonal Projection]
+\label{thm:leakage}
+Let $\bx_{\text{style}} = \bx_{\text{style}}^\parallel + \bx_{\text{style}}^\perp$ be the unique orthogonal decomposition of $\bx_{\text{style}}$ with respect to $\Vsub$, where $\bx_{\text{style}}^\parallel \in \Vsub$ and $\bx_{\text{style}}^\perp \in \Vortho$. Then:
+\begin{enumerate}
+    \item The projected feature $\bx_{\text{style}}^\perp$ has zero inner product with the content representation: $\inner{\bx_{\text{style}}^\perp}{\bx_{\text{sub}}} = 0$.
+    \item Under a joint Gaussian feature distribution model $\mathcal{N}(\boldsymbol{0}, \boldsymbol{\Sigma})$, the mutual information between the orthogonalized style feature and the subject feature vanishes: $I(\bx_{\text{style}}^\perp; \bx_{\text{sub}}) = 0$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By definition of the orthogonal projection operator in Eq.~\eqref{eq:ortho_sub}:
+\begin{equation}
+    \bx_{\text{style}}^\perp = \bx_{\text{style}} - \left( \frac{\inner{\bx_{\text{style}}}{\bx_{\text{sub}}}}{\norm{\bx_{\text{sub}}}_2^2} \right) \bx_{\text{sub}}.
+\end{equation}
+Taking the inner product with $\bx_{\text{sub}}$:
+\begin{align}
+    \inner{\bx_{\text{style}}^\perp}{\bx_{\text{sub}}} &= \inner{\bx_{\text{style}}}{\bx_{\text{sub}}} - \left( \frac{\inner{\bx_{\text{style}}}{\bx_{\text{sub}}}}{\norm{\bx_{\text{sub}}}_2^2} \right) \inner{\bx_{\text{sub}}}{\bx_{\text{sub}}} \\
+    &= \inner{\bx_{\text{style}}}{\bx_{\text{sub}}} - \inner{\bx_{\text{style}}}{\bx_{\text{sub}}} = 0.
+\end{align}
+For linear Gaussian vectors, zero covariance implies statistical independence. Thus, the mutual information $I(\bx_{\text{style}}^\perp; \bx_{\text{sub}}) = -\frac{1}{2} \log \left( 1 - \rho^2 \right) = 0$, where $\rho = \frac{\inner{\bx_{\text{style}}^\perp}{\bx_{\text{sub}}}}{\norm{\bx_{\text{style}}^\perp}_2 \norm{\bx_{\text{sub}}}_2} = 0$. Consequently, $\bx_{\text{style}}^\perp$ contains zero linear information regarding the semantic identity or structure of $\bx_{\text{sub}}$.
+\end{proof}
+
+\subsection{Energy Conservation and Stylistic Expressiveness}
+\label{subsec:proof_energy}
+
+A naive orthogonal projection strictly reduces the geometric $L_2$ norm of the feature vector:
+\begin{equation}
+    \norm{\bx_{\text{style}}^\perp}_2^2 = \norm{\bx_{\text{style}}}_2^2 - \norm{\bx_{\text{style}}^\parallel}_2^2 = \norm{\bx_{\text{style}}}_2^2 \sin^2 \theta \le \norm{\bx_{\text{style}}}_2^2,
+\end{equation}
+where $\theta$ is the angle between $\bx_{\text{style}}$ and $\bx_{\text{sub}}$. If the style image and content image share partial structural alignment ($\theta \to 0$), $\norm{\bx_{\text{style}}^\perp}_2 \to 0$, causing catastrophic style attenuation.
+
+\begin{theorem}[Energy Conservation of Rescaled Orthogonal Features]
+\label{thm:energy}
+Let $\tilde{\bx}_{\text{style}}^\perp = \bx_{\text{style}}^\perp \cdot \frac{\norm{\bx_{\text{style}}}_2}{\norm{\bx_{\text{style}}^\perp}_2}$ be the energy-compensated feature vector as defined in Eq.~\eqref{eq:energy_comp}. Then:
+\begin{enumerate}
+    \item $\tilde{\bx}_{\text{style}}^\perp$ exactly preserves the original energy norm: $\norm{\tilde{\bx}_{\text{style}}^\perp}_2 = \norm{\bx_{\text{style}}}_2$.
+    \item $\tilde{\bx}_{\text{style}}^\perp$ remains strictly in the orthogonal null space: $\tilde{\bx}_{\text{style}}^\perp \in \Vortho$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Direct calculation of the $L_2$ norm yields:
+\begin{equation}
+    \norm{\tilde{\bx}_{\text{style}}^\perp}_2 = \norm{ \bx_{\text{style}}^\perp \cdot \frac{\norm{\bx_{\text{style}}}_2}{\norm{\bx_{\text{style}}^\perp}_2} }_2 = \frac{\norm{\bx_{\text{style}}}_2}{\norm{\bx_{\text{style}}^\perp}_2} \norm{\bx_{\text{style}}^\perp}_2 = \norm{\bx_{\text{style}}}_2.
+\end{equation}
+Furthermore, since scalar multiplication does not alter vector direction in $\R^C$:
+\begin{equation}
+    \inner{\tilde{\bx}_{\text{style}}^\perp}{\bx_{\text{sub}}} = \left( \frac{\norm{\bx_{\text{style}}}_2}{\norm{\bx_{\text{style}}^\perp}_2} \right) \inner{\bx_{\text{style}}^\perp}{\bx_{\text{sub}}} = \left( \frac{\norm{\bx_{\text{style}}}_2}{\norm{\bx_{\text{style}}^\perp}_2} \right) \cdot 0 = 0.
+\end{equation}
+Thus, energy compensation restores $100\%$ of the original stylistic activation magnitude without reintroducing content leakage.
+\end{proof}
+
+\subsection{Diffusion Manifold Stability via Score-Orthogonal Guidance}
+\label{subsec:proof_manifold}
+
+During diffusion reverse sampling, the intermediate state $\bx_t$ moves according to the probability flow ODE:
+\begin{equation}
+    \frac{\mathrm{d}\bx_t}{\mathrm{d}t} = f(\bx_t, t) - \frac{1}{2} g(t)^2 \nabla_{\bx_t} \log p_t(\bx_t).
+\end{equation}
+The score function $\nabla_{\bx_t} \log p_t(\bx_t) \approx -\frac{\beps_\theta(\bx_t, t)}{\sigma_t}$ points along the normal vector toward high-density regions of the data manifold $\mathcal{M}_t$.
+
+\begin{theorem}[Manifold Invariance under Score-Orthogonal Guidance]
+\label{thm:manifold}
+Let $\bg = \nabla_{\bz_0} \Loss_{\text{style}}$ be the gradient of the style objective, and let $\bg^\perp = \bg - \Proj_{\beps_\theta}(\bg)$ be its projection orthogonal to the predicted score vector $\beps_\theta$. Then:
+\begin{enumerate}
+    \item The guidance perturbation $\Delta \bz_0 = -\eta \bg^\perp$ causes zero first-order disruption to the score magnitude along the normal direction of the manifold: $\inner{\Delta \bz_0}{\beps_\theta} = 0$.
+    \item Trajectory updates $\bg^\perp$ act purely as tangential rotations along the iso-probability contours of $p_t(\bx_t)$, preventing off-manifold divergence.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The inner product between the projected gradient update $\bg^\perp$ and the score vector $\beps_\theta$ is:
+\begin{align}
+    \inner{\bg^\perp}{\beps_\theta} &= \inner{\bg - \frac{\inner{\bg}{\beps_\theta}}{\norm{\beps_\theta}_2^2} \beps_\theta}{\beps_\theta} \\
+    &= \inner{\bg}{\beps_\theta} - \frac{\inner{\bg}{\beps_\theta}}{\norm{\beps_\theta}_2^2} \norm{\beps_\theta}_2^2 = 0.
+\end{align}
+Because $\inner{\Delta \bz_0}{\beps_\theta} = -\eta \inner{\bg^\perp}{\beps_\theta} = 0$, the guidance step is orthogonal to the gradient of the log-density $\nabla \log p_t$. To first order, the log-likelihood drift satisfies:
+\begin{equation}
+    \delta \log p_t(\bx_t) \approx \inner{\nabla_{\bx_t} \log p_t}{\Delta \bz_0} \propto \inner{-\beps_\theta}{\bg^\perp} = 0.
+\end{equation}
+This guarantees that guidance updates explore stylistic variations strictly within the high-probability manifold $\mathcal{M}_t$, eliminating blurry, out-of-distribution artifacts.
+\end{proof}
+
+\subsection{Comparative Analysis: DINO-ViT vs. CSD vs. CLIP for Visual Style}
+\label{subsec:dino_vs_csd}
+
+\paragraph{Why not CLIP?}
+CLIP~\cite{radford2021learning} is trained with contrastive language supervision. Its representations map strongly to categorical semantics (e.g., "a cat", "a gold sculpture"). Using CLIP image embeddings for style guidance inevitably forces the synthesis toward the semantic category of the style image, drastically accelerating content leakage.
+
+\paragraph{Why not CSD?}
+Content-Style Disentangled (CSD) models~\cite{rout2024rbmodulation} use trained metric learning embeddings. However, CSD is constrained by its specific training dataset; when evaluated on diverse real-world artistic media (e.g., stained glass, glowing neon, melting gold, origami), CSD embeddings suffer from out-of-domain feature collapse.
+
+\paragraph{Why DINO-ViT?}
+Self-supervised DINO-ViT~\cite{caron2021emerging,oquab2023dinov2} is trained via self-distillation on image patches without textual or class supervision. The deep self-attention keys $\bk \in \R^{N \times C}$ in layer 11 capture fine-grained spatial correlations, stroke textures, and color distribution. As demonstrated in our experiments, DINO feature MSE provides an isotropic, domain-agnostic style metric that guides pure artistic rendering without introducing semantic bias.

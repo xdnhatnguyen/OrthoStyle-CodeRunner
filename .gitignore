@@ -1,6 +1,9 @@
 # Private & Temporary files
 Code.md
 RULES.md
+AGENTS.md
+.agents/
+.ref_paper_archive/
 
 # Output and results
 output/
@@ -12,23 +15,29 @@ logs/
 *.log
 run_all_afa_cfgs.log
 
+# Baseline results & large archives (Chiêu 1: GitHub Releases)
+baseline_results/
+*.zip
+*.tar
+*.tar.gz
+zi*
+
 # References & Papers
 reference/
 ref_paper/
 ref_gdf_rbm.py
 
-# Heavy dependencies, Data & Local Test/Exploratory scripts
+# Heavy dependencies & Local exploratory scripts
 third_party/
-data/
-run_test.py
-main.py
-rb-modulation.ipynb
 *.ipynb
 
 # Models & Checkpoints
 *.safetensors
 *.ckpt
 *.pth
+*.pt
+*.bin
+*.onnx
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

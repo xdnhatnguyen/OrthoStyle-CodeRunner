@@ -1,0 +1,21 @@
+\section{Experimental Setup}
+\label{sec:setup}
+
+We present an exhaustive empirical evaluation of \method across diverse semantic categories and artistic styles. This section details the backbone architecture, sampling configurations, benchmark dataset, and quantitative evaluation metrics.
+
+\paragraph{Backbone Architecture.}
+We implement \method on the cascaded Stable Cascade (W{\"u}rstchen) architecture~\cite{wuerstchen}. Stage C employs a 3.6B parameter model operating at $42\times$ spatial compression to synthesize $24 \times 24 \times 16$ latents for $1024 \times 1024$ image generation. Stage B utilizes a 3.0B parameter model to upscale latents to $128 \times 128 \times 4$, which are decoded to pixel space via Stage A.
+
+\paragraph{Sampling Configurations.}
+Across all experiments, Stage C is executed for 20 timesteps with a cosine log-SNR schedule ($\text{CFG} = 4.0$, $\text{shift} = 2.0$). ControlNet condition strength is set to $\lambda_{\text{cnet}} = 0.8$ with semantic background gating. The style guidance gradient step is $\eta = 0.20$ using DINO-ViT-S/16 style loss. The early-step AdaIN pushforward operates on predicted clean latents $\bx_0$ with blending weight $\gamma_{\text{push}} = 0.60$ for $\tau_{\text{push}} = 1$ step. The style token blending factor is set to $\alpha_s = 0.85$.
+
+\paragraph{Benchmark Dataset (SOICT-Data).}
+We evaluate on the SOICT-Data benchmark comprising $225$ distinct content-style evaluation pairs ($15$ diverse content objects $\times$ $15$ artistic style exemplars). The content objects span four distinct taxonomic categories: animals, vehicles, architecture, and common household objects. The style exemplars cover challenging visual media including oil paintings (\textit{The Starry Night}, \textit{Rain Princess}), mosaic tile art, sculptural gold, woodblock prints, and cyberpunk neon. Evaluations are conducted across three prompting levels: (1) \textit{Null prompt} (\texttt{""}), (2) \textit{Object prompt} (\texttt{"a <object>"}), and (3) \textit{Style prompt} (\texttt{"a <object> in <style> style"}).
+
+\paragraph{Evaluation Metrics.}
+We employ five objective metrics covering three complementary dimensions:
+\begin{enumerate}
+    \item \textbf{Style Fidelity}: (i) \textbf{CSD} ($\uparrow$), measuring feature similarity in the Content-Style Disentanglement metric space ($\times 100$), and (ii) \textbf{DINO-Style} ($\uparrow$)~\cite{dino}, computing cosine similarity between deep spatial ViT features of the generated image and reference style ($\times 100$).
+    \item \textbf{Content Preservation}: (i) \textbf{CLIP-I} ($\uparrow$)~\cite{clip}, calculating visual cosine similarity between CLIP image embeddings of the generated and content images ($\times 100$), and (ii) \textbf{LPIPS} ($\downarrow$)~\cite{lpips}, measuring learned perceptual patch distance to the content reference ($\times 100$).
+    \item \textbf{Leakage Suppression}: \textbf{DCL} ($\downarrow$)~\cite{rout2025rbmodulation}, measuring Disentangled Content Leakage to quantify whether foreign semantic objects from the style reference bleed into the output ($\times 100$).
+\end{enumerate}

@@ -1,0 +1,2 @@
+task_name,task_desc,category,num_evaluated,csd_style_similarity,style_retrieval_correct,style_retrieval_accuracy,clip_i_content_similarity,dino_content_similarity,dino_style_similarity,dino,lpips,cfsd,dcl
+table2_D_no_guidance,"Table 2 (D): No Guidance (No DINO, No Loss, No Grad)",table2_ablation,225,0.4665951298094458,0.7733333333333333,,0.7079693407482571,0.4107556554799279,0.3095732378794087,0.3095732378794087,0.701907193130917,0.017844760405520552,0.43259746859471004

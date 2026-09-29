@@ -1,0 +1,2 @@
+task_name,task_desc,category,num_evaluated,csd_style_similarity,style_retrieval_correct,style_retrieval_accuracy,clip_i_content_similarity,dino_content_similarity,dino_style_similarity,dino,lpips,cfsd,dcl
+level1_null,Main Benchmark: Level 1 Null Prompt (Full 225 pairs),table1_benchmark,225,0.3949346148926351,0.6088888888888889,,0.7986496845881145,0.6058548668358061,0.2386146528687742,0.2386146528687742,0.5621993141041861,0.014071956649422603,0.2640506297018793

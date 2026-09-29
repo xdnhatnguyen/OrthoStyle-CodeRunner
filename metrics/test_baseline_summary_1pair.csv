@@ -1,0 +1,2 @@
+csd_style_similarity,style_retrieval_accuracy,clip_i_content_similarity,dino_content_similarity,lpips,cfsd,dcl
+0.5629883408546448,1.0,0.8470678329467773,0.6214280128479004,0.2639901041984558,0.0035246277693659067,0.2108430117368698

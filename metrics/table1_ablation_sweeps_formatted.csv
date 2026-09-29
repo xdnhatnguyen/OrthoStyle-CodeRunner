@@ -1,0 +1,13 @@
+Model,Num eval,Blended Style Tokens & Early step controller,AdaIN,Semantic Gated Preprocessing,Score-Orthogonal Guidance,Style token Blended ($\alpha_s$),Sweep ($\tau$),Prompting,CSD (H),DINO (H),CLIP-I (H),LPIPS (L),DCL (D),Status
+(A) Full method (OrthoStyle),225,x,x,x,x,"0,85",1,Null,"39,493","23,861","79,865","56,220","26,405",FALSE
+(B) Pure Mean Token (α_s = 0),225,x,x,x,x,0,1,Null,"23,345","17,561","85,152","55,038","20,581",FALSE
+(C) Raw Style Token (α_s = 1.0),225,x,x,x,x,1,1,Null,"52,637","34,382","68,943","67,915","44,816",FALSE
+(D) w/o Score-Orthogonal Guidance,225,x,x,x,,"0,85",1,Null,"46,660","30,957","70,797","70,191","43,260",FALSE
+(E) w/o AdaIN Pushforward,225,x,,x,x,"0,85",1,Null,"65,867","49,533","58,740","74,892","64,735",FALSE
+(F) w/o Semantic Gated Canny,225,x,x,,x,"0,85",1,Null,"44,976","30,364","71,133","69,879","42,235",FALSE
+(E) Sweep,49,x,x,x,x,"0,85",1,Null,"45,143","27,344","75,901","58,549","27,268",FALSE
+(E) Sweep,49,x,x,x,x,"0,85",2,Null,"41,568","25,507","76,500","56,610","25,502",FALSE
+(E) Sweep,49,x,x,x,x,"0,85",3,Null,"40,401","24,536","78,435","55,505","23,515",FALSE
+(E) Sweep,49,x,x,x,x,"0,85",4,Null,"37,072","23,268","79,397","54,220","21,655",FALSE
+(H) Prompting level,225,x,x,x,x,"0,85",1,Obj,"29,104","18,917","83,822","55,225","21,567",FALSE
+(H) Prompting level,225,x,x,x,x,"0,85",1,Sty,"40,225","25,211","78,007","59,976","29,997",FALSE

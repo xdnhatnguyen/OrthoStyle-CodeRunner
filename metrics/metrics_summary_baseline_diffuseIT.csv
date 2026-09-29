@@ -1,0 +1,2 @@
+task_name,task_desc,category,num_evaluated,csd_style_similarity,style_retrieval_correct,style_retrieval_accuracy,clip_i_content_similarity,dino_content_similarity,dino_style_similarity,dino,lpips,cfsd,dcl
+baseline_diffuseIT,Baseline: DiffuseIT,baselines,225,0.3190425171578924,0.6311111111111111,,0.6827599014176263,0.39188346814778113,0.32106079109840924,0.32106079109840924,0.5442547779613071,0.009459399301558686,0.4268938034110599

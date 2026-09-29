@@ -1,0 +1,2 @@
+task_name,task_desc,category,num_evaluated,csd_style_similarity,style_retrieval_correct,style_retrieval_accuracy,clip_i_content_similarity,dino_content_similarity,dino_style_similarity,dino,lpips,cfsd,dcl
+baseline_rb_modulation,Baseline: RB-Modulation,baselines,225,0.31381045420136716,0.5555555555555556,,0.816915455394321,0.5561235157027841,0.19125487090398868,0.19125487090398868,0.6808580137623681,0.016886451314720795,0.2880886235833168

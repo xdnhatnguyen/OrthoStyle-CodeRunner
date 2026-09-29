@@ -1,0 +1,2 @@
+task_name,task_desc,category,num_evaluated,csd_style_similarity,style_retrieval_correct,style_retrieval_accuracy,clip_i_content_similarity,dino_content_similarity,dino_style_similarity,dino,lpips,cfsd,dcl
+table2_B_pure_mean,Table 2 (B): Pure Mean Token (alpha_s=0.0),table2_ablation,225,0.23344904225319624,0.3022222222222222,,0.8515183766682942,0.6689740977022383,0.17561128148188193,0.17561128148188193,0.5503835539023082,0.013715750967255849,0.20581099518471294

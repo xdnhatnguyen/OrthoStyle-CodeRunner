@@ -1,0 +1,10 @@
+\section{Conclusion and Future Work}
+\label{sec:conclusion}
+
+In this paper, we introduced \textbf{\method}, a training-free framework for high-fidelity, zero-leakage artistic style transfer on diffusion models. By addressing the fundamental trade-off between content leakage and structural preservation, \method advances the state of the art through:
+\begin{enumerate}
+    \item \textbf{Blended Style Tokens with Orthogonal Projection and Energy Compensation}, which mathematically prevents style-to-content semantic leakage while fully preserving the energetic variance of artistic textures.
+    \item \textbf{Score-Orthogonal DINO Latent Guidance}, which steers diffusion sampling strictly along the tangent space of the score manifold to maintain image sharpness and avoid out-of-distribution drift.
+    \item \textbf{Early-Step AdaIN Pushforward Controller}, which leverages early diffusion dynamics to anchor global chromatic distributions without corrupting fine-grained texture synthesis.
+\end{enumerate}
+Through comprehensive quantitative benchmarks and qualitative evaluations across 225 content-style pairs, \method demonstrates Pareto-dominant stylization performance against existing state-of-the-art training-free methods.

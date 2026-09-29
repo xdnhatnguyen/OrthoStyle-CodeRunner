@@ -49,7 +49,7 @@ baseline_keys = [
     "baseline_rb_modulation",
 ]
 name_map = {
-    "level1_null": "OrthoStyle (Ours)",
+    "level1_null": "OrthoStyle",
     "baseline_styleid": "StyleID",
     "baseline_attenst": "AttenST",
     "baseline_diffuseIT": "DiffuseIT",
@@ -58,7 +58,7 @@ name_map = {
     "baseline_rb_modulation": "RB-Modulation",
 }
 color_map = {
-    "OrthoStyle (Ours)": "#D92638",  # Bold Crimson
+    "OrthoStyle": "#D92638",  # Bold Crimson
     "StyleID": "#3182CE",           # Blue
     "AttenST": "#38A169",           # Green
     "AttnST": "#38A169",            # Green fallback
@@ -103,7 +103,7 @@ def plot_figure1_pareto():
     # Plot Tau Sweep curve (Pareto trajectory for OrthoStyle)
     sweep_x = df_sweeps["clip"].tolist()
     sweep_y = df_sweeps["csd"].tolist()
-    ours_row = df_b[df_b["display_name"] == "OrthoStyle (Ours)"].iloc[0]
+    ours_row = df_b[df_b["display_name"] == "OrthoStyle"].iloc[0]
     sweep_x.append(ours_row["clip"])
     sweep_y.append(ours_row["csd"])
     sort_idx = np.argsort(sweep_x)
@@ -119,8 +119,8 @@ def plot_figure1_pareto():
         y = row["csd"]
         color = color_map.get(name, "#4A5568")
 
-        if name == "OrthoStyle (Ours)":
-            ax.scatter(x, y, color=color, s=280, marker="*", edgecolor="#FFFFFF", linewidth=1.5, zorder=6, label="OrthoStyle (Ours)")
+        if name == "OrthoStyle":
+            ax.scatter(x, y, color=color, s=280, marker="*", edgecolor="#FFFFFF", linewidth=1.5, zorder=6, label="OrthoStyle")
             ax.annotate(
                 f"  {name}\n  (Pareto Sweet Spot)",
                 xy=(x, y),
@@ -192,7 +192,7 @@ def plot_figure2_radar():
     ]
     N = len(categories)
 
-    plot_models = ["OrthoStyle (Ours)", "StyleID", "AttenST", "InstantStyle", "RB-Modulation"]
+    plot_models = ["OrthoStyle", "StyleID", "AttenST", "InstantStyle", "RB-Modulation"]
 
     raw_matrix = []
     for m in plot_models:
@@ -229,7 +229,7 @@ def plot_figure2_radar():
         values += values[:1]
         c = color_map.get(m, "#4A5568")
 
-        if m == "OrthoStyle (Ours)":
+        if m == "OrthoStyle":
             ax.plot(angles, values, linewidth=2.8, linestyle="solid", color=c, label=m, zorder=6)
             ax.fill(angles, values, color=c, alpha=0.25, zorder=5)
         elif m == "RB-Modulation":
@@ -251,7 +251,7 @@ def plot_figure2_radar():
 # Figure 3: Head-to-Head Improvement over RB-Modulation
 # -----------------------------------------------------------------------------
 def plot_figure3_head_to_head():
-    ours = df_b[df_b["display_name"] == "OrthoStyle (Ours)"].iloc[0]
+    ours = df_b[df_b["display_name"] == "OrthoStyle"].iloc[0]
     rbm = df_b[df_b["display_name"] == "RB-Modulation"].iloc[0]
 
     pct_csd = ((ours["csd"] - rbm["csd"]) / rbm["csd"]) * 100.0
@@ -261,11 +261,11 @@ def plot_figure3_head_to_head():
     pct_clip = ((ours["clip"] - rbm["clip"]) / rbm["clip"]) * 100.0
 
     metrics_labels = [
-        "Style Fidelity\n(CSD Similarity)",
-        "Style Alignment\n(DINO ViT)",
-        "Structural Fidelity\n(LPIPS Error Reduction)",
-        "Leakage Suppression\n(DCL Content Leakage Reduction)",
-        "Content Preservation\n(CLIP-I Similarity)",
+        "Style Fidelity\n(CSD)",
+        "Style Alignment\n(DINO)",
+        "Structural Fidelity\n(LPIPS)",
+        "Leakage Suppression\n(DCL Content)",
+        "Content Preservation\n(CLIP-I)",
     ]
     pct_values = [pct_csd, pct_dino, pct_lpips, pct_dcl, pct_clip]
 
@@ -274,7 +274,7 @@ def plot_figure3_head_to_head():
 
     ax.axvline(0, color="#2D3748", linewidth=1.2)
     ax.set_xlabel("Relative Improvement over Backbone RB-Modulation (%)", fontsize=11, fontweight="bold")
-    ax.set_title("OrthoStyle Gains over Baseline Backbone (RB-Modulation)", fontsize=13, fontweight="bold", pad=12)
+    ax.set_title("OrthoStyle Gains over RB-Modulation", fontsize=13, fontweight="bold", pad=12)
 
     for bar, val in zip(bars, pct_values):
         sign = "+" if val >= 0 else ""
@@ -319,7 +319,7 @@ def plot_figure4_balance_score():
     }).sort_values(by="Harmonic_Score", ascending=True)
 
     fig, ax = plt.subplots(figsize=(8.0, 5.2))
-    colors = ["#D92638" if m == "OrthoStyle (Ours)" else "#CBD5E0" for m in df_score["Model"]]
+    colors = ["#D92638" if m == "OrthoStyle" else "#CBD5E0" for m in df_score["Model"]]
 
     bars = ax.barh(df_score["Model"], df_score["Harmonic_Score"], color=colors, height=0.55, edgecolor="#2D3748")
 
@@ -327,8 +327,8 @@ def plot_figure4_balance_score():
     ax.set_title("Overall Style-Content Balance Score (Harmonic Mean)", fontsize=13, fontweight="bold", pad=12)
 
     for bar, val, m in zip(bars, df_score["Harmonic_Score"], df_score["Model"]):
-        fw = "bold" if m == "OrthoStyle (Ours)" else "normal"
-        c = "#9B2C2C" if m == "OrthoStyle (Ours)" else "#2D3748"
+        fw = "bold" if m == "OrthoStyle" else "normal"
+        c = "#9B2C2C" if m == "OrthoStyle" else "#2D3748"
         ax.text(val + 1.0, bar.get_y() + bar.get_height() / 2, f"{val:.1f}", va="center", ha="left", fontsize=9.5, fontweight=fw, color=c)
 
     ax.set_xlim(0, 80)
@@ -356,7 +356,7 @@ def plot_master_combined_figure():
 
     sweep_x = df_sweeps["clip"].tolist()
     sweep_y = df_sweeps["csd"].tolist()
-    ours_row = df_b[df_b["display_name"] == "OrthoStyle (Ours)"].iloc[0]
+    ours_row = df_b[df_b["display_name"] == "OrthoStyle"].iloc[0]
     sweep_x.append(ours_row["clip"])
     sweep_y.append(ours_row["csd"])
     sort_idx = np.argsort(sweep_x)
@@ -366,7 +366,7 @@ def plot_master_combined_figure():
         name = row["display_name"]
         x, y = row["clip"], row["csd"]
         c = color_map.get(name, "#4A5568")
-        if name == "OrthoStyle (Ours)":
+        if name == "OrthoStyle":
             ax1.scatter(x, y, color=c, s=240, marker="*", edgecolor="#FFFFFF", linewidth=1.5, zorder=6, label=name)
             ax1.annotate(f" {name}\n (Pareto Sweet Spot)", (x, y), xytext=(x - 6.5, y + 2.5), fontsize=9.5, fontweight="bold", color="#9B2C2C", arrowprops=dict(arrowstyle="->", color="#9B2C2C", lw=1.3), zorder=7)
         else:
@@ -422,7 +422,7 @@ def plot_master_combined_figure():
     ax3 = fig.add_subplot(2, 2, 3, polar=True)
     categories = ["CSD (Style)", "DINO (Align)", "CLIP-I (Cont)", "100 - LPIPS", "100 - DCL"]
     N = len(categories)
-    plot_models = ["OrthoStyle (Ours)", "StyleID", "AttenST", "InstantStyle", "RB-Modulation"]
+    plot_models = ["OrthoStyle", "StyleID", "AttenST", "InstantStyle", "RB-Modulation"]
     raw_matrix = []
     for m in plot_models:
         r = df_b[df_b["display_name"] == m].iloc[0]
@@ -443,7 +443,7 @@ def plot_master_combined_figure():
         values = norm_matrix[idx].tolist()
         values += values[:1]
         c = color_map.get(m, "#4A5568")
-        if m == "OrthoStyle (Ours)":
+        if m == "OrthoStyle":
             ax3.plot(angles, values, linewidth=2.6, color=c, label=m, zorder=6)
             ax3.fill(angles, values, color=c, alpha=0.22, zorder=5)
         elif m == "RB-Modulation":
@@ -468,13 +468,13 @@ def plot_master_combined_figure():
         "Model": df_b["display_name"].values,
         "Harmonic_Score": h_score,
     }).sort_values(by="Harmonic_Score", ascending=True)
-    colors4 = ["#D92638" if m == "OrthoStyle (Ours)" else "#CBD5E0" for m in df_score["Model"]]
+    colors4 = ["#D92638" if m == "OrthoStyle" else "#CBD5E0" for m in df_score["Model"]]
     bars4 = ax4.barh(df_score["Model"], df_score["Harmonic_Score"], color=colors4, height=0.55, edgecolor="#2D3748")
     ax4.set_xlabel("Overall Style-Content Balance ($F_{balance}$)", fontsize=11, fontweight="bold")
     ax4.set_title("(d) Overall Harmonic Trade-off Score", fontsize=12.5, fontweight="bold", pad=8)
     for bar, val, m in zip(bars4, df_score["Harmonic_Score"], df_score["Model"]):
-        fw = "bold" if m == "OrthoStyle (Ours)" else "normal"
-        c = "#9B2C2C" if m == "OrthoStyle (Ours)" else "#2D3748"
+        fw = "bold" if m == "OrthoStyle" else "normal"
+        c = "#9B2C2C" if m == "OrthoStyle" else "#2D3748"
         ax4.text(val + 1.0, bar.get_y() + bar.get_height() / 2, f"{val:.1f}", va="center", ha="left", fontsize=9.5, fontweight=fw, color=c)
     ax4.set_xlim(0, 80)
     ax4.grid(axis="x", linestyle="--", alpha=0.7)
